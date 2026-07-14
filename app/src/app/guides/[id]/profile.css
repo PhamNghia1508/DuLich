@@ -1,0 +1,66 @@
+.safe-image { position: relative; display: block; overflow: hidden; background: #e9e2d7; }
+.safe-image img { position: relative; z-index: 1; display: block; opacity: 1; transition: opacity .2s ease; }
+.safe-image img.safe-image-failed { opacity: 0; }
+.safe-image-skeleton { position: absolute; inset: 0; background: linear-gradient(100deg, #e9e2d7 20%, #f6f1e9 38%, #e9e2d7 56%); background-size: 220% 100%; }
+.safe-image-loaded .safe-image-skeleton { display: none; }
+
+.profile-page-container { width: min(1240px, calc(100% - 48px)); margin-inline: auto; padding-block: 28px 72px; }
+.profile-commerce-region { display: grid; grid-template-columns: minmax(0, 820px) 372px; gap: 48px; align-items: start; }
+.profile-main-column { min-width: 0; }
+.profile-booking-sidebar { position: sticky; top: calc(var(--site-header-height, 76px) + 20px); align-self: start; min-width: 0; z-index: 20; }
+.profile-after-commerce { display: grid; gap: 64px; margin-top: 72px; }
+.profile-section { margin-top: 72px; }
+.profile-signature-section { margin-top: 72px; }
+.profile-section-heading { display: flex; align-items: end; justify-content: space-between; gap: 24px; margin-bottom: 24px; }
+.profile-section-heading h2 { font-family: var(--font-heading); font-size: 30px; line-height: 1.1; color: #193b30; }
+.profile-section-heading p { margin-top: 8px; color: #66736d; font-size: 15px; }
+.profile-text-action { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; color: #a94d35; font-weight: 750; white-space: nowrap; }
+
+.profile-gallery { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: repeat(2, 188px); gap: 14px; }
+.profile-gallery > button { position: relative; min-width: 0; overflow: hidden; border-radius: 18px; background: #e9e2d7; }
+.profile-gallery-main { grid-row: span 2; }
+.profile-gallery-zoom { position: absolute; z-index: 2; right: 14px; bottom: 14px; min-height: 40px; border-radius: 999px; background: #fffdf8e8; color: #193b30; display: inline-flex; align-items: center; gap: 7px; padding: 0 12px; font-size: 12px; font-weight: 800; opacity: 0; transition: opacity .2s; }
+.profile-gallery button:hover .profile-gallery-zoom, .profile-gallery button:focus-visible .profile-gallery-zoom { opacity: 1; }
+.profile-lightbox { position: fixed; inset: 0; z-index: 100; background: #0d1713ed; display: grid; place-items: center; padding: 72px; }
+.profile-lightbox-media { width: min(1000px, 80vw); height: min(760px, 78vh); background: transparent; }
+.profile-lightbox p { position: absolute; bottom: 24px; color: white; font-size: 14px; }
+.profile-lightbox-close, .profile-lightbox-prev, .profile-lightbox-next { position: absolute; z-index: 2; width: 48px; height: 48px; border-radius: 50%; background: #fffdf8; color: #193b30; display: grid; place-items: center; }
+.profile-lightbox-close { right: 24px; top: 24px; }
+.profile-lightbox-prev { left: 24px; top: 50%; }
+.profile-lightbox-next { right: 24px; top: 50%; }
+.profile-video-section { margin-top: 72px; }
+.profile-video-trigger { position: relative; display: block; width: 100%; aspect-ratio: 16 / 9; max-height: 460px; overflow: hidden; border-radius: 22px; border: 1px solid #E8E4DC; background: #EDE8E0; text-align: left; }
+.profile-video-trigger:focus-visible,
+.profile-gallery > button:focus-visible,
+.profile-text-action:focus-visible { outline: 2px solid #1C3A2E; outline-offset: 3px; }
+.profile-video-wash { position: absolute; inset: 0; z-index: 1; background: linear-gradient(180deg, rgba(13,23,19,.08), rgba(13,23,19,.32)); }
+.profile-video-play { position: absolute; z-index: 2; left: 50%; top: 50%; display: grid; width: 64px; height: 64px; transform: translate(-50%, -50%); place-items: center; border-radius: 999px; border: 2px solid rgba(255,255,255,.5); background: #C4614A; color: white; box-shadow: 0 16px 36px rgba(28,58,46,.22); }
+.profile-video-duration { position: absolute; z-index: 2; left: 16px; bottom: 16px; display: inline-flex; min-height: 34px; align-items: center; gap: 7px; border-radius: 999px; background: rgba(13,23,19,.72); padding: 0 12px; color: white; font-size: 12px; font-weight: 800; }
+.profile-video-modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 20px; background: rgba(13,23,19,.72); }
+.profile-video-dialog { position: relative; width: min(480px, 100%); border: 1px solid #E8E4DC; border-radius: 24px; background: #FAFAF7; padding: 28px; box-shadow: 0 24px 80px rgba(13,23,19,.24); }
+.profile-video-close { position: absolute; right: 16px; top: 16px; display: grid; width: 44px; height: 44px; place-items: center; border-radius: 999px; color: #66736d; }
+.profile-video-close:focus-visible { outline: 2px solid #1C3A2E; outline-offset: 2px; }
+
+@media (max-width: 1099px) {
+  .profile-commerce-region { display: block; }
+  .profile-booking-sidebar { display: none; }
+  .profile-page-container { width: min(calc(100% - 40px), 900px); }
+  .profile-after-commerce { margin-top: 56px; gap: 56px; }
+}
+
+@media (max-width: 700px) {
+  .profile-page-container { width: min(calc(100% - 32px), 900px); padding-block: 20px 56px; }
+  .profile-after-commerce { margin-top: 48px; gap: 48px; }
+  .profile-section { margin-top: 48px; }
+  .profile-section-heading { align-items: start; }
+  .profile-gallery { grid-template-columns: 1fr 1fr; grid-template-rows: 220px 118px 118px; gap: 10px; }
+  .profile-gallery-main { grid-row: span 2; }
+  .profile-gallery > button:nth-child(n+4) { display: none; }
+  .profile-lightbox { padding: 64px 16px; }
+  .profile-lightbox-media { width: 100%; height: 70vh; }
+  .profile-lightbox-prev { left: 12px; }
+  .profile-lightbox-next { right: 12px; }
+  .profile-video-section { margin-top: 56px; }
+  .profile-video-trigger { max-height: 360px; border-radius: 18px; }
+  .profile-video-play { width: 56px; height: 56px; }
+}
