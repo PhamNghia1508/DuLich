@@ -73,7 +73,7 @@ export default function AdminOverviewPage() {
         </h1>
 
         {/* METRICS STATS BAR */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8 text-left">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8 text-left">
           <div className="bg-white border border-[#E8E4DC] p-5 rounded-2xl shadow-sm flex items-center gap-4">
             <div className="bg-[#EAF0EC] p-3 rounded-lg text-[#1C3A2E] border border-[#B8DFC8]">
               <Users size={24} />
@@ -140,7 +140,7 @@ export default function AdminOverviewPage() {
                       </div>
                     </div>
 
-                    <div className="flex justify-end gap-2 pt-2 border-t border-[#F5F0EA]">
+                    <div className="flex flex-wrap justify-end gap-2 pt-2 border-t border-[#F5F0EA]">
                       {app.status === 'pending' ? (
                         <>
                           <button

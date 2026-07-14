@@ -2070,7 +2070,6 @@ a {
     justify-content: center;
   }
   .guide-grid {
-    grid-template-columns: 1fr;
     gap: 1.25rem;
   }
   .guide-match-help > .guide-container {
@@ -2117,6 +2116,12 @@ a {
   }
   .guide-drawer {
     max-height: 80vh;
+  }
+}
+
+@media (max-width: 640px) {
+  .guide-grid {
+    grid-template-columns: 1fr;
   }
 }
 

@@ -80,7 +80,7 @@ export default function GuideDashboardPage() {
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <h1 className="font-[family-name:var(--font-playfair)] text-xl md:text-2xl font-bold leading-none">
+                <h1 className="font-[family-name:var(--font-playfair)] text-xl md:text-2xl font-bold leading-none" style={{ color: 'var(--color-on-dark)' }}>
                   {guide.firstName} Nguyen
                 </h1>
                 <span className="badge badge-verified bg-white/95 text-[9px] py-0.5 px-1 font-bold text-[#1C6B3A] rounded">
