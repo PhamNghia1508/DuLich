@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useLocation } from 'wouter';
+import { Link, useLocation, useSearch } from 'wouter';
 import {
   Accessibility, Building2, Camera, Check, ChevronDown, Compass,
   History, Map, Moon, SearchX, ShieldCheck, SlidersHorizontal,
@@ -220,8 +220,9 @@ function Filters({
 }
 
 function GuidesContent() {
-  const [location, setLocation] = useLocation();
-  const params = new URLSearchParams(window.location.search);
+  const [, setLocation] = useLocation();
+  const search = useSearch();
+  const params = new URLSearchParams(search);
   const lang = oneOf(params.get('lang'), languages.map(item => item.id));
   const category = oneOf(params.get('category'), categories.map(item => item.id));
   const gender = oneOf(params.get('gender'), genders.map(item => item.id));

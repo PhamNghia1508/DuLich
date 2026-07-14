@@ -1,8 +1,5 @@
-'use client';
-
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
+import { Link, useParams } from 'wouter';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { GUIDES, REVIEWS } from '@/data/mockData';
@@ -56,17 +53,6 @@ export default function GuideProfilePage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-[#FAFAF7] pb-20 lg:pb-0">
-      {/* Global CSS to add drawer animation */}
-      <style jsx global>{`
-        @keyframes slideUp {
-          from { transform: translateY(100%); }
-          to { transform: translateY(0); }
-        }
-        .animate-slide-up {
-          animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-      `}</style>
-
       <Navbar />
 
       <main className="profile-page-container flex-1">

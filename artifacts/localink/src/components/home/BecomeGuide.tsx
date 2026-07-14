@@ -1,4 +1,4 @@
-import Link from 'wouter/link';
+import { Link } from 'wouter';
 import { CalendarDays, ClipboardList, Compass, UserRoundCheck } from 'lucide-react';
 
 const benefits = [

@@ -1,0 +1,1 @@
+- [Next.js → Vite/wouter port lessons](nextjs-to-vite-port.md) — wouter useSearch for query reactivity; unlayered globals.css beats Tailwind utilities; migration backup nested at .migration-backup/app/.

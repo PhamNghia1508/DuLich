@@ -1,8 +1,5 @@
-'use client';
-
 import React, { useState, Suspense } from 'react';
-import Link from 'next/link';
-import { useParams, useRouter, useSearchParams } from 'next/navigation';
+import { Link, useParams, useSearch } from 'wouter';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { GUIDES } from '@/data/mockData';
@@ -23,8 +20,7 @@ import type { Booking } from '@/types';
 
 function BookingRequestContent() {
   const params = useParams();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const searchParams = new URLSearchParams(useSearch());
   const guideId = params?.guideId as string;
   const durationPreset = searchParams?.get('duration') || 'hour';
 
@@ -182,7 +178,7 @@ function BookingRequestContent() {
         
         {/* Back Link */}
         <button 
-          onClick={() => router.back()}
+          onClick={() => window.history.back()}
           className="mb-6 flex items-center gap-1 text-xs font-bold text-[#5A5A5A] hover:text-[#1A1A1A] transition-colors"
         >
           <ArrowLeft size={14} /> Back to profile
