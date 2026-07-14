@@ -78,10 +78,10 @@
    Base Styles
    ============================================================ */
 
+/* Note: margin/padding reset is provided by Tailwind preflight (@layer base).
+   Keeping it here unlayered would override Tailwind spacing utilities. */
 *, *::before, *::after {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
 html {
@@ -746,6 +746,7 @@ a {
 }
 
 .footer-brand-col { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+.site-footer .footer-brand-col a span { color: var(--color-on-dark); }
 .footer-brand-col p { font-size: 0.875rem; line-height: 1.7; max-width: 280px; }
 .footer-socials { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
 .footer-socials a {
