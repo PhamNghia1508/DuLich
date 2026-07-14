@@ -736,6 +736,90 @@ a {
 .become-guide-image > div { position: absolute; z-index: 1; left: 22px; right: 22px; bottom: 22px; padding: 18px; border: 1px solid rgba(255,255,255,.18); border-radius: 12px; background: rgba(21,44,34,.86); backdrop-filter: blur(9px); }
 .become-guide-image span { color: #F0A08C; font-size: .72rem; font-weight: 750; letter-spacing: .08em; text-transform: uppercase; }
 .become-guide-image p { margin-top: 5px; color: var(--color-on-dark); font-family: var(--font-heading); font-size: 1.15rem; line-height: 1.4; }
+.site-footer { padding: 72px 0 32px; }
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr 1fr 1.25fr;
+  gap: 48px;
+  margin-bottom: 56px;
+}
+
+.footer-brand-col { display: flex; flex-direction: column; gap: 18px; align-items: flex-start; }
+.footer-brand-col p { font-size: 0.875rem; line-height: 1.7; max-width: 280px; }
+.footer-socials { display: flex; align-items: center; gap: 14px; margin-top: 4px; }
+.footer-socials a {
+  width: 38px; height: 38px; border-radius: var(--radius-full);
+  background: #142A21; border: 1px solid #294B3B;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--color-on-dark-muted);
+  transition: color 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+.footer-socials a:hover { color: var(--color-on-dark); border-color: #3C6A54; transform: translateY(-2px); }
+
+.footer-col { display: flex; flex-direction: column; gap: 18px; }
+.site-footer h4.footer-heading {
+  font-family: var(--font-body);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+.footer-links { display: flex; flex-direction: column; gap: 12px; font-size: 0.875rem; }
+.footer-links a { width: fit-content; transition: color 160ms ease; }
+
+.footer-contact { display: flex; flex-direction: column; gap: 10px; font-size: 0.875rem; margin-bottom: 6px; }
+.footer-contact > div { display: flex; align-items: center; gap: 9px; }
+.footer-contact svg { color: #E58C76; flex-shrink: 0; }
+
+.footer-selectors { display: flex; gap: 10px; }
+.footer-selectors > div { position: relative; flex: 1; }
+.footer-selectors select {
+  width: 100%;
+  font-size: 0.75rem;
+  border: 1px solid var(--color-on-dark-border);
+  border-radius: var(--radius-md);
+  padding: 0 30px 0 12px;
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  transition: border-color 160ms ease, color 160ms ease;
+}
+.footer-selectors select:hover { color: var(--color-on-dark); border-color: #3C6A54; }
+.footer-selectors > div::after {
+  content: '';
+  position: absolute;
+  right: 12px; top: 50%;
+  width: 7px; height: 7px;
+  border-right: 1.5px solid var(--color-on-dark-muted);
+  border-bottom: 1.5px solid var(--color-on-dark-muted);
+  transform: translateY(-70%) rotate(45deg);
+  pointer-events: none;
+}
+
+.footer-divider { border: 0; border-top: 1px solid #294B3B; margin: 0 0 28px; }
+
+.footer-meta {
+  display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center;
+  gap: 16px 28px; font-size: 0.75rem;
+}
+.footer-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+.footer-badges span { display: flex; align-items: center; gap: 7px; }
+.footer-legal { display: flex; gap: 22px; }
+
+.footer-copyright { margin-top: 26px; padding-top: 22px; border-top: 1px solid #223F31; text-align: center; font-size: 0.75rem; color: var(--color-on-dark-subtle); }
+
+@media (max-width: 1024px) {
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+}
+
+@media (max-width: 640px) {
+  .site-footer { padding: 52px 0 28px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 34px; margin-bottom: 40px; }
+  .footer-meta { flex-direction: column; align-items: flex-start; }
+}
+
 .site-footer.dark-surface { border-color: #294B3B; }
 .site-footer.dark-surface p, .site-footer.dark-surface nav, .site-footer.dark-surface nav a, .site-footer.dark-surface div, .site-footer.dark-surface span, .site-footer.dark-surface select, .site-footer.dark-surface option { color: var(--color-on-dark-muted); }
 .site-footer.dark-surface h4 { color: var(--color-on-dark-subtle); }
