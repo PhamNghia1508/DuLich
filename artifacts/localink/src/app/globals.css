@@ -31,6 +31,8 @@
   --color-on-dark-border: #3E5D4F;
 
   /* Typography */
+  --font-playfair: 'Playfair Display';
+  --font-inter: 'Inter';
   --font-heading: var(--font-playfair), 'Georgia', serif;
   --font-body: var(--font-inter), 'Helvetica Neue', sans-serif;
 
@@ -1007,6 +1009,14 @@ a {
   background-color: var(--color-white);
   transition: all var(--transition-fast);
   cursor: pointer;
+}
+
+/* Hide mobile category buttons (direct children) on desktop; the
+   design-system button rule above outweighs Tailwind's md:hidden. */
+@media (min-width: 768px) {
+  .guide-category-scroll > button {
+    display: none;
+  }
 }
 
 .guide-category-scroll button:hover {

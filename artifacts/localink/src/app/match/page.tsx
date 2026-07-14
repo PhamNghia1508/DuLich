@@ -1,7 +1,5 @@
-'use client';
-
 import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useLocation } from 'wouter';
 import Navbar from '@/components/layout/Navbar';
 import { 
   ArrowLeft, 
@@ -25,7 +23,7 @@ import type { TripRequest, ExperienceCategory, PersonalityTag, GuideGender } fro
 type FormState = Omit<TripRequest, 'id'>;
 
 export default function MatchPage() {
-  const router = useRouter();
+  const [, navigate] = useLocation();
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMsgIdx, setSubmitMsgIdx] = useState(0);
@@ -187,7 +185,7 @@ export default function MatchPage() {
         q.set('accessibility', 'true');
       }
 
-      router.push(`/guides?${q.toString()}`);
+      navigate(`/guides?${q.toString()}`);
     }, 6000);
   };
 

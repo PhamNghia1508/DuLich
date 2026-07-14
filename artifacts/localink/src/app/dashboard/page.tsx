@@ -1,8 +1,5 @@
-'use client';
-
 import React, { useState, useEffect, Suspense } from 'react';
-import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { Link, useSearch } from 'wouter';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import StarRating from '@/components/ui/StarRating';
@@ -31,8 +28,8 @@ import { formatCurrency, categoryLabel } from '@/lib/utils';
 import type { Booking, Conversation, Message, Guide } from '@/types';
 
 function TravelerDashboardContent() {
-  const searchParams = useSearchParams();
-  const chatPreset = searchParams?.get('chat');
+  const searchParams = new URLSearchParams(useSearch());
+  const chatPreset = searchParams.get('chat');
 
   // Tabs state
   const [activeTab, setActiveTab] = useState<'upcoming' | 'pending' | 'messages' | 'saved' | 'past' | 'notifications'>('upcoming');

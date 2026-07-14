@@ -1,9 +1,9 @@
-import { Languages, LifeBuoy, MessageCircleCheck, UserRoundCheck } from 'lucide-react';
+import { Languages, LifeBuoy, MessageCircleMore, UserRoundCheck } from 'lucide-react';
 
 const trustItems = [
   { icon: UserRoundCheck, title: 'Profiles reviewed by people', text: 'Every guide profile is checked before it appears.' },
   { icon: Languages, title: 'Multiple language options', text: 'Find a guide you can speak with comfortably.' },
-  { icon: MessageCircleCheck, title: 'Experience-based reviews', text: 'Feedback is tied to completed experiences.' },
+  { icon: MessageCircleMore, title: 'Experience-based reviews', text: 'Feedback is tied to completed experiences.' },
   { icon: LifeBuoy, title: 'Support when you need it', text: 'Local help before and during your time together.' },
 ];
 
