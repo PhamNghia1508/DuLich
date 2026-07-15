@@ -15,6 +15,7 @@ import GuideVideoIntro from '@/components/guides/profile/GuideVideoIntro';
 import GuideReviews from '@/components/guides/profile/GuideReviews';
 import GuideCredentials from '@/components/guides/profile/GuideCredentials';
 import GuideBookingCard from '@/components/guides/profile/GuideBookingCard';
+import GuideAvailabilitySection from '@/components/guides/profile/GuideAvailabilitySection';
 import SimilarGuides from '@/components/guides/profile/SimilarGuides';
 import GuideFinalCTA from '@/components/guides/profile/GuideFinalCTA';
 import { formatCurrency } from '@/lib/utils';
@@ -30,9 +31,20 @@ export default function GuideProfilePage() {
   const [selectedDuration, setSelectedDuration] = useState<'hour' | 'half' | 'full'>('hour');
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
 
+  // Lift state for availability date and time
+  const todayStr = new Date().toISOString().split('T')[0];
+  const [selectedDate, setSelectedDate] = useState(todayStr);
+  const [selectedTime, setSelectedTime] = useState('');
+
   const focusBookingArea = () => {
-    if (window.innerWidth < 1024) setIsMobileDrawerOpen(true);
-    else document.getElementById('profile-booking')?.focus();
+    if (window.innerWidth < 1024) {
+      setIsMobileDrawerOpen(true);
+    } else {
+      const el = document.getElementById('availability-section');
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
   };
 
   if (!guide) {
@@ -106,6 +118,15 @@ export default function GuideProfilePage() {
               reviewCount={guide.reviewCount} 
             />
 
+            {/* Dedicated Availability Section */}
+            <GuideAvailabilitySection
+              guide={guide}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
+            />
+
             {/* Credentials / Manually Reviewed Trust */}
             <GuideCredentials guide={guide} />
 
@@ -117,6 +138,10 @@ export default function GuideProfilePage() {
               guide={guide}
               selectedDuration={selectedDuration}
               setSelectedDuration={setSelectedDuration}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
             />
           </aside>
 
@@ -170,11 +195,26 @@ export default function GuideProfilePage() {
                 Cancel
               </button>
             </div>
+
+            {/* Visual scheduler section for mobile view in drawer */}
+            <div className="border-b border-[#F5F0EA] pb-2">
+              <GuideAvailabilitySection
+                guide={guide}
+                selectedDate={selectedDate}
+                setSelectedDate={setSelectedDate}
+                selectedTime={selectedTime}
+                setSelectedTime={setSelectedTime}
+              />
+            </div>
             
             <GuideBookingCard
               guide={guide}
               selectedDuration={selectedDuration}
               setSelectedDuration={setSelectedDuration}
+              selectedDate={selectedDate}
+              setSelectedDate={setSelectedDate}
+              selectedTime={selectedTime}
+              setSelectedTime={setSelectedTime}
               onBook={() => setIsMobileDrawerOpen(false)}
             />
           </div>

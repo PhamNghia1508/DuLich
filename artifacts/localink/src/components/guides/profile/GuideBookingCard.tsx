@@ -1,72 +1,64 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Calendar, Clock, Users, Shield, MessageSquare, Info, Plus, Minus, ChevronRight, HelpCircle } from 'lucide-react';
+import { Clock, Users, Shield, MessageSquare, Info, Plus, Minus, CheckCircle, Calendar } from 'lucide-react';
 import type { Guide } from '@/types';
 import { formatCurrency } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
-import { getGuideAvailability } from '@/data/availability';
 
 interface GuideBookingCardProps {
   guide: Guide;
   selectedDuration: 'hour' | 'half' | 'full';
   setSelectedDuration: (d: 'hour' | 'half' | 'full') => void;
+  selectedDate: string;
+  setSelectedDate: (d: string) => void;
+  selectedTime: string;
+  setSelectedTime: (t: string) => void;
   onBook?: () => void; // Optional callback for drawer completion
 }
 
-const formatDateString = (d: Date) => {
-  const year = d.getFullYear();
-  const month = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`;
+const formatDateLabel = (dateStr: string) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
 };
 
 const formatTimeLabel = (timeStr: string) => {
+  if (!timeStr) return '';
   const [hourStr, minStr] = timeStr.split(':');
   const hour = parseInt(hourStr, 10);
   const ampm = hour >= 12 ? 'PM' : 'AM';
   const displayHour = hour % 12 === 0 ? 12 : hour % 12;
-  
-  let label = `${displayHour}:${minStr} ${ampm}`;
-  if (timeStr === '06:00') label += ' (Sunrise)';
-  if (timeStr === '16:00') label += ' (Golden hr)';
-  if (timeStr === '18:00') label += ' (Sunset)';
-  return label;
+  return `${displayHour}:${minStr} ${ampm}`;
 };
-
-const ALL_SLOTS = [
-  '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', 
-  '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'
-];
 
 export default function GuideBookingCard({
   guide,
   selectedDuration,
   setSelectedDuration,
+  selectedDate,
+  setSelectedDate,
+  selectedTime,
+  setSelectedTime,
   onBook,
 }: GuideBookingCardProps) {
   const [, navigate] = useLocation();
   const { isAuthenticated } = useAuth();
 
-  // Initialize selectedDate to today
-  const todayStr = formatDateString(new Date());
-  const [selectedDate, setSelectedDate] = useState(todayStr);
-  const [time, setTime] = useState('09:00');
+  // Booking details state
   const [groupSize, setGroupSize] = useState(2);
   const [hours, setHours] = useState(3);
-  const [showManualDatePicker, setShowManualDatePicker] = useState(false);
-
-  // Generate 7 days carousel list
-  const next7Days = Array.from({ length: 7 }).map((_, i) => {
-    const d = new Date();
-    d.setDate(d.getDate() + i);
-    return d;
-  });
-
-  const activeAvailability = getGuideAvailability(guide.id, selectedDate);
 
   const handleRequestBooking = (e: React.MouseEvent) => {
     e.preventDefault();
-    const targetUrl = `/book/${guide.id}?duration=${selectedDuration}&date=${selectedDate}&time=${time}&groupSize=${groupSize}&hours=${hours}`;
+    
+    // Check if slot has been selected, if not scroll to section
+    if (!selectedDate || !selectedTime) {
+      scrollToCalendar();
+      return;
+    }
+
+    const targetUrl = `/book/${guide.id}?duration=${selectedDuration}&date=${selectedDate}&time=${selectedTime}&groupSize=${groupSize}&hours=${hours}`;
     if (onBook) onBook();
     if (isAuthenticated) {
       navigate(targetUrl);
@@ -82,6 +74,13 @@ export default function GuideBookingCard({
       navigate(targetUrl);
     } else {
       navigate(`/signin?redirect=${encodeURIComponent(targetUrl)}`);
+    }
+  };
+
+  const scrollToCalendar = () => {
+    const el = document.getElementById('availability-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
   };
 
@@ -122,6 +121,8 @@ export default function GuideBookingCard({
       setHours(nextVal);
     }
   };
+
+  const hasSelectedSlot = selectedDate && selectedTime;
 
   return (
     <div className="bg-white border border-[#E8E4DC] p-6 rounded-3xl shadow-lg space-y-6 relative transition-all">
@@ -197,122 +198,46 @@ export default function GuideBookingCard({
         </div>
       )}
 
-      {/* ─── CUSTOM VISUAL SCHEDULER ────────────────────────────────────────── */}
-      <div className="space-y-3.5">
-        <div className="flex justify-between items-center">
-          <label className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider">
-            Check availability schedule
-          </label>
-          <button
-            type="button"
-            onClick={() => setShowManualDatePicker(!showManualDatePicker)}
-            className="text-[10px] font-bold text-[#C4614A] hover:underline bg-transparent border-0 cursor-pointer"
-          >
-            {showManualDatePicker ? 'Show 7 Days' : 'Pick other date'}
-          </button>
-        </div>
-
-        {/* 7 Days Carousel */}
-        {!showManualDatePicker ? (
-          <div className="calendar-carousel">
-            {next7Days.map((d) => {
-              const dStr = formatDateString(d);
-              const isActive = selectedDate === dStr;
-              const dayNum = d.getDate();
-              const dayOfWeek = d.toLocaleDateString('en-US', { weekday: 'short' });
-              
-              // Get availability dots for the day
-              const dayAvail = getGuideAvailability(guide.id, dStr);
-              const bookedCount = dayAvail.bookedSlots.length;
-              const pendingCount = dayAvail.pendingSlots.length;
-              const totalUnavailable = bookedCount + pendingCount;
-              
-              let dotClass = 'free';
-              if (totalUnavailable >= ALL_SLOTS.length) {
-                dotClass = 'booked';
-              } else if (totalUnavailable >= 5) {
-                dotClass = 'busy';
-              }
-
-              return (
-                <button
-                  key={dStr}
-                  type="button"
-                  onClick={() => setSelectedDate(dStr)}
-                  className={`calendar-day-chip focus:outline-none focus:ring-1 focus:ring-[#1C3A2E] ${
-                    isActive ? 'active' : ''
-                  }`}
-                >
-                  <span className="text-[10px] font-semibold opacity-70 uppercase">{dayOfWeek}</span>
-                  <span className="text-sm font-bold mt-0.5">{dayNum}</span>
-                  <div className={`day-dot ${dotClass}`} />
-                </button>
-              );
-            })}
+      {/* ─── SIMPLIFIED SELECTED SLOT VIEW ──────────────────────────────────── */}
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">
+          Selected Schedule
+        </label>
+        
+        {hasSelectedSlot ? (
+          <div className="flex items-center gap-3 bg-[#EAF0EC] border border-[#C5D1CA] p-3.5 rounded-2xl">
+            <CheckCircle size={18} className="text-[#1D6C3D] shrink-0" />
+            <div className="text-xs">
+              <span className="font-bold text-[#1C3A2E] block">
+                {formatDateLabel(selectedDate)}
+              </span>
+              <span className="text-[11px] font-semibold text-[#1C3A2E]/80">
+                Starts at {formatTimeLabel(selectedTime)}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={scrollToCalendar}
+              className="ml-auto text-[10px] font-bold text-[#C4614A] hover:underline bg-transparent border-0 cursor-pointer"
+            >
+              Change
+            </button>
           </div>
         ) : (
-          /* Manual Date Picker Input wrapper */
-          <div className="relative">
-            <input
-              type="date"
-              value={selectedDate}
-              onChange={(e) => setSelectedDate(e.target.value)}
-              min={todayStr}
-              className="w-full h-11 border border-[#E8E4DC] rounded-xl px-3 py-2 text-xs font-semibold text-[#1A1A1A] bg-white focus:outline-none focus:ring-2 focus:ring-[#1C3A2E] transition-all"
-            />
-          </div>
-        )}
-
-        {/* Timeline Slot Selection Grid */}
-        <div className="space-y-2">
-          <p className="text-[10px] font-semibold text-[#8A8A8A] flex justify-between">
-            <span>Available slots for {selectedDate === todayStr ? 'Today' : selectedDate}</span>
-            <span className="flex gap-2">
-              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" /> Free</span>
-              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b]" /> Hold</span>
-              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#e5e7eb]" /> Booked</span>
+          <button
+            type="button"
+            onClick={scrollToCalendar}
+            className="w-full flex items-center justify-between border border-[#E8E4DC] p-3.5 rounded-2xl hover:border-[#1C3A2E] bg-white text-left transition-all cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#1C3A2E]"
+          >
+            <span className="flex items-center gap-2 text-xs font-bold text-[#5A5A5A]">
+              <Calendar size={16} className="text-[#8A8A8A]" />
+              Select date & time slot...
             </span>
-          </p>
-
-          <div className="time-slots-grid">
-            {ALL_SLOTS.map((slot) => {
-              const isBooked = activeAvailability.bookedSlots.includes(slot);
-              const isPending = activeAvailability.pendingSlots.includes(slot);
-              const isSelected = time === slot;
-
-              let slotClass = '';
-              let isDisabled = false;
-              let titleText = 'Available slot';
-
-              if (isBooked) {
-                slotClass = 'booked';
-                isDisabled = true;
-                titleText = 'Booked by another traveler';
-              } else if (isPending) {
-                slotClass = 'pending';
-                isDisabled = true;
-                titleText = 'Pending confirmation';
-              } else if (isSelected) {
-                slotClass = 'active';
-              }
-
-              return (
-                <button
-                  key={slot}
-                  type="button"
-                  disabled={isDisabled}
-                  onClick={() => setTime(slot)}
-                  title={titleText}
-                  className={`time-slot-btn focus:outline-none focus:ring-1 focus:ring-[#C4614A] ${slotClass}`}
-                >
-                  <span>{formatTimeLabel(slot)}</span>
-                  {isBooked && <span className="text-[7px] font-bold opacity-60 scale-90 uppercase mt-0.5">Booked</span>}
-                  {isPending && <span className="text-[7px] font-bold opacity-80 scale-90 uppercase mt-0.5">Hold</span>}
-                </button>
-              );
-            })}
-          </div>
-        </div>
+            <span className="text-[10px] font-bold text-[#C4614A] hover:underline">
+              Choose slot
+            </span>
+          </button>
+        )}
       </div>
 
       {/* Group Size Selector */}
@@ -370,7 +295,7 @@ export default function GuideBookingCard({
           onClick={handleRequestBooking}
           className="btn btn-accent h-12 w-full text-center shadow-md flex items-center justify-center gap-2 font-bold text-sm rounded-xl hover:shadow-lg active:scale-95 transition-all border-0 cursor-pointer"
         >
-          Request booking
+          {hasSelectedSlot ? 'Request booking' : 'Choose time slot to book'}
         </button>
         
         <button
