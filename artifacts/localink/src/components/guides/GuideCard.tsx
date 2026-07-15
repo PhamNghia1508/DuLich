@@ -155,7 +155,7 @@ function GuidePortrait({
         </div>
       )}
 
-      {/* Favorite button — top-left */}
+      {/* Favorite button — top-left (z-index above stretched link) */}
       <button
         type="button"
         onClick={(e) => {
@@ -166,7 +166,7 @@ function GuidePortrait({
         aria-label={isFavorited ? `Remove ${guide.displayName} from saved guides` : `Save ${guide.displayName} to saved guides`}
         className={cn(
           'guide-favorite-btn absolute top-2.5 left-2.5 w-8 h-8 rounded-full flex items-center justify-center',
-          'transition-all duration-150 shadow-sm',
+          'transition-all duration-150 shadow-sm z-20',
           isFavorited
             ? 'bg-white text-red-500'
             : 'bg-white/80 text-[var(--color-text-muted)] hover:bg-white hover:text-red-400',
@@ -301,8 +301,8 @@ function GuideCardBody({
           </span>
         </div>
 
-        {/* Action buttons */}
-        <div className="pt-2">
+        {/* Action buttons — z-index above stretched link */}
+        <div className="pt-2 relative z-20">
           <Link
             href={`/guides/${guide.id}`}
             className="btn btn-outline btn-sm w-full text-center justify-center"
@@ -480,7 +480,17 @@ export default function GuideCard({
 
   // ── Default variant: vertical portrait card ────────────────────────────────
   return (
-    <article className={cn("card flex flex-col animate-fade-in", isHovered && "hovered")}>
+    <article className={cn("card flex flex-col animate-fade-in relative", isHovered && "hovered")}>
+      {/*
+        Stretched link: covers the entire card area as a clickable zone.
+        The favorite button and "View Profile" link use e.stopPropagation()
+        / higher z-index to remain independently clickable.
+      */}
+      <Link
+        href={`/guides/${guide.id}`}
+        className="absolute inset-0 z-10 rounded-[inherit]"
+        aria-label={`View profile of ${guide.displayName}`}
+      />
       <GuidePortrait
         guide={guide}
         isFavorited={isFavorited}

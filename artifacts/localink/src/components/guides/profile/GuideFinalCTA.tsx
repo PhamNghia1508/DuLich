@@ -18,12 +18,12 @@ export default function GuideFinalCTA({ guide, onCheckAvailability }: GuideFinal
       <div className="max-w-xl mx-auto space-y-6 relative z-10">
         <span className="text-xs font-bold text-[#C5D1CA] uppercase tracking-wider block">Your Saigon Journey Starts Here</span>
         
-        <h3 className="font-[family-name:var(--font-playfair)] text-3xl sm:text-4xl font-bold leading-tight">
+        <h3 className="font-[family-name:var(--font-playfair)] text-3xl sm:text-4xl font-bold leading-tight text-white">
           Ready to explore Saigon with {guide.firstName}?
         </h3>
         
-        <p className="text-sm sm:text-base text-[#AEBFB5] leading-relaxed">
-          Choose a date, share your interests, and shape the experience together. Linh is available to tailor tours to your speed, food allergies, and curiosity.
+        <p className="text-sm sm:text-base text-[#D4E0DA] leading-relaxed">
+          Choose a date, share your interests, and shape the experience together. {guide.firstName} is available to tailor tours to your speed, food allergies, and curiosity.
         </p>
 
         {/* CTAs */}
