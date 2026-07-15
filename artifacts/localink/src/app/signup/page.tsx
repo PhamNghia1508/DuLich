@@ -23,10 +23,10 @@ function getPasswordStrength(pw: string): { score: number; label: string; color:
   return { score, label: 'Strong', color: '#22c55e' };
 }
 
-// ─── Saigon Tourism Atmospheric Slides ───────────────────────────────────────
+// ─── Saigon & Vietnam Tourism Atmospheric Slides ─────────────────────────────
 const SLIDES = [
   {
-    image: "https://picsum.photos/seed/saigon-notredame/900/1100",
+    image: "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&h=1100&q=80",
     eyebrow: "YOUR SAIGON JOURNEY STARTS HERE",
     title: "Explore the historic heart of Saigon.",
     description: "From historic architecture to hidden alleys, discover the stories behind city landmarks with passionate local guides.",
@@ -36,7 +36,7 @@ const SLIDES = [
     avatar: "https://picsum.photos/seed/sophie-traveler/48/48"
   },
   {
-    image: "https://picsum.photos/seed/saigon-river/900/1100",
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deceeaf7?auto=format&fit=crop&w=900&h=1100&q=80",
     eyebrow: "VIBRANT STREETS & MARKETS",
     title: "Taste the authentic local flavors.",
     description: "Navigate bustling street food hubs and local markets. Let verified guides show you Saigon's best culinary secrets.",
@@ -46,7 +46,7 @@ const SLIDES = [
     avatar: "https://picsum.photos/seed/alex-traveler/48/48"
   },
   {
-    image: "https://picsum.photos/seed/saigon-cafe/900/1100",
+    image: "https://images.unsplash.com/photo-1508672019048-805c876b67e2?auto=format&fit=crop&w=900&h=1100&q=80",
     eyebrow: "LOCAL LIFELINES & CULTURE",
     title: "Travel deeper, not just further.",
     description: "Connect with locals who can show you the city from a different perspective and make you feel right at home.",
@@ -135,130 +135,10 @@ export default function SignUpPage() {
 
   return (
     <div className="h-screen w-screen flex bg-[var(--color-bg)] overflow-hidden">
-      {/* ─── LEFT: Atmospheric Slideshow Panel (60%) ──────────────────────── */}
-      <div className="hidden lg:flex lg:w-[58%] relative overflow-hidden h-full">
-        {/* Background slide images with Ken Burns zoom effect */}
-        {SLIDES.map((slide, index) => (
-          <img
-            key={index}
-            src={slide.image}
-            alt=""
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
-              index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
-            }`}
-          />
-        ))}
-
-        {/* Stronger dark gradient overlay for high text contrast */}
-        <div className="absolute inset-0 bg-gradient-to-br from-[#07130F]/90 via-[#132A21]/65 to-[#07130F]/85 z-0" />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#050D0A]/95 via-transparent to-transparent z-0" />
-
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-between h-full p-16 text-white w-full">
-          {/* Brand mark top */}
-          <Link href="/" className="flex items-center gap-3 w-fit cursor-pointer">
-            <div className="w-9 h-9 rounded-xl bg-[var(--color-accent)] flex items-center justify-center shadow-md">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-              </svg>
-            </div>
-            <span
-              className="font-bold text-xl tracking-tight text-white drop-shadow-sm"
-              style={{ fontFamily: 'var(--font-playfair)' }}
-            >
-              Local<span className="text-[var(--color-accent-light)]">Link</span>
-            </span>
-          </Link>
-
-          {/* Editorial dynamic text and cards */}
-          <div className="space-y-8 max-w-md my-auto">
-            {/* Dynamic slides text containing high-contrast text styling */}
-            <div className="space-y-4 transition-all duration-500">
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-muted)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
-                {SLIDES[currentSlide].eyebrow}
-              </p>
-              <h2
-                className="text-4xl xl:text-5xl font-bold leading-tight text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
-                style={{ fontFamily: 'var(--font-heading)' }}
-              >
-                {SLIDES[currentSlide].title}
-              </h2>
-              <p className="text-white/90 text-sm xl:text-base leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]">
-                {SLIDES[currentSlide].description}
-              </p>
-            </div>
-
-            {/* Testimonial slider card */}
-            <div className="bg-white/12 backdrop-blur-md border border-white/20 rounded-2xl p-6 space-y-4 shadow-xl">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={13} className="fill-amber-400 text-amber-400" />
-                ))}
-              </div>
-              <p className="text-white text-sm leading-relaxed italic drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
-                "{SLIDES[currentSlide].quote}"
-              </p>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <img
-                    src={SLIDES[currentSlide].avatar}
-                    alt={SLIDES[currentSlide].author}
-                    className="w-9 h-9 rounded-full object-cover border border-white/30"
-                  />
-                  <div>
-                    <p className="text-white text-xs font-bold">{SLIDES[currentSlide].author}</p>
-                    <p className="text-white/60 text-[10px]">{SLIDES[currentSlide].location}</p>
-                  </div>
-                </div>
-                {/* Dots indicator */}
-                <div className="flex gap-1.5">
-                  {SLIDES.map((_, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setCurrentSlide(i)}
-                      className={`w-1.5 h-1.5 rounded-full transition-all border-0 cursor-pointer ${
-                        i === currentSlide ? 'bg-[var(--color-accent)] w-4' : 'bg-white/40 hover:bg-white/60'
-                      }`}
-                      aria-label={`Go to slide ${i + 1}`}
-                    />
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Social proof bottom */}
-          <div className="flex items-center gap-4">
-            <div className="flex -space-x-2">
-              {AVATARS.map((src, i) => (
-                <img
-                  key={i}
-                  src={src}
-                  alt=""
-                  className="w-8 h-8 rounded-full border-2 border-[#132A21] object-cover"
-                />
-              ))}
-            </div>
-            <p className="text-xs xl:text-sm text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
-              Join <span className="text-white font-bold">2,400+</span> travelers who've explored Saigon with local friends
-            </p>
-          </div>
-        </div>
-
-        {/* Grain overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.03] pointer-events-none"
-          style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          }}
-        />
-      </div>
-
-      {/* ─── RIGHT: Form Panel (42%) ───────────────────────────────────────── */}
+      {/* ─── LEFT: Form Panel (42%) (Swapped layout for signup page) ──────── */}
       <div className="w-full lg:w-[42%] flex items-center justify-center p-8 sm:p-12 h-full overflow-y-auto relative">
-        {/* Simple Back to Home action button for top-right */}
-        <Link href="/" className="absolute top-8 right-8 text-xs font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors flex items-center gap-1 cursor-pointer">
+        {/* Simple Back to Home action button for top-left */}
+        <Link href="/" className="absolute top-8 left-8 text-xs font-semibold text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors flex items-center gap-1 cursor-pointer">
           Back to home
         </Link>
 
@@ -521,7 +401,7 @@ export default function SignUpPage() {
             </div>
           </div>
 
-          {/* Social login */}
+          {/* Social login: Google & Facebook */}
           <div className="grid grid-cols-2 gap-3">
             <button type="button" className="btn btn-ghost text-sm font-medium gap-2.5 cursor-pointer">
               <svg width="18" height="18" viewBox="0 0 48 48">
@@ -533,10 +413,10 @@ export default function SignUpPage() {
               Google
             </button>
             <button type="button" className="btn btn-ghost text-sm font-medium gap-2.5 cursor-pointer">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
               </svg>
-              GitHub
+              Facebook
             </button>
           </div>
 
@@ -551,6 +431,129 @@ export default function SignUpPage() {
             </Link>
           </p>
         </div>
+      </div>
+
+      {/* ─── RIGHT: Atmospheric Slideshow Panel (60%) ─────────────────────── */}
+      <div className="hidden lg:flex lg:w-[58%] relative overflow-hidden h-full">
+        {/* Background slide images with smooth cross-fade */}
+        {SLIDES.map((slide, index) => (
+          <img
+            key={index}
+            src={slide.image}
+            alt=""
+            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-in-out ${
+              index === currentSlide ? 'opacity-100 scale-100' : 'opacity-0 scale-105'
+            }`}
+          />
+        ))}
+
+        {/* Dark overlay for clean contrast */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[#07130F]/85 via-[#132A21]/55 to-[#07130F]/80 z-0" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#050D0A]/90 via-transparent to-transparent z-0" />
+
+        {/* Content */}
+        <div className="relative z-10 flex flex-col justify-between h-full p-16 text-white w-full">
+          {/* Brand mark top */}
+          <Link href="/" className="flex items-center gap-3 w-fit cursor-pointer">
+            <div className="w-9 h-9 rounded-xl bg-[var(--color-accent)] flex items-center justify-center shadow-md">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+              </svg>
+            </div>
+            <span
+              className="font-bold text-xl tracking-tight text-white drop-shadow-sm"
+              style={{ fontFamily: 'var(--font-playfair)' }}
+            >
+              Local<span className="text-[var(--color-accent-light)]">Link</span>
+            </span>
+          </Link>
+
+          {/* Editorial dynamic text and cards */}
+          <div className="space-y-8 max-w-md my-auto">
+            {/* Dynamic slides text containing high-contrast warm-beige text styling */}
+            <div className="space-y-4 transition-all duration-500">
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[var(--color-accent-muted)] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)]">
+                {SLIDES[currentSlide].eyebrow}
+              </p>
+              <h2
+                className="text-4xl xl:text-5xl font-bold leading-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)]"
+                style={{ fontFamily: 'var(--font-heading)', color: 'var(--color-bg)' }}
+              >
+                {SLIDES[currentSlide].title}
+              </h2>
+              <p 
+                className="text-sm xl:text-base leading-relaxed drop-shadow-[0_1px_4px_rgba(0,0,0,0.5)]"
+                style={{ color: 'var(--color-border-light)' }}
+              >
+                {SLIDES[currentSlide].description}
+              </p>
+            </div>
+
+            {/* Testimonial slider card */}
+            <div className="bg-white/12 backdrop-blur-md border border-white/20 rounded-2xl p-6 space-y-4 shadow-xl">
+              <div className="flex gap-0.5">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <Star key={i} size={13} className="fill-amber-400 text-amber-400" />
+                ))}
+              </div>
+              <p className="text-white text-sm leading-relaxed italic drop-shadow-[0_1px_2px_rgba(0,0,0,0.3)]">
+                "{SLIDES[currentSlide].quote}"
+              </p>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <img
+                    src={SLIDES[currentSlide].avatar}
+                    alt={SLIDES[currentSlide].author}
+                    className="w-9 h-9 rounded-full object-cover border border-white/30"
+                  />
+                  <div>
+                    <p className="text-white text-xs font-bold">{SLIDES[currentSlide].author}</p>
+                    <p className="text-white/60 text-[10px]">{SLIDES[currentSlide].location}</p>
+                  </div>
+                </div>
+                {/* Dots indicator */}
+                <div className="flex gap-1.5">
+                  {SLIDES.map((_, i) => (
+                    <button
+                      key={i}
+                      onClick={() => setCurrentSlide(i)}
+                      className={`w-1.5 h-1.5 rounded-full transition-all border-0 cursor-pointer ${
+                        i === currentSlide ? 'bg-[var(--color-accent)] w-4' : 'bg-white/40 hover:bg-white/60'
+                      }`}
+                      aria-label={`Go to slide ${i + 1}`}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Social proof bottom */}
+          <div className="flex items-center gap-4">
+            <div className="flex -space-x-2">
+              {AVATARS.map((src, i) => (
+                <img
+                  key={i}
+                  src={src}
+                  alt=""
+                  className="w-8 h-8 rounded-full border-2 border-[#132A21] object-cover"
+                />
+              ))}
+            </div>
+            <p className="text-xs xl:text-sm text-white/90 drop-shadow-[0_1px_2px_rgba(0,0,0,0.4)]">
+              Join <span className="text-white font-bold">2,400+</span> travelers who've explored Saigon with local friends
+            </p>
+          </div>
+        </div>
+
+        {/* Grain overlay */}
+        <div
+          className="absolute inset-0 opacity-[0.03] pointer-events-none"
+          style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+          }}
+        />
       </div>
     </div>
   );
