@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import { Calendar, Clock, Users, Shield, MessageSquare, Info, Plus, Minus } from 'lucide-react';
 import type { Guide } from '@/types';
 import { formatCurrency } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface GuideBookingCardProps {
   guide: Guide;
@@ -17,11 +18,35 @@ export default function GuideBookingCard({
   setSelectedDuration,
   onBook,
 }: GuideBookingCardProps) {
+  const [, navigate] = useLocation();
+  const { isAuthenticated } = useAuth();
+
   // Booking state variables
   const [date, setDate] = useState('');
   const [time, setTime] = useState('09:00');
   const [groupSize, setGroupSize] = useState(2);
   const [hours, setHours] = useState(3);
+
+  const handleRequestBooking = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const targetUrl = `/book/${guide.id}?duration=${selectedDuration}&date=${date}&time=${time}&groupSize=${groupSize}`;
+    if (onBook) onBook();
+    if (isAuthenticated) {
+      navigate(targetUrl);
+    } else {
+      navigate(`/signin?redirect=${encodeURIComponent(targetUrl)}`);
+    }
+  };
+
+  const handleMessageGuide = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const targetUrl = `/dashboard?chat=${guide.id}`;
+    if (isAuthenticated) {
+      navigate(targetUrl);
+    } else {
+      navigate(`/signin?redirect=${encodeURIComponent(targetUrl)}`);
+    }
+  };
 
   // Compute pricing
   const getPriceDetails = () => {
@@ -243,21 +268,20 @@ export default function GuideBookingCard({
 
       {/* Call to Actions */}
       <div className="space-y-3 pt-2">
-        <Link
-          href={`/book/${guide.id}?duration=${selectedDuration}&date=${date}&time=${time}&groupSize=${groupSize}`}
-          onClick={onBook}
-          className="btn btn-accent h-12 w-full text-center shadow-md flex items-center justify-center gap-2 font-bold text-sm rounded-xl hover:shadow-lg active:scale-95 transition-all"
+        <button
+          onClick={handleRequestBooking}
+          className="btn btn-accent h-12 w-full text-center shadow-md flex items-center justify-center gap-2 font-bold text-sm rounded-xl hover:shadow-lg active:scale-95 transition-all border-0 cursor-pointer"
         >
           Request booking
-        </Link>
+        </button>
         
-        <Link
-          href={`/dashboard?chat=${guide.id}`}
-          className="btn btn-outline h-12 w-full text-center flex items-center justify-center gap-2 font-semibold text-xs rounded-xl hover:bg-[#FAFAF7] active:scale-95 transition-all"
+        <button
+          onClick={handleMessageGuide}
+          className="btn btn-outline h-12 w-full text-center flex items-center justify-center gap-2 font-semibold text-xs rounded-xl hover:bg-[#FAFAF7] active:scale-95 transition-all border border-[#1C3A2E] cursor-pointer"
         >
           <MessageSquare size={16} />
           <span>Message {guide.firstName}</span>
-        </Link>
+        </button>
       </div>
 
       {/* Disclaimers (Prototype-safe) */}

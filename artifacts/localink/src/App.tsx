@@ -8,8 +8,11 @@ import DashboardPage from '@/app/dashboard/page';
 import GuideDashboardPage from '@/app/guide-dashboard/page';
 import MatchPage from '@/app/match/page';
 import AdminPage from '@/app/admin/page';
+import SignInPage from '@/app/signin/page';
+import SignUpPage from '@/app/signup/page';
 import NotFound from '@/pages/not-found';
 import ScrollToTop from '@/components/ScrollToTop';
+import { AuthProvider } from '@/hooks/useAuth';
 
 function Router() {
   return (
@@ -22,6 +25,8 @@ function Router() {
       <Route path="/guide-dashboard" component={GuideDashboardPage} />
       <Route path="/match" component={MatchPage} />
       <Route path="/admin" component={AdminPage} />
+      <Route path="/signin" component={SignInPage} />
+      <Route path="/signup" component={SignUpPage} />
       <Route component={NotFound} />
     </Switch>
   );
@@ -29,11 +34,13 @@ function Router() {
 
 function App() {
   return (
-    <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-      {/* Reset scroll về đầu trang mỗi khi route thay đổi */}
-      <ScrollToTop />
-      <Router />
-    </WouterRouter>
+    <AuthProvider>
+      <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+        {/* Reset scroll về đầu trang mỗi khi route thay đổi */}
+        <ScrollToTop />
+        <Router />
+      </WouterRouter>
+    </AuthProvider>
   );
 }
 

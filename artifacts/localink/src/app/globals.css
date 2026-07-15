@@ -529,6 +529,39 @@ a {
   margin-bottom: 0.375rem;
 }
 
+
+/* Auth input styles */
+.auth-input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  background-color: var(--color-white);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0.75rem 1rem;
+  min-height: 48px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.auth-input:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(196, 97, 74, 0.1);
+}
+
+.auth-input::placeholder {
+  color: var(--color-text-light);
+}
+
+.auth-input-error {
+  border-color: #ef4444 !important;
+}
+
+.auth-input-error:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
 /* Divider */
 .divider {
   height: 1px;

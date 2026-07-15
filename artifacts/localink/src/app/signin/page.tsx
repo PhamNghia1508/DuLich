@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import { Eye, EyeOff, Mail, Lock, ArrowRight, Star } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
+import { useAuth } from '@/hooks/useAuth';
 
-// ─── Mock auth context (replace with real auth later) ────────────────────────
-// For demo: any email/password combo "succeeds"
 function useRedirectParam(): string {
   const search = window.location.search;
   const params = new URLSearchParams(search);
@@ -40,6 +39,7 @@ const AVATARS = [
 export default function SignInPage() {
   const [, navigate] = useLocation();
   const redirectTo = useRedirectParam();
+  const { login } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -62,12 +62,14 @@ export default function SignInPage() {
     }
 
     setIsLoading(true);
-    // Simulate API call
-    await new Promise((r) => setTimeout(r, 1200));
-    setIsLoading(false);
-
-    // Mock success → navigate to redirect target
-    navigate(redirectTo as string);
+    try {
+      await login(email);
+      navigate(redirectTo as string);
+    } catch (err: any) {
+      setError(err?.message || 'Failed to sign in. Please try again.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const isBookingRedirect = redirectTo.startsWith('/book/') || redirectTo.startsWith('/guides/');
