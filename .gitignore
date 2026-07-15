@@ -5,6 +5,11 @@ dist
 tmp
 out-tsc
 *.tsbuildinfo
+.next
+.vercel
+.early.coverage
+test-results
+playwright-report
 .expo
 .expo-shared
 
@@ -47,3 +52,7 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Local migration and backup material
+.migration-backup/
+backups/
