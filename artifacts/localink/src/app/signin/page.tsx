@@ -131,7 +131,7 @@ export default function SignInPage() {
               className="font-bold text-xl tracking-tight text-white drop-shadow-sm"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              Friendlocalcheap
+              Friendlocal<span className="text-[var(--color-accent-light)]">cheap</span>
             </span>
           </Link>
 
@@ -257,7 +257,7 @@ export default function SignInPage() {
                 </svg>
               </div>
               <span className="font-bold text-base tracking-tight" style={{ fontFamily: 'var(--font-playfair)' }}>
-                Friendlocalcheap
+                Friendlocal<span className="text-[var(--color-accent)]">cheap</span>
               </span>
             </div>
 

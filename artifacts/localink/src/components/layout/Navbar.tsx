@@ -69,7 +69,7 @@ export default function Navbar() {
         <div className="site-nav">
           <Link href="/" className="brand" aria-label="Friendlocalcheap home">
             <span className="brand-mark" aria-hidden="true"><Compass size={20} /></span>
-            <span>Local<span>Link</span></span>
+            <span>Friendlocal<span>cheap</span></span>
           </Link>
 
           <nav className="desktop-nav" aria-label="Primary navigation">
