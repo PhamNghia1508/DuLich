@@ -45,97 +45,99 @@ export default function Navbar() {
     : pathname === href;
 
   return (
-    <header className={`site-header ${scrolled ? 'site-header-scrolled' : ''}`}>
-      <div className="site-nav">
-        <Link href="/" className="brand" aria-label="LocalLink home">
-          <span className="brand-mark" aria-hidden="true"><Compass size={20} /></span>
-          <span>Local<span>Link</span></span>
-        </Link>
+    <div className="sticky top-0 z-50">
+      <header className={`site-header ${scrolled ? 'site-header-scrolled' : ''}`}>
+        <div className="site-nav">
+          <Link href="/" className="brand" aria-label="LocalLink home">
+            <span className="brand-mark" aria-hidden="true"><Compass size={20} /></span>
+            <span>Local<span>Link</span></span>
+          </Link>
 
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
-              {link.name}
-            </Link>
-          ))}
-        </nav>
+          <nav className="desktop-nav" aria-label="Primary navigation">
+            {navLinks.map((link) => (
+              <Link key={link.name} href={link.href} aria-current={isActive(link.href) ? 'page' : undefined}>
+                {link.name}
+              </Link>
+            ))}
+          </nav>
 
-        <div className="desktop-actions">
-          <div className="language-menu" ref={languageRef}>
-            <button
-              type="button"
-              className="language-trigger"
-              aria-label="Choose language"
-              aria-haspopup="menu"
-              aria-expanded={languageOpen}
-              onClick={() => setLanguageOpen((open) => !open)}
-            >
-              <Globe2 aria-hidden="true" size={17} />
-              {selectedLanguage}
-              <ChevronDown aria-hidden="true" size={14} className={languageOpen ? 'rotate-180' : ''} />
-            </button>
-            {languageOpen && (
-              <div className="language-popover" role="menu">
-                {UI_LANGUAGES.map((language) => (
-                  <button
-                    type="button"
-                    role="menuitemradio"
-                    aria-checked={selectedLanguage === language.code.toUpperCase()}
-                    key={language.code}
-                    onClick={() => {
-                      setSelectedLanguage(language.code.toUpperCase());
-                      setLanguageOpen(false);
-                    }}
-                  >
-                    {language.label}
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-          <Link href="/dashboard" className="sign-in-link">Sign in</Link>
-          <Link href="/match" className="btn btn-accent nav-cta">Tell us about your trip</Link>
-        </div>
-
-        <button
-          type="button"
-          className="mobile-menu-trigger"
-          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={menuOpen}
-          aria-controls="mobile-navigation"
-          onClick={() => setMenuOpen((open) => !open)}
-        >
-          {menuOpen ? <X aria-hidden="true" size={23} /> : <Menu aria-hidden="true" size={23} />}
-        </button>
-      </div>
-
-      {menuOpen && <button className="mobile-nav-backdrop" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />}
-      <aside id="mobile-navigation" className={`mobile-nav ${menuOpen ? 'mobile-nav-open' : ''}`} aria-hidden={!menuOpen}>
-        <nav aria-label="Mobile navigation">
-          {navLinks.map((link) => (
-            <Link key={link.name} href={link.href} onClick={() => setMenuOpen(false)}>{link.name}</Link>
-          ))}
-        </nav>
-        <div className="mobile-language">
-          <p>Language</p>
-          <div>
-            {UI_LANGUAGES.map((language) => (
+          <div className="desktop-actions">
+            <div className="language-menu" ref={languageRef}>
               <button
                 type="button"
-                key={language.code}
-                aria-pressed={selectedLanguage === language.code.toUpperCase()}
-                onClick={() => setSelectedLanguage(language.code.toUpperCase())}
+                className="language-trigger"
+                aria-label="Choose language"
+                aria-haspopup="menu"
+                aria-expanded={languageOpen}
+                onClick={() => setLanguageOpen((open) => !open)}
               >
-                {language.code.toUpperCase()}
+                <Globe2 aria-hidden="true" size={17} />
+                {selectedLanguage}
+                <ChevronDown aria-hidden="true" size={14} className={languageOpen ? 'rotate-180' : ''} />
               </button>
-            ))}
+              {languageOpen && (
+                <div className="language-popover" role="menu">
+                  {UI_LANGUAGES.map((language) => (
+                    <button
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={selectedLanguage === language.code.toUpperCase()}
+                      key={language.code}
+                      onClick={() => {
+                        setSelectedLanguage(language.code.toUpperCase());
+                        setLanguageOpen(false);
+                      }}
+                    >
+                      {language.label}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <Link href="/dashboard" className="sign-in-link">Sign in</Link>
+            <Link href="/match" className="btn btn-accent nav-cta">Tell us about your trip</Link>
           </div>
+
+          <button
+            type="button"
+            className="mobile-menu-trigger"
+            aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={menuOpen}
+            aria-controls="mobile-navigation"
+            onClick={() => setMenuOpen((open) => !open)}
+          >
+            {menuOpen ? <X aria-hidden="true" size={23} /> : <Menu aria-hidden="true" size={23} />}
+          </button>
         </div>
-        <div className="mobile-nav-actions">
-          <Link href="/dashboard" onClick={() => setMenuOpen(false)}>Sign in</Link>
-          <Link href="/match" className="btn btn-accent" onClick={() => setMenuOpen(false)}>Tell us about your trip</Link>
-        </div>
-      </aside>
-    </header>
+
+        {menuOpen && <button className="mobile-nav-backdrop" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />}
+        <aside id="mobile-navigation" className={`mobile-nav ${menuOpen ? 'mobile-nav-open' : ''}`} aria-hidden={!menuOpen}>
+          <nav aria-label="Mobile navigation">
+            {navLinks.map((link) => (
+              <Link key={link.name} href={link.href} onClick={() => setMenuOpen(false)}>{link.name}</Link>
+            ))}
+          </nav>
+          <div className="mobile-language">
+            <p>Language</p>
+            <div>
+              {UI_LANGUAGES.map((language) => (
+                <button
+                  type="button"
+                  key={language.code}
+                  aria-pressed={selectedLanguage === language.code.toUpperCase()}
+                  onClick={() => setSelectedLanguage(language.code.toUpperCase())}
+                >
+                  {language.code.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div className="mobile-nav-actions">
+            <Link href="/dashboard" onClick={() => setMenuOpen(false)}>Sign in</Link>
+            <Link href="/match" className="btn btn-accent" onClick={() => setMenuOpen(false)}>Tell us about your trip</Link>
+          </div>
+        </aside>
+      </header>
+    </div>
   );
 }

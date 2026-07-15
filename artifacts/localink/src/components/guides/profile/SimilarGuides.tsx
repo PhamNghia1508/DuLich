@@ -36,12 +36,13 @@ export default function SimilarGuides({ currentGuide }: SimilarGuidesProps) {
             href={`/guides/${guide.id}`}
             className="bg-white border border-[#E8E4DC] rounded-2xl overflow-hidden shadow-sm hover:shadow-md hover:scale-[1.01] transition-all duration-300 flex flex-col group"
           >
-            {/* Small portrait cover */}
-            <div className="relative h-40 w-full overflow-hidden bg-[#EDE8E0]">
+            {/* Portrait — tăng chiều cao để hiện rõ mặt */}
+            <div className="relative h-52 w-full overflow-hidden bg-[#EDE8E0]">
               <img
                 src={guide.avatar}
                 alt={`${guide.firstName} ${guide.lastName}`}
-                className="w-full h-full object-cover object-top group-hover:scale-103 transition-transform duration-500"
+                className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                style={{ objectPosition: 'center 20%' }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent pointer-events-none" />
               

@@ -9,6 +9,7 @@ import GuideDashboardPage from '@/app/guide-dashboard/page';
 import MatchPage from '@/app/match/page';
 import AdminPage from '@/app/admin/page';
 import NotFound from '@/pages/not-found';
+import ScrollToTop from '@/components/ScrollToTop';
 
 function Router() {
   return (
@@ -29,6 +30,8 @@ function Router() {
 function App() {
   return (
     <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+      {/* Reset scroll về đầu trang mỗi khi route thay đổi */}
+      <ScrollToTop />
       <Router />
     </WouterRouter>
   );
