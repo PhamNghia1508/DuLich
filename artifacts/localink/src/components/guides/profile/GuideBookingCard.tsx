@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { Calendar, Clock, Users, Shield, MessageSquare, Info, Plus, Minus } from 'lucide-react';
+import { Calendar, Clock, Users, Shield, MessageSquare, Info, Plus, Minus, ChevronRight, HelpCircle } from 'lucide-react';
 import type { Guide } from '@/types';
 import { formatCurrency } from '@/lib/utils';
 import { useAuth } from '@/hooks/useAuth';
+import { getGuideAvailability } from '@/data/availability';
 
 interface GuideBookingCardProps {
   guide: Guide;
@@ -11,6 +12,31 @@ interface GuideBookingCardProps {
   setSelectedDuration: (d: 'hour' | 'half' | 'full') => void;
   onBook?: () => void; // Optional callback for drawer completion
 }
+
+const formatDateString = (d: Date) => {
+  const year = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+};
+
+const formatTimeLabel = (timeStr: string) => {
+  const [hourStr, minStr] = timeStr.split(':');
+  const hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+  
+  let label = `${displayHour}:${minStr} ${ampm}`;
+  if (timeStr === '06:00') label += ' (Sunrise)';
+  if (timeStr === '16:00') label += ' (Golden hr)';
+  if (timeStr === '18:00') label += ' (Sunset)';
+  return label;
+};
+
+const ALL_SLOTS = [
+  '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', 
+  '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'
+];
 
 export default function GuideBookingCard({
   guide,
@@ -21,15 +47,26 @@ export default function GuideBookingCard({
   const [, navigate] = useLocation();
   const { isAuthenticated } = useAuth();
 
-  // Booking state variables
-  const [date, setDate] = useState('');
+  // Initialize selectedDate to today
+  const todayStr = formatDateString(new Date());
+  const [selectedDate, setSelectedDate] = useState(todayStr);
   const [time, setTime] = useState('09:00');
   const [groupSize, setGroupSize] = useState(2);
   const [hours, setHours] = useState(3);
+  const [showManualDatePicker, setShowManualDatePicker] = useState(false);
+
+  // Generate 7 days carousel list
+  const next7Days = Array.from({ length: 7 }).map((_, i) => {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    return d;
+  });
+
+  const activeAvailability = getGuideAvailability(guide.id, selectedDate);
 
   const handleRequestBooking = (e: React.MouseEvent) => {
     e.preventDefault();
-    const targetUrl = `/book/${guide.id}?duration=${selectedDuration}&date=${date}&time=${time}&groupSize=${groupSize}`;
+    const targetUrl = `/book/${guide.id}?duration=${selectedDuration}&date=${selectedDate}&time=${time}&groupSize=${groupSize}&hours=${hours}`;
     if (onBook) onBook();
     if (isAuthenticated) {
       navigate(targetUrl);
@@ -89,7 +126,7 @@ export default function GuideBookingCard({
   return (
     <div className="bg-white border border-[#E8E4DC] p-6 rounded-3xl shadow-lg space-y-6 relative transition-all">
       
-      {/* Starting Price & Rating Header */}
+      {/* Starting Rate & Rating Header */}
       <div className="flex justify-between items-baseline border-b border-[#F5F0EA] pb-4">
         <div>
           <span className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">Estimated rate</span>
@@ -109,7 +146,7 @@ export default function GuideBookingCard({
         </div>
       </div>
 
-      {/* Duration Selector */}
+      {/* Duration Style Selector */}
       <div className="space-y-2">
         <label className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">
           Select duration style
@@ -132,7 +169,7 @@ export default function GuideBookingCard({
         </div>
       </div>
 
-      {/* Hourly duration count selector (only shows if hourly is selected) */}
+      {/* Number of Hours Counter (Hourly only) */}
       {selectedDuration === 'hour' && (
         <div className="flex items-center justify-between bg-[#FAFAF7] border border-[#E8E4DC] p-3 rounded-2xl">
           <span className="text-xs font-semibold text-[#5A5A5A]">Number of hours</span>
@@ -141,7 +178,7 @@ export default function GuideBookingCard({
               type="button"
               onClick={() => handleHoursChange(-1)}
               disabled={hours <= 1}
-              className="w-10 h-10 rounded-full bg-white border border-[#E8E4DC] flex items-center justify-center text-[#1C3A2E] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#FAFAF7] focus:outline-none focus:ring-2 focus:ring-[#1C3A2E]"
+              className="w-10 h-10 rounded-full bg-white border border-[#E8E4DC] flex items-center justify-center text-[#1C3A2E] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#FAFAF7]"
               aria-label="Decrease hours"
             >
               <Minus size={14} />
@@ -151,7 +188,7 @@ export default function GuideBookingCard({
               type="button"
               onClick={() => handleHoursChange(1)}
               disabled={hours >= 24}
-              className="w-10 h-10 rounded-full bg-white border border-[#E8E4DC] flex items-center justify-center text-[#1C3A2E] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#FAFAF7] focus:outline-none focus:ring-2 focus:ring-[#1C3A2E]"
+              className="w-10 h-10 rounded-full bg-white border border-[#E8E4DC] flex items-center justify-center text-[#1C3A2E] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#FAFAF7]"
               aria-label="Increase hours"
             >
               <Plus size={14} />
@@ -160,51 +197,121 @@ export default function GuideBookingCard({
         </div>
       )}
 
-      {/* Date & Time Selectors */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <label htmlFor="booking-date" className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">
-            Date
+      {/* ─── CUSTOM VISUAL SCHEDULER ────────────────────────────────────────── */}
+      <div className="space-y-3.5">
+        <div className="flex justify-between items-center">
+          <label className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider">
+            Check availability schedule
           </label>
+          <button
+            type="button"
+            onClick={() => setShowManualDatePicker(!showManualDatePicker)}
+            className="text-[10px] font-bold text-[#C4614A] hover:underline bg-transparent border-0 cursor-pointer"
+          >
+            {showManualDatePicker ? 'Show 7 Days' : 'Pick other date'}
+          </button>
+        </div>
+
+        {/* 7 Days Carousel */}
+        {!showManualDatePicker ? (
+          <div className="calendar-carousel">
+            {next7Days.map((d) => {
+              const dStr = formatDateString(d);
+              const isActive = selectedDate === dStr;
+              const dayNum = d.getDate();
+              const dayOfWeek = d.toLocaleDateString('en-US', { weekday: 'short' });
+              
+              // Get availability dots for the day
+              const dayAvail = getGuideAvailability(guide.id, dStr);
+              const bookedCount = dayAvail.bookedSlots.length;
+              const pendingCount = dayAvail.pendingSlots.length;
+              const totalUnavailable = bookedCount + pendingCount;
+              
+              let dotClass = 'free';
+              if (totalUnavailable >= ALL_SLOTS.length) {
+                dotClass = 'booked';
+              } else if (totalUnavailable >= 5) {
+                dotClass = 'busy';
+              }
+
+              return (
+                <button
+                  key={dStr}
+                  type="button"
+                  onClick={() => setSelectedDate(dStr)}
+                  className={`calendar-day-chip focus:outline-none focus:ring-1 focus:ring-[#1C3A2E] ${
+                    isActive ? 'active' : ''
+                  }`}
+                >
+                  <span className="text-[10px] font-semibold opacity-70 uppercase">{dayOfWeek}</span>
+                  <span className="text-sm font-bold mt-0.5">{dayNum}</span>
+                  <div className={`day-dot ${dotClass}`} />
+                </button>
+              );
+            })}
+          </div>
+        ) : (
+          /* Manual Date Picker Input wrapper */
           <div className="relative">
             <input
-              id="booking-date"
               type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className="w-full h-11 border border-[#E8E4DC] rounded-xl px-3 py-2 text-xs font-semibold text-[#1A1A1A] bg-white focus:outline-none focus:ring-2 focus:ring-[#1C3A2E] focus:border-transparent transition-all"
-              required
+              value={selectedDate}
+              onChange={(e) => setSelectedDate(e.target.value)}
+              min={todayStr}
+              className="w-full h-11 border border-[#E8E4DC] rounded-xl px-3 py-2 text-xs font-semibold text-[#1A1A1A] bg-white focus:outline-none focus:ring-2 focus:ring-[#1C3A2E] transition-all"
             />
           </div>
-        </div>
-        
-        <div className="space-y-1.5">
-          <label htmlFor="booking-time" className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">
-            Start Time
-          </label>
-          <select
-            id="booking-time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-full h-11 border border-[#E8E4DC] rounded-xl px-3 py-2 text-xs font-semibold text-[#1A1A1A] bg-white focus:outline-none focus:ring-2 focus:ring-[#1C3A2E] focus:border-transparent transition-all cursor-pointer"
-          >
-            <option value="06:00">6:00 AM (Sunrise)</option>
-            <option value="07:00">7:00 AM</option>
-            <option value="08:00">8:00 AM</option>
-            <option value="09:00">9:00 AM</option>
-            <option value="10:00">10:00 AM</option>
-            <option value="11:00">11:00 AM</option>
-            <option value="12:00">12:00 PM</option>
-            <option value="13:00">1:00 PM</option>
-            <option value="14:00">2:00 PM</option>
-            <option value="15:00">3:00 PM</option>
-            <option value="16:00">4:00 PM (Golden hr)</option>
-            <option value="17:00">5:00 PM</option>
-            <option value="18:00">6:00 PM (Sunset)</option>
-            <option value="19:00">7:00 PM</option>
-            <option value="20:00">8:00 PM</option>
-          </select>
+        )}
+
+        {/* Timeline Slot Selection Grid */}
+        <div className="space-y-2">
+          <p className="text-[10px] font-semibold text-[#8A8A8A] flex justify-between">
+            <span>Available slots for {selectedDate === todayStr ? 'Today' : selectedDate}</span>
+            <span className="flex gap-2">
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#22c55e]" /> Free</span>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#f59e0b]" /> Hold</span>
+              <span className="flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-[#e5e7eb]" /> Booked</span>
+            </span>
+          </p>
+
+          <div className="time-slots-grid">
+            {ALL_SLOTS.map((slot) => {
+              const isBooked = activeAvailability.bookedSlots.includes(slot);
+              const isPending = activeAvailability.pendingSlots.includes(slot);
+              const isSelected = time === slot;
+
+              let slotClass = '';
+              let isDisabled = false;
+              let titleText = 'Available slot';
+
+              if (isBooked) {
+                slotClass = 'booked';
+                isDisabled = true;
+                titleText = 'Booked by another traveler';
+              } else if (isPending) {
+                slotClass = 'pending';
+                isDisabled = true;
+                titleText = 'Pending confirmation';
+              } else if (isSelected) {
+                slotClass = 'active';
+              }
+
+              return (
+                <button
+                  key={slot}
+                  type="button"
+                  disabled={isDisabled}
+                  onClick={() => setTime(slot)}
+                  title={titleText}
+                  className={`time-slot-btn focus:outline-none focus:ring-1 focus:ring-[#C4614A] ${slotClass}`}
+                >
+                  <span>{formatTimeLabel(slot)}</span>
+                  {isBooked && <span className="text-[7px] font-bold opacity-60 scale-90 uppercase mt-0.5">Booked</span>}
+                  {isPending && <span className="text-[7px] font-bold opacity-80 scale-90 uppercase mt-0.5">Hold</span>}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
@@ -239,16 +346,7 @@ export default function GuideBookingCard({
         </div>
       </div>
 
-      {/* Quick Availability check */}
-      <div className="flex items-center justify-between bg-[#EAF0EC] border border-[#C5D1CA] p-3.5 rounded-2xl text-xs text-[#1C3A2E]">
-        <span className="flex items-center gap-1.5 font-bold">
-          <span className="w-2 h-2 bg-[#1D6C3D] rounded-full animate-pulse"></span>
-          Available slot:
-        </span>
-        <span className="font-bold">Tomorrow 9:00am</span>
-      </div>
-
-      {/* Pricing Breakdown */}
+      {/* Pricing Breakdown Card */}
       <div className="bg-[#FAFAF7] p-4 rounded-2xl border border-[#E8E4DC] space-y-2 text-xs font-semibold">
         <span className="text-[10px] font-bold text-[#8A8A8A] uppercase tracking-wider block">Price breakdown</span>
         <div className="flex justify-between text-[#5A5A5A]">
@@ -266,7 +364,7 @@ export default function GuideBookingCard({
         </div>
       </div>
 
-      {/* Call to Actions */}
+      {/* Booking Actions */}
       <div className="space-y-3 pt-2">
         <button
           onClick={handleRequestBooking}
@@ -284,7 +382,7 @@ export default function GuideBookingCard({
         </button>
       </div>
 
-      {/* Disclaimers (Prototype-safe) */}
+      {/* trust verification seals */}
       <div className="border-t border-[#F5F0EA] pt-4 text-[10px] text-[#8A8A8A] space-y-2 leading-relaxed">
         <div className="flex items-start gap-1">
           <Info size={12} className="text-[#C4614A] shrink-0 mt-0.5" />
