@@ -175,58 +175,58 @@ export default function Navbar() {
             {menuOpen ? <X aria-hidden="true" size={23} /> : <Menu aria-hidden="true" size={23} />}
           </button>
         </div>
-
-        {menuOpen && <button className="mobile-nav-backdrop" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />}
-        <aside id="mobile-navigation" className={`mobile-nav ${menuOpen ? 'mobile-nav-open' : ''}`} aria-hidden={!menuOpen}>
-          <nav aria-label="Mobile navigation">
-            {navLinks.map((link) => (
-              <Link key={link.name} href={link.href} onClick={() => setMenuOpen(false)}>{link.name}</Link>
-            ))}
-          </nav>
-          <div className="mobile-language">
-            <p>Language</p>
-            <div>
-              {UI_LANGUAGES.map((language) => (
-                <button
-                  type="button"
-                  key={language.code}
-                  aria-pressed={selectedLanguage === language.code.toUpperCase()}
-                  onClick={() => setSelectedLanguage(language.code.toUpperCase())}
-                >
-                  {language.code.toUpperCase()}
-                </button>
-              ))}
-            </div>
-          </div>
-          <div className="mobile-nav-actions">
-            {isAuthenticated && user ? (
-              <div className="space-y-2.5 mb-4">
-                <div className="flex items-center gap-3 px-1 py-3 border-b border-[var(--color-border-light)]">
-                  <img src={user.avatarUrl} alt={user.name} className="w-10 h-10 rounded-full border border-[var(--color-border)] object-cover" />
-                  <div>
-                    <p className="text-sm font-bold text-[var(--color-text)]">{user.name}</p>
-                    <p className="text-xs text-[var(--color-text-light)]">{user.email}</p>
-                  </div>
-                </div>
-                <Link href="/dashboard" className="block text-sm font-semibold text-[var(--color-text)] py-2" onClick={() => setMenuOpen(false)}>Dashboard</Link>
-                <button
-                  type="button"
-                  className="w-full text-left py-2 border-0 bg-transparent text-sm font-semibold text-red-600 cursor-pointer"
-                  onClick={() => {
-                    logout();
-                    setMenuOpen(false);
-                  }}
-                >
-                  Sign out
-                </button>
-              </div>
-            ) : (
-              <Link href="/signin" onClick={() => setMenuOpen(false)}>Sign in</Link>
-            )}
-            <Link href="/match" className="btn btn-accent" onClick={() => setMenuOpen(false)}>Tell us about your trip</Link>
-          </div>
-        </aside>
       </header>
+
+      {menuOpen && <button className="mobile-nav-backdrop" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />}
+      <aside id="mobile-navigation" className={`mobile-nav ${menuOpen ? 'mobile-nav-open' : ''}`} aria-hidden={!menuOpen}>
+        <nav aria-label="Mobile navigation">
+          {navLinks.map((link) => (
+            <Link key={link.name} href={link.href} onClick={() => setMenuOpen(false)}>{link.name}</Link>
+          ))}
+        </nav>
+        <div className="mobile-language">
+          <p>Language</p>
+          <div>
+            {UI_LANGUAGES.map((language) => (
+              <button
+                type="button"
+                key={language.code}
+                aria-pressed={selectedLanguage === language.code.toUpperCase()}
+                onClick={() => setSelectedLanguage(language.code.toUpperCase())}
+              >
+                {language.code.toUpperCase()}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div className="mobile-nav-actions">
+          {isAuthenticated && user ? (
+            <div className="space-y-2.5 mb-4">
+              <div className="flex items-center gap-3 px-1 py-3 border-b border-[var(--color-border-light)]">
+                <img src={user.avatarUrl} alt={user.name} className="w-10 h-10 rounded-full border border-[var(--color-border)] object-cover" />
+                <div>
+                  <p className="text-sm font-bold text-[var(--color-text)]">{user.name}</p>
+                  <p className="text-xs text-[var(--color-text-light)]">{user.email}</p>
+                </div>
+              </div>
+              <Link href="/dashboard" className="block text-sm font-semibold text-[var(--color-text)] py-2" onClick={() => setMenuOpen(false)}>Dashboard</Link>
+              <button
+                type="button"
+                className="w-full text-left py-2 border-0 bg-transparent text-sm font-semibold text-red-600 cursor-pointer"
+                onClick={() => {
+                  logout();
+                  setMenuOpen(false);
+                }}
+              >
+                Sign out
+              </button>
+            </div>
+          ) : (
+            <Link href="/signin" onClick={() => setMenuOpen(false)}>Sign in</Link>
+          )}
+          <Link href="/match" className="btn btn-accent" onClick={() => setMenuOpen(false)}>Tell us about your trip</Link>
+        </div>
+      </aside>
     </div>
   );
 }
