@@ -644,7 +644,7 @@ function GuidesContent() {
                         Edit trip request
                       </Link>
                       <Link className="btn btn-ghost" href="/match">
-                        Let LocalLink help
+                        Let Friendlocalcheap help
                       </Link>
                     </div>
                   </div>
@@ -682,7 +682,7 @@ function GuidesContent() {
             <Link className="btn btn-accent" href="/match">
               Refine my trip
             </Link>
-            <a className="btn btn-ghost" href="mailto:hello@locallink.co">
+            <a className="btn btn-ghost" href="mailto:hello@friendlocalcheap.co">
               Contact support
             </a>
           </div>

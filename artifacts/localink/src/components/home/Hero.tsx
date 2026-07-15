@@ -39,7 +39,7 @@ export default function Hero() {
             </Link>
           </div>
 
-          <ul className="hero-trust" aria-label="LocalLink benefits">
+          <ul className="hero-trust" aria-label="Friendlocalcheap benefits">
             {trustSignals.map(({ label, icon: Icon }) => (
               <li key={label}>
                 <Icon aria-hidden="true" size={17} />

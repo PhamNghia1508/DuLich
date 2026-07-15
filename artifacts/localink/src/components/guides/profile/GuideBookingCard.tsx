@@ -1,27 +1,88 @@
 import React, { useState } from 'react';
-import { Link } from 'wouter';
-import { Calendar, Clock, Users, Shield, MessageSquare, Info, Plus, Minus } from 'lucide-react';
+import { Link, useLocation } from 'wouter';
+import { Clock, Users, Shield, MessageSquare, Info, Plus, Minus, CheckCircle, Calendar } from 'lucide-react';
 import type { Guide } from '@/types';
 import { formatCurrency } from '@/lib/utils';
+import { useAuth } from '@/hooks/useAuth';
 
 interface GuideBookingCardProps {
   guide: Guide;
   selectedDuration: 'hour' | 'half' | 'full';
   setSelectedDuration: (d: 'hour' | 'half' | 'full') => void;
+  selectedDate: string;
+  setSelectedDate: (d: string) => void;
+  selectedTime: string;
+  setSelectedTime: (t: string) => void;
   onBook?: () => void; // Optional callback for drawer completion
 }
+
+const formatDateLabel = (dateStr: string) => {
+  if (!dateStr) return '';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return dateStr;
+  return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+};
+
+const formatTimeLabel = (timeStr: string) => {
+  if (!timeStr) return '';
+  const [hourStr, minStr] = timeStr.split(':');
+  const hour = parseInt(hourStr, 10);
+  const ampm = hour >= 12 ? 'PM' : 'AM';
+  const displayHour = hour % 12 === 0 ? 12 : hour % 12;
+  return `${displayHour}:${minStr} ${ampm}`;
+};
 
 export default function GuideBookingCard({
   guide,
   selectedDuration,
   setSelectedDuration,
+  selectedDate,
+  setSelectedDate,
+  selectedTime,
+  setSelectedTime,
   onBook,
 }: GuideBookingCardProps) {
-  // Booking state variables
-  const [date, setDate] = useState('');
-  const [time, setTime] = useState('09:00');
+  const [, navigate] = useLocation();
+  const { isAuthenticated } = useAuth();
+
+  // Booking details state
   const [groupSize, setGroupSize] = useState(2);
   const [hours, setHours] = useState(3);
+
+  const handleRequestBooking = (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    // Check if slot has been selected, if not scroll to section
+    if (!selectedDate || !selectedTime) {
+      scrollToCalendar();
+      return;
+    }
+
+    const targetUrl = `/book/${guide.id}?duration=${selectedDuration}&date=${selectedDate}&time=${selectedTime}&groupSize=${groupSize}&hours=${hours}`;
+    if (onBook) onBook();
+    if (isAuthenticated) {
+      navigate(targetUrl);
+    } else {
+      navigate(`/signin?redirect=${encodeURIComponent(targetUrl)}`);
+    }
+  };
+
+  const handleMessageGuide = (e: React.MouseEvent) => {
+    e.preventDefault();
+    const targetUrl = `/dashboard?chat=${guide.id}`;
+    if (isAuthenticated) {
+      navigate(targetUrl);
+    } else {
+      navigate(`/signin?redirect=${encodeURIComponent(targetUrl)}`);
+    }
+  };
+
+  const scrollToCalendar = () => {
+    const el = document.getElementById('availability-section');
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  };
 
   // Compute pricing
   const getPriceDetails = () => {
@@ -61,10 +122,12 @@ export default function GuideBookingCard({
     }
   };
 
+  const hasSelectedSlot = selectedDate && selectedTime;
+
   return (
     <div className="bg-white border border-[#E8E4DC] p-6 rounded-3xl shadow-lg space-y-6 relative transition-all">
       
-      {/* Starting Price & Rating Header */}
+      {/* Starting Rate & Rating Header */}
       <div className="flex justify-between items-baseline border-b border-[#F5F0EA] pb-4">
         <div>
           <span className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">Estimated rate</span>
@@ -84,7 +147,7 @@ export default function GuideBookingCard({
         </div>
       </div>
 
-      {/* Duration Selector */}
+      {/* Duration Style Selector */}
       <div className="space-y-2">
         <label className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">
           Select duration style
@@ -107,7 +170,7 @@ export default function GuideBookingCard({
         </div>
       </div>
 
-      {/* Hourly duration count selector (only shows if hourly is selected) */}
+      {/* Number of Hours Counter (Hourly only) */}
       {selectedDuration === 'hour' && (
         <div className="flex items-center justify-between bg-[#FAFAF7] border border-[#E8E4DC] p-3 rounded-2xl">
           <span className="text-xs font-semibold text-[#5A5A5A]">Number of hours</span>
@@ -116,7 +179,7 @@ export default function GuideBookingCard({
               type="button"
               onClick={() => handleHoursChange(-1)}
               disabled={hours <= 1}
-              className="w-10 h-10 rounded-full bg-white border border-[#E8E4DC] flex items-center justify-center text-[#1C3A2E] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#FAFAF7] focus:outline-none focus:ring-2 focus:ring-[#1C3A2E]"
+              className="w-10 h-10 rounded-full bg-white border border-[#E8E4DC] flex items-center justify-center text-[#1C3A2E] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#FAFAF7]"
               aria-label="Decrease hours"
             >
               <Minus size={14} />
@@ -126,7 +189,7 @@ export default function GuideBookingCard({
               type="button"
               onClick={() => handleHoursChange(1)}
               disabled={hours >= 24}
-              className="w-10 h-10 rounded-full bg-white border border-[#E8E4DC] flex items-center justify-center text-[#1C3A2E] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#FAFAF7] focus:outline-none focus:ring-2 focus:ring-[#1C3A2E]"
+              className="w-10 h-10 rounded-full bg-white border border-[#E8E4DC] flex items-center justify-center text-[#1C3A2E] disabled:opacity-30 disabled:cursor-not-allowed hover:bg-[#FAFAF7]"
               aria-label="Increase hours"
             >
               <Plus size={14} />
@@ -135,52 +198,46 @@ export default function GuideBookingCard({
         </div>
       )}
 
-      {/* Date & Time Selectors */}
-      <div className="grid grid-cols-2 gap-3">
-        <div className="space-y-1.5">
-          <label htmlFor="booking-date" className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">
-            Date
-          </label>
-          <div className="relative">
-            <input
-              id="booking-date"
-              type="date"
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              min={new Date().toISOString().split('T')[0]}
-              className="w-full h-11 border border-[#E8E4DC] rounded-xl px-3 py-2 text-xs font-semibold text-[#1A1A1A] bg-white focus:outline-none focus:ring-2 focus:ring-[#1C3A2E] focus:border-transparent transition-all"
-              required
-            />
-          </div>
-        </div>
+      {/* ─── SIMPLIFIED SELECTED SLOT VIEW ──────────────────────────────────── */}
+      <div className="space-y-2">
+        <label className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">
+          Selected Schedule
+        </label>
         
-        <div className="space-y-1.5">
-          <label htmlFor="booking-time" className="text-xs font-bold text-[#8A8A8A] uppercase tracking-wider block">
-            Start Time
-          </label>
-          <select
-            id="booking-time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="w-full h-11 border border-[#E8E4DC] rounded-xl px-3 py-2 text-xs font-semibold text-[#1A1A1A] bg-white focus:outline-none focus:ring-2 focus:ring-[#1C3A2E] focus:border-transparent transition-all cursor-pointer"
+        {hasSelectedSlot ? (
+          <div className="flex items-center gap-3 bg-[#EAF0EC] border border-[#C5D1CA] p-3.5 rounded-2xl">
+            <CheckCircle size={18} className="text-[#1D6C3D] shrink-0" />
+            <div className="text-xs">
+              <span className="font-bold text-[#1C3A2E] block">
+                {formatDateLabel(selectedDate)}
+              </span>
+              <span className="text-[11px] font-semibold text-[#1C3A2E]/80">
+                Starts at {formatTimeLabel(selectedTime)}
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={scrollToCalendar}
+              className="ml-auto text-[10px] font-bold text-[#C4614A] hover:underline bg-transparent border-0 cursor-pointer"
+            >
+              Change
+            </button>
+          </div>
+        ) : (
+          <button
+            type="button"
+            onClick={scrollToCalendar}
+            className="w-full flex items-center justify-between border border-[#E8E4DC] p-3.5 rounded-2xl hover:border-[#1C3A2E] bg-white text-left transition-all cursor-pointer focus:outline-none focus:ring-1 focus:ring-[#1C3A2E]"
           >
-            <option value="06:00">6:00 AM (Sunrise)</option>
-            <option value="07:00">7:00 AM</option>
-            <option value="08:00">8:00 AM</option>
-            <option value="09:00">9:00 AM</option>
-            <option value="10:00">10:00 AM</option>
-            <option value="11:00">11:00 AM</option>
-            <option value="12:00">12:00 PM</option>
-            <option value="13:00">1:00 PM</option>
-            <option value="14:00">2:00 PM</option>
-            <option value="15:00">3:00 PM</option>
-            <option value="16:00">4:00 PM (Golden hr)</option>
-            <option value="17:00">5:00 PM</option>
-            <option value="18:00">6:00 PM (Sunset)</option>
-            <option value="19:00">7:00 PM</option>
-            <option value="20:00">8:00 PM</option>
-          </select>
-        </div>
+            <span className="flex items-center gap-2 text-xs font-bold text-[#5A5A5A]">
+              <Calendar size={16} className="text-[#8A8A8A]" />
+              Select date & time slot...
+            </span>
+            <span className="text-[10px] font-bold text-[#C4614A] hover:underline">
+              Choose slot
+            </span>
+          </button>
+        )}
       </div>
 
       {/* Group Size Selector */}
@@ -214,16 +271,7 @@ export default function GuideBookingCard({
         </div>
       </div>
 
-      {/* Quick Availability check */}
-      <div className="flex items-center justify-between bg-[#EAF0EC] border border-[#C5D1CA] p-3.5 rounded-2xl text-xs text-[#1C3A2E]">
-        <span className="flex items-center gap-1.5 font-bold">
-          <span className="w-2 h-2 bg-[#1D6C3D] rounded-full animate-pulse"></span>
-          Available slot:
-        </span>
-        <span className="font-bold">Tomorrow 9:00am</span>
-      </div>
-
-      {/* Pricing Breakdown */}
+      {/* Pricing Breakdown Card */}
       <div className="bg-[#FAFAF7] p-4 rounded-2xl border border-[#E8E4DC] space-y-2 text-xs font-semibold">
         <span className="text-[10px] font-bold text-[#8A8A8A] uppercase tracking-wider block">Price breakdown</span>
         <div className="flex justify-between text-[#5A5A5A]">
@@ -231,7 +279,7 @@ export default function GuideBookingCard({
           <span>{formatCurrency(basePrice)}</span>
         </div>
         <div className="flex justify-between text-[#5A5A5A]">
-          <span>LocalLink Platform Fee (10%)</span>
+          <span>Friendlocalcheap Platform Fee (10%)</span>
           <span>{formatCurrency(serviceFee)}</span>
         </div>
         <div className="h-[1px] bg-[#E8E4DC] my-1"></div>
@@ -241,26 +289,25 @@ export default function GuideBookingCard({
         </div>
       </div>
 
-      {/* Call to Actions */}
+      {/* Booking Actions */}
       <div className="space-y-3 pt-2">
-        <Link
-          href={`/book/${guide.id}?duration=${selectedDuration}&date=${date}&time=${time}&groupSize=${groupSize}`}
-          onClick={onBook}
-          className="btn btn-accent h-12 w-full text-center shadow-md flex items-center justify-center gap-2 font-bold text-sm rounded-xl hover:shadow-lg active:scale-95 transition-all"
+        <button
+          onClick={handleRequestBooking}
+          className="btn btn-accent h-12 w-full text-center shadow-md flex items-center justify-center gap-2 font-bold text-sm rounded-xl hover:shadow-lg active:scale-95 transition-all border-0 cursor-pointer"
         >
-          Request booking
-        </Link>
+          {hasSelectedSlot ? 'Request booking' : 'Choose time slot to book'}
+        </button>
         
-        <Link
-          href={`/dashboard?chat=${guide.id}`}
-          className="btn btn-outline h-12 w-full text-center flex items-center justify-center gap-2 font-semibold text-xs rounded-xl hover:bg-[#FAFAF7] active:scale-95 transition-all"
+        <button
+          onClick={handleMessageGuide}
+          className="btn btn-outline h-12 w-full text-center flex items-center justify-center gap-2 font-semibold text-xs rounded-xl hover:bg-[#FAFAF7] active:scale-95 transition-all border border-[#1C3A2E] cursor-pointer"
         >
           <MessageSquare size={16} />
           <span>Message {guide.firstName}</span>
-        </Link>
+        </button>
       </div>
 
-      {/* Disclaimers (Prototype-safe) */}
+      {/* trust verification seals */}
       <div className="border-t border-[#F5F0EA] pt-4 text-[10px] text-[#8A8A8A] space-y-2 leading-relaxed">
         <div className="flex items-start gap-1">
           <Info size={12} className="text-[#C4614A] shrink-0 mt-0.5" />

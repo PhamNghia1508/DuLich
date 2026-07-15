@@ -9,7 +9,7 @@ const trustItems = [
 
 export default function TrustMetrics() {
   return (
-    <section className="trust-band" aria-label="Why travelers choose LocalLink">
+    <section className="trust-band" aria-label="Why travelers choose Friendlocalcheap">
       <div className="container trust-band-grid">
         {trustItems.map(({ icon: Icon, title, text }) => (
           <div className="trust-band-item" key={title}>

@@ -25,14 +25,15 @@ export default function FeaturedGuides() {
           {featured.map((guide) => {
             const isSaved = saved.includes(guide.id);
             return (
-              <article className="home-guide-card" key={guide.id}>
+              <article className="home-guide-card" key={guide.id} style={{ position: 'relative' }}>
+                <Link href={`/guides/${guide.id}`} className="absolute inset-0 z-10 rounded-[inherit] outline-none" aria-label={`View profile of ${guide.displayName}`} />
                 <div className="home-guide-photo">
                   {!imageErrors.includes(guide.id) ? (
                     <img src={guide.avatar} alt={`${guide.displayName}, a local guide in ${guide.city}`} className="absolute inset-0 w-full h-full object-cover" onError={() => setImageErrors((ids) => [...ids, guide.id])} />
                   ) : (
                     <div className="guide-image-fallback" role="img" aria-label={`Portrait unavailable for ${guide.displayName}`}><span>{guide.firstName.charAt(0)}</span></div>
                   )}
-                  <button type="button" aria-label={isSaved ? `Remove ${guide.displayName} from saved guides` : `Save ${guide.displayName}`} aria-pressed={isSaved} onClick={() => setSaved((items) => isSaved ? items.filter((id) => id !== guide.id) : [...items, guide.id])}>
+                  <button type="button" aria-label={isSaved ? `Remove ${guide.displayName} from saved guides` : `Save ${guide.displayName}`} aria-pressed={isSaved} onClick={() => setSaved((items) => isSaved ? items.filter((id) => id !== guide.id) : [...items, guide.id])} className="absolute z-20" style={{ top: '12px', right: '12px' }}>
                     <Heart size={18} fill={isSaved ? 'currentColor' : 'none'} />
                   </button>
                   <span className="availability-pill">Available this week</span>
@@ -49,7 +50,7 @@ export default function FeaturedGuides() {
                     <span><Star size={15} fill="currentColor" /> <strong>{guide.rating}</strong> ({guide.reviewCount})</span>
                     <span>From <strong>{formatCurrency(guide.pricing.perHour, guide.pricing.currency)}/hr</strong></span>
                   </div>
-                  <Link href={`/guides/${guide.id}`} className="guide-profile-link">View profile <ArrowRight size={16} /></Link>
+                  <Link href={`/guides/${guide.id}`} className="guide-profile-link relative z-20">View profile <ArrowRight size={16} /></Link>
                 </div>
               </article>
             );

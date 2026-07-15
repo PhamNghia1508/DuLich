@@ -73,3 +73,105 @@
 .animate-slide-up {
   animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ─── Scheduler Styles ──────────────────────────────────────────────────────── */
+.calendar-carousel {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  scrollbar-width: none;
+}
+.calendar-carousel::-webkit-scrollbar {
+  display: none;
+}
+.calendar-day-chip {
+  flex: 0 0 calc((100% - 48px) / 7);
+  min-width: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  border: 1px solid #E8E4DC;
+  border-radius: 12px;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.calendar-day-chip:hover {
+  border-color: #1C3A2E;
+  background: #FAFAF7;
+}
+.calendar-day-chip.active {
+  border-color: #1C3A2E;
+  background: #1C3A2E;
+  color: white;
+}
+.calendar-day-chip.active .day-dot {
+  background: white !important;
+}
+
+.day-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin-top: 4px;
+}
+.day-dot.free {
+  background: #22c55e;
+}
+.day-dot.busy {
+  background: #f59e0b;
+}
+.day-dot.booked {
+  background: #ef4444;
+}
+
+.time-slots-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+.time-slot-btn {
+  height: 38px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #E8E4DC;
+  border-radius: 10px;
+  background: white;
+  color: #1A1A1A;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.2s ease;
+}
+.time-slot-btn:hover:not(:disabled) {
+  border-color: #C4614A;
+  background: #FAF0ED;
+}
+.time-slot-btn.active {
+  border-color: #C4614A;
+  background: #C4614A;
+  color: white;
+}
+.time-slot-btn:disabled {
+  cursor: not-allowed;
+}
+
+.time-slot-btn.booked {
+  background-color: #f3f4f6;
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, #e5e7eb 4px, #e5e7eb 8px);
+  border-color: #e5e7eb;
+  color: #9ca3af;
+}
+
+.time-slot-btn.pending {
+  background: #fef3c7;
+  border: 1px dashed #f59e0b;
+  color: #d97706;
+}

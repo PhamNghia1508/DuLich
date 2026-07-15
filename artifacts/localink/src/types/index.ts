@@ -74,6 +74,13 @@ export interface Guide {
   accessibilityExperience: boolean;
   isFavorited?: boolean;
   sampleItineraries: SampleItinerary[];
+  availabilitySlots?: GuideAvailability[];
+}
+
+export interface GuideAvailability {
+  date: string;
+  bookedSlots: string[];
+  pendingSlots: string[];
 }
 
 export interface SampleItinerary {

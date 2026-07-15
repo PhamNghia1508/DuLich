@@ -12,7 +12,7 @@ export default function GuideCredentials({ guide }: GuideCredentialsProps) {
     {
       icon: <BadgeCheck size={18} className="text-[#1D6C3D]" />,
       title: 'Profile manually reviewed',
-      desc: 'The profile content and details are reviewed by the LocalLink community team.',
+      desc: 'The profile content and details are reviewed by the Friendlocalcheap community team.',
     },
     {
       icon: <FileCheck size={18} className="text-[#1D6C3D]" />,
@@ -74,7 +74,7 @@ export default function GuideCredentials({ guide }: GuideCredentialsProps) {
           <div className="border-t border-[#E8E4DC] pt-3 mt-3 flex gap-2 text-[11px] text-[#5A5A5A] leading-relaxed">
             <ShieldAlert size={16} className="text-[#C4614A] shrink-0 mt-0.5" />
             <p>
-              LocalLink reviews profile information and displays relevant credentials supplied by the guide. Travelers should review all booking details before confirming.
+              Friendlocalcheap reviews profile information and displays relevant credentials supplied by the guide. Travelers should review all booking details before confirming.
             </p>
           </div>
         </div>
