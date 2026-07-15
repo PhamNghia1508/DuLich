@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import { ChevronDown, Compass, Globe2, Menu, X, LogOut, User } from 'lucide-react';
+import { ChevronDown, Compass, Globe2, Menu, X, LogOut, User, ArrowRight } from 'lucide-react';
 import { UI_LANGUAGES } from '@/data/mockData';
 import { useAuth } from '@/hooks/useAuth';
 
@@ -179,6 +179,17 @@ export default function Navbar() {
 
       {menuOpen && <button className="mobile-nav-backdrop" aria-label="Close navigation menu" onClick={() => setMenuOpen(false)} />}
       <aside id="mobile-navigation" className={`mobile-nav ${menuOpen ? 'mobile-nav-open' : ''}`} aria-hidden={!menuOpen}>
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-[var(--color-border-light)]">
+          <span className="font-bold text-xs uppercase tracking-wider text-[var(--color-text-light)]">Navigation</span>
+          <button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            className="flex items-center justify-center w-8 h-8 rounded-full bg-[var(--color-surface)] border-0 text-[var(--color-text-muted)] hover:text-[var(--color-accent)] transition-colors cursor-pointer"
+            aria-label="Close menu"
+          >
+            <ArrowRight size={16} />
+          </button>
+        </div>
         <nav aria-label="Mobile navigation">
           {navLinks.map((link) => (
             <Link key={link.name} href={link.href} onClick={() => setMenuOpen(false)}>{link.name}</Link>

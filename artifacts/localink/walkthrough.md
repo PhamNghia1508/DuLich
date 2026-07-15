@@ -32,6 +32,10 @@ We have successfully refined the sign-in and sign-up experiences to make them hi
 ### 2. Social Logins (Google & Facebook)
 - Updated social login buttons on both signin and signup views to offer **Google** and **Facebook** sign-in options, completely removing the developer-oriented GitHub option.
 
+### 3. Mobile Navbar Drawer Clipping Resolution
+- **Issue:** Scrolling down on mobile attaches the `.site-header-scrolled` class, which uses `backdrop-filter: blur(16px)` and `overflow: hidden`. In modern browsers, `backdrop-filter` creates a new containing block context. This contains the mobile nav drawer (which has `position: fixed`) inside the header, causing the entire drawer to be hidden and clipped to a height of 64px.
+- **Resolution:** Moved the mobile navigation drawer `<aside>` and overlay elements outside the `<header>` element, while remaining inside the sticky wrapper container. This allows the drawer to render relative to the viewport container and bypasses the header's container stacking clipping boundaries.
+
 ---
 
 ## 🧪 Verification & Automated Playwright Tests
