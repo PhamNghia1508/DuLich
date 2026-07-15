@@ -36,6 +36,9 @@ We have successfully refined the sign-in and sign-up experiences to make them hi
 - **Issue:** Scrolling down on mobile attaches the `.site-header-scrolled` class, which uses `backdrop-filter: blur(16px)` and `overflow: hidden`. In modern browsers, `backdrop-filter` creates a new containing block context. This contains the mobile nav drawer (which has `position: fixed`) inside the header, causing the entire drawer to be hidden and clipped to a height of 64px.
 - **Resolution:** Moved the mobile navigation drawer `<aside>` and overlay elements outside the `<header>` element, while remaining inside the sticky wrapper container. This allows the drawer to render relative to the viewport container and bypasses the header's container stacking clipping boundaries.
 
+### 4. Close Arrow Icon Button in Mobile Navbar Drawer
+- **Feature:** Added a header inside the `<aside>` navigation drawer containing a title "NAVIGATION" and an ArrowRight close icon button inside a circular button. This provides a direct, highly-visible UI element for users to tap and slide the menu shut on mobile viewports.
+
 ---
 
 ## 🧪 Verification & Automated Playwright Tests
