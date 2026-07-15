@@ -36,7 +36,7 @@ const SLIDES = [
     eyebrow: "LOCAL LIFELINES & CULTURE",
     title: "Travel deeper, not just further.",
     description: "Connect with locals who can show you the city from a different perspective and make you feel right at home.",
-    quote: "Highly recommend! Booking through LocalLink gave us a real friend in Ho Chi Minh City.",
+    quote: "Highly recommend! Booking through Friendlocalcheap gave us a real friend in Ho Chi Minh City.",
     author: "Sarah M.",
     location: "Australia",
     avatar: "https://picsum.photos/seed/sarah-traveler/48/48"
@@ -131,7 +131,7 @@ export default function SignInPage() {
               className="font-bold text-xl tracking-tight text-white drop-shadow-sm"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              Local<span className="text-[var(--color-accent-light)]">Link</span>
+              Friendlocalcheap
             </span>
           </Link>
 
@@ -257,7 +257,7 @@ export default function SignInPage() {
                 </svg>
               </div>
               <span className="font-bold text-base tracking-tight" style={{ fontFamily: 'var(--font-playfair)' }}>
-                Local<span className="text-[var(--color-accent)]">Link</span>
+                Friendlocalcheap
               </span>
             </div>
 
@@ -268,7 +268,7 @@ export default function SignInPage() {
               Welcome back
             </h1>
             <p className="text-sm text-[var(--color-text-muted)]">
-              Sign in to your LocalLink account
+              Sign in to your Friendlocalcheap account
             </p>
           </div>
 
@@ -291,7 +291,7 @@ export default function SignInPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="you@example.com"
-                  className="auth-input pl-10"
+                  className="auth-input has-icon"
                   aria-required="true"
                 />
               </div>
@@ -322,7 +322,7 @@ export default function SignInPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••"
-                  className="auth-input pl-10 pr-11"
+                  className="auth-input has-icon has-icon-right"
                   aria-required="true"
                 />
                 <button

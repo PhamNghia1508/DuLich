@@ -562,6 +562,14 @@ a {
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
 }
 
+.auth-input.has-icon {
+  padding-left: 2.75rem !important;
+}
+
+.auth-input.has-icon-right {
+  padding-right: 2.75rem !important;
+}
+
 /* Divider */
 .divider {
   height: 1px;

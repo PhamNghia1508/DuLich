@@ -50,7 +50,7 @@ const SLIDES = [
     eyebrow: "LOCAL LIFELINES & CULTURE",
     title: "Travel deeper, not just further.",
     description: "Connect with locals who can show you the city from a different perspective and make you feel right at home.",
-    quote: "Highly recommend! Booking through LocalLink gave us a real friend in Ho Chi Minh City.",
+    quote: "Highly recommend! Booking through Friendlocalcheap gave us a real friend in Ho Chi Minh City.",
     author: "Sarah M.",
     location: "Australia",
     avatar: "https://picsum.photos/seed/sarah-traveler/48/48"
@@ -170,7 +170,7 @@ export default function SignUpPage() {
                 </svg>
               </div>
               <span className="font-bold text-base tracking-tight" style={{ fontFamily: 'var(--font-playfair)' }}>
-                Local<span className="text-[var(--color-accent)]">Link</span>
+                Friendlocalcheap
               </span>
             </div>
 
@@ -202,7 +202,7 @@ export default function SignUpPage() {
                     value={form.firstName}
                     onChange={updateField('firstName')}
                     placeholder="Alex"
-                    className={`auth-input pl-9 ${errors.firstName ? 'auth-input-error' : ''}`}
+                    className={`auth-input has-icon ${errors.firstName ? 'auth-input-error' : ''}`}
                   />
                 </div>
                 {errors.firstName && <p className="text-[10px] text-red-500">{errors.firstName}</p>}
@@ -239,7 +239,7 @@ export default function SignUpPage() {
                   value={form.email}
                   onChange={updateField('email')}
                   placeholder="you@example.com"
-                  className={`auth-input pl-10 ${errors.email ? 'auth-input-error' : ''}`}
+                  className={`auth-input has-icon ${errors.email ? 'auth-input-error' : ''}`}
                 />
               </div>
               {errors.email && <p className="text-[10px] text-red-500">{errors.email}</p>}
@@ -259,7 +259,7 @@ export default function SignUpPage() {
                   value={form.password}
                   onChange={updateField('password')}
                   placeholder="Min. 8 characters"
-                  className={`auth-input pl-10 pr-11 ${errors.password ? 'auth-input-error' : ''}`}
+                  className={`auth-input has-icon has-icon-right ${errors.password ? 'auth-input-error' : ''}`}
                 />
                 <button
                   type="button"
@@ -307,7 +307,7 @@ export default function SignUpPage() {
                   value={form.confirmPassword}
                   onChange={updateField('confirmPassword')}
                   placeholder="Repeat your password"
-                  className={`auth-input pl-10 pr-11 ${errors.confirmPassword ? 'auth-input-error' : ''}`}
+                  className={`auth-input has-icon has-icon-right ${errors.confirmPassword ? 'auth-input-error' : ''}`}
                 />
                 <button
                   type="button"
@@ -465,7 +465,7 @@ export default function SignUpPage() {
               className="font-bold text-xl tracking-tight text-white drop-shadow-sm"
               style={{ fontFamily: 'var(--font-playfair)' }}
             >
-              Local<span className="text-[var(--color-accent-light)]">Link</span>
+              Friendlocalcheap
             </span>
           </Link>
 
