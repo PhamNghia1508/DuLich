@@ -32,13 +32,13 @@ No request data is persisted outside the mounted Home component.
 
 ### Navbar
 
-The existing shared Navbar is simplified to:
+The existing shared Navbar receives an explicit Home-only presentation (or Home uses a focused wrapper) containing:
 
 - FriendLocalTrip logo/brand.
 - **For Travelers** tab linking to Home.
 - **Local Guide** tab linking to the existing guide-facing route.
 
-It does not add a traditional multi-item menu. Existing shared-route behavior must be checked because Navbar is used outside Home.
+It does not add a traditional multi-item menu. The **Local Guide** tab links to the existing `/guide-dashboard` route. The default shared Navbar markup and behavior remain unchanged for every route outside Home.
 
 ### Hero and Trust Badges
 
