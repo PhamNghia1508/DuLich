@@ -14,9 +14,9 @@ export default function FeaturedGuides() {
       <div className="container">
         <div className="section-heading-row">
           <div>
-            <span className="section-label">Featured local experts</span>
-            <h2 id="featured-guides-title">Meet guides who make Vietnam feel personal</h2>
-            <p>Different languages, interests, and ways of exploring—one local match that feels right.</p>
+            <span className="section-label">FriendLocalTrip marketplace</span>
+            <h2 id="featured-guides-title">Meet Your Local Friends</h2>
+            <p>A few friendly faces ready to share their city, language, and local point of view.</p>
           </div>
           <Link href="/guides" className="text-link">Browse all guides <ArrowRight size={17} /></Link>
         </div>

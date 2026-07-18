@@ -11,7 +11,41 @@ const navLinks = [
   { name: 'Become a Guide', href: '/guide-dashboard' },
 ];
 
-export default function Navbar() {
+interface NavbarProps {
+  variant?: 'default' | 'home';
+}
+
+function HomeNavbar() {
+  const [pathname] = useLocation();
+  const homeLinks = [
+    { label: 'For Travelers', href: '/' },
+    { label: 'Local Guide', href: '/guide-dashboard' },
+  ];
+
+  return (
+    <header className="site-header home-site-header">
+      <div className="site-nav home-site-nav">
+        <Link href="/" className="brand" aria-label="FriendLocalTrip home">
+          <span className="brand-mark" aria-hidden="true"><Compass size={20} /></span>
+          <span>FriendLocal<span>Trip</span></span>
+        </Link>
+        <nav className="home-nav-tabs" aria-label="FriendLocalTrip audiences">
+          {homeLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              aria-current={pathname === link.href ? 'page' : undefined}
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+      </div>
+    </header>
+  );
+}
+
+function DefaultNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [languageOpen, setLanguageOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('EN');
@@ -240,4 +274,8 @@ export default function Navbar() {
       </aside>
     </div>
   );
+}
+
+export default function Navbar({ variant = 'default' }: NavbarProps) {
+  return variant === 'home' ? <HomeNavbar /> : <DefaultNavbar />;
 }

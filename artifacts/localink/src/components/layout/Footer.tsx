@@ -3,7 +3,26 @@ import { Link } from 'wouter';
 import { Compass, Shield, Star, Globe, Mail, MapPin } from 'lucide-react';
 import { UI_LANGUAGES } from '@/data/mockData';
 
-export default function Footer() {
+interface FooterProps {
+  variant?: 'default' | 'home';
+}
+
+function HomeFooter() {
+  return (
+    <footer className="home-footer">
+      <div className="container home-footer-inner">
+        <Link href="/" className="home-footer-brand" aria-label="FriendLocalTrip home">
+          <Compass size={18} aria-hidden="true" />
+          FriendLocalTrip
+        </Link>
+        <a href="mailto:support@friendlocaltrip.com">support@friendlocaltrip.com</a>
+        <small>© {new Date().getFullYear()} FriendLocalTrip</small>
+      </div>
+    </footer>
+  );
+}
+
+function DefaultFooter() {
   const [selectedCurrency, setSelectedCurrency] = useState('USD');
   const [selectedLang, setSelectedLang] = useState('en');
 
@@ -149,4 +168,8 @@ export default function Footer() {
       </div>
     </footer>
   );
+}
+
+export default function Footer({ variant = 'default' }: FooterProps) {
+  return variant === 'home' ? <HomeFooter /> : <DefaultFooter />;
 }

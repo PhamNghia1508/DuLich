@@ -1,32 +1,36 @@
-import React from 'react';
+import { useState } from 'react';
+
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/home/Hero';
-import TrustMetrics from '@/components/home/TrustMetrics';
 import FeaturedGuides from '@/components/home/FeaturedGuides';
-import HowItWorks from '@/components/home/HowItWorks';
-import ExperienceCategories from '@/components/home/ExperienceCategories';
-import SafetyVerification from '@/components/home/SafetyVerification';
-import Testimonials from '@/components/home/Testimonials';
-import FinalCTA from '@/components/home/FinalCTA';
-import BecomeGuide from '@/components/home/BecomeGuide';
+import RequestGuideDialog from '@/components/home/RequestGuideDialog';
+import SupportChat from '@/components/home/SupportChat';
+import type { RequestGuideDraft } from '@/components/home/requestGuideValidation';
 
 export default function Home() {
+  const [requestDialogOpen, setRequestDialogOpen] = useState(false);
+  const [, setRequestDraft] = useState<RequestGuideDraft | null>(null);
+
+  const handleRequestSubmit = (draft: RequestGuideDraft) => {
+    setRequestDraft(draft);
+    setRequestDialogOpen(false);
+  };
+
   return (
-    <div className="flex flex-col min-h-screen">
-      <Navbar />
+    <div className="home-page flex flex-col min-h-screen">
+      <Navbar variant="home" />
       <main className="flex-1">
-        <Hero />
-        <TrustMetrics />
+        <Hero onRequestGuide={() => setRequestDialogOpen(true)} />
         <FeaturedGuides />
-        <HowItWorks />
-        <ExperienceCategories />
-        <SafetyVerification />
-        <Testimonials />
-        <FinalCTA />
-        <BecomeGuide />
       </main>
-      <Footer />
+      <Footer variant="home" />
+      <SupportChat />
+      <RequestGuideDialog
+        open={requestDialogOpen}
+        onOpenChange={setRequestDialogOpen}
+        onSubmit={handleRequestSubmit}
+      />
     </div>
   );
 }
