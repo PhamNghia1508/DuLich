@@ -25,7 +25,7 @@ export default function Home() {
         <FeaturedGuides />
       </main>
       <Footer variant="home" />
-      <SupportChat />
+      {!requestDialogOpen && <SupportChat />}
       <RequestGuideDialog
         open={requestDialogOpen}
         onOpenChange={setRequestDialogOpen}

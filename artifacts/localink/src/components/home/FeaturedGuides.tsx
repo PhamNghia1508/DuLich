@@ -14,7 +14,6 @@ export default function FeaturedGuides() {
       <div className="container">
         <div className="section-heading-row">
           <div>
-            <span className="section-label">FriendLocalTrip marketplace</span>
             <h2 id="featured-guides-title">Meet Your Local Friends</h2>
             <p>A few friendly faces ready to share their city, language, and local point of view.</p>
           </div>
