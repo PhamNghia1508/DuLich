@@ -41,6 +41,16 @@ test('guide-specific fallback content is deterministic', () => {
   assert.ok(first.experiences.every((experience) => experience.id.startsWith('prototype-guide-010')));
 });
 
+test('availability mapping exposes available, hold, and unavailable states', () => {
+  for (const guide of MOCK_GUIDES) {
+    const statuses = createRichGuideProfileViewModel(guide.id)?.availability.map((day) => day.status);
+
+    assert.ok(statuses?.includes('available'), `${guide.id} has no available day`);
+    assert.ok(statuses?.includes('hold'), `${guide.id} has no hold day`);
+    assert.ok(statuses?.includes('unavailable'), `${guide.id} has no unavailable day`);
+  }
+});
+
 test('maps at most two recommendation reasons only for the current guide', () => {
   const recommendation = {
     guideId: 'guide-001',

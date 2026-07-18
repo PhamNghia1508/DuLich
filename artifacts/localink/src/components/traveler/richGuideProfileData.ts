@@ -209,7 +209,10 @@ function createReviews(
 function createAvailability(guideId: string): RichGuideAvailabilityDay[] {
   const profile = getPrototypeGuideProfile(guideId);
   if (!profile) return [];
-  const holdIndex = stableSeed(guideId) % profile.availability.length;
+  const availableIndices = profile.availability
+    .map((day, index) => day.available ? index : -1)
+    .filter((index) => index >= 0);
+  const holdIndex = availableIndices[stableSeed(guideId) % availableIndices.length];
 
   return profile.availability.map((day, index) => ({
     date: day.date,

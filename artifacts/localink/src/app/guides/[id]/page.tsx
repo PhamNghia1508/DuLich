@@ -5,9 +5,9 @@ import Navbar from '@/components/layout/Navbar';
 import SupportChat from '@/components/home/SupportChat';
 import PrototypeGuideProfile from '@/components/traveler/PrototypeGuideProfile';
 import {
-  getGuideRecommendation,
-  getPrototypeGuideProfile,
-} from '@/components/traveler/guideProfileData';
+  createProfileBookingHandoff,
+  createRichGuideProfileViewModel,
+} from '@/components/traveler/richGuideProfileData';
 import { useTravelerPrototype } from '@/components/traveler/TravelerPrototypeContext';
 
 import './profile.css';
@@ -16,7 +16,7 @@ export default function GuideProfilePage() {
   const { id = '' } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
   const { recommendation, selectGuide } = useTravelerPrototype();
-  const guide = getPrototypeGuideProfile(id);
+  const guide = createRichGuideProfileViewModel(id, recommendation);
 
   if (!guide) {
     return (
@@ -33,10 +33,11 @@ export default function GuideProfilePage() {
     );
   }
 
-  const recommendationReasons = getGuideRecommendation(recommendation, guide.id);
   const handleChoose = () => {
-    selectGuide(guide.id);
-    navigate(`/booking-handoff/${guide.id}`);
+    const handoff = createProfileBookingHandoff(guide.id);
+    if (!handoff) return;
+    selectGuide(handoff.selectedGuideId);
+    navigate(handoff.href);
   };
 
   return (
@@ -45,7 +46,6 @@ export default function GuideProfilePage() {
       <main className="traveler-profile-container">
         <PrototypeGuideProfile
           guide={guide}
-          recommendationReasons={recommendationReasons}
           onChoose={handleChoose}
         />
       </main>
