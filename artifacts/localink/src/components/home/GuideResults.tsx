@@ -6,6 +6,7 @@ import { SUPPORTED_LANGUAGES } from '@/data/mockData';
 import { formatCurrency } from '@/lib/utils';
 
 import type { GuideMatchResult } from './guideMatching';
+import { selectVisibleMatchReasons } from './matchReasonPresentation';
 
 interface GuideResultsProps {
   results: GuideMatchResult[];
@@ -20,6 +21,9 @@ function languageName(code: string) {
 export default function GuideResults({ results, onEditRequest }: GuideResultsProps) {
   const [imageErrors, setImageErrors] = useState<string[]>([]);
   const visibleResults = results.slice(0, 6);
+  const visibleReasonSets = selectVisibleMatchReasons(
+    visibleResults.map(({ matchReasons }) => matchReasons),
+  );
 
   if (visibleResults.length === 0) {
     return (
@@ -36,7 +40,7 @@ export default function GuideResults({ results, onEditRequest }: GuideResultsPro
 
   return (
     <section className="guide-results-grid" aria-label={`${visibleResults.length} matching local guides`}>
-      {visibleResults.map(({ guide, matchReasons }, index) => (
+      {visibleResults.map(({ guide }, index) => (
         <article className="matched-guide-card" key={guide.id}>
           <div className="matched-guide-photo">
             {!imageErrors.includes(guide.id) ? (
@@ -67,7 +71,7 @@ export default function GuideResults({ results, onEditRequest }: GuideResultsPro
             </p>
 
             <div className="matched-guide-reasons" aria-label="Why this guide matches">
-              {matchReasons.slice(0, 2).map((reason) => <span key={reason}>{reason}</span>)}
+              {(visibleReasonSets[index] ?? []).map((reason) => <span key={reason}>{reason}</span>)}
             </div>
 
             <div className="matched-guide-meta">

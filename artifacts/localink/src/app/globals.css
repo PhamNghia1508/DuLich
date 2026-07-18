@@ -2636,7 +2636,8 @@ a {
 
 /* Phase 3 local-only request results */
 .home-results {
-  padding: clamp(2rem, 4vw, 3.5rem) 0 clamp(3rem, 5vw, 5rem);
+  padding: clamp(2rem, 4vw, 3.5rem) 0
+    max(clamp(6rem, 7vw, 7rem), calc(5rem + env(safe-area-inset-bottom)));
   background: linear-gradient(180deg, var(--color-bg) 0, var(--color-white) 18rem);
 }
 
@@ -2860,6 +2861,7 @@ a {
 }
 
 .matched-guide-reasons span {
+  max-width: 100%;
   padding: 0.3rem 0.55rem;
   border: 1px solid #dce7df;
   border-radius: var(--radius-full);
@@ -2868,6 +2870,7 @@ a {
   font-size: 0.68rem;
   font-weight: 650;
   line-height: 1.25;
+  overflow-wrap: anywhere;
 }
 
 .matched-guide-meta {
@@ -3097,7 +3100,7 @@ a {
   }
 
   .home-results {
-    padding: 1.5rem 0.75rem 2.5rem;
+    padding: 1.5rem 0.75rem max(3.5rem, calc(2.5rem + env(safe-area-inset-bottom)));
   }
 
   .home-results-header {
@@ -3132,15 +3135,24 @@ a {
 
   .request-summary-actions {
     width: 100%;
-    justify-content: space-between;
+    min-width: 0;
+    align-items: stretch;
+    flex-direction: column;
+    gap: 0.35rem;
   }
 
   .request-summary-actions .btn {
-    min-height: 42px;
+    width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    justify-content: center;
   }
 
   .request-start-over {
-    min-height: 42px;
+    width: 100%;
+    min-height: 44px;
+    padding: 0 0.75rem;
+    justify-content: center;
   }
 
   .guide-results-grid {
