@@ -2395,10 +2395,12 @@ a {
 .request-guide-dialog {
   width: min(calc(100% - 2rem), 760px);
   max-width: 760px;
-  max-height: min(90vh, 820px);
-  display: block;
+  height: min(88vh, 800px);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
   padding: 0;
-  overflow-y: auto;
+  overflow: hidden;
   border: 1px solid var(--color-border-light);
   border-radius: var(--radius-xl);
   background: var(--color-white);
@@ -2406,6 +2408,9 @@ a {
 }
 
 .request-guide-dialog > button {
+  top: 1rem;
+  right: 1rem;
+  z-index: 4;
   width: 36px;
   height: 36px;
   display: grid;
@@ -2417,8 +2422,13 @@ a {
 }
 
 .request-dialog-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  flex: 0 0 auto;
   padding: 1.75rem 4rem 1.25rem 1.75rem;
   border-bottom: 1px solid var(--color-border-light);
+  background: var(--color-white);
   text-align: left;
 }
 
@@ -2443,7 +2453,20 @@ a {
 }
 
 .request-form {
-  padding: 1.5rem 1.75rem 1.75rem;
+  min-height: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.request-form-body {
+  min-height: 0;
+  flex: 1;
+  padding: 1.5rem 1.75rem 2rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .request-form-grid {
@@ -2594,13 +2617,21 @@ a {
 }
 
 .request-form-footer {
-  margin-top: 1.5rem;
-  padding-top: 1.25rem;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  flex: 0 0 auto;
+  padding: 1rem 1.75rem;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 1rem;
   border-top: 1px solid var(--color-border-light);
+  background: var(--color-white);
+}
+
+.request-form-footer .btn {
+  min-width: 220px;
 }
 
 @media (max-width: 840px) {
@@ -2699,9 +2730,9 @@ a {
   .request-guide-dialog {
     inset: 0.5rem !important;
     width: auto !important;
-    height: auto;
+    height: calc(100dvh - 1rem);
     max-width: none !important;
-    max-height: none !important;
+    max-height: calc(100dvh - 1rem) !important;
     transform: none !important;
     --tw-translate-x: 0px !important;
     --tw-translate-y: 0px !important;
@@ -2709,11 +2740,17 @@ a {
   }
 
   .request-dialog-header {
-    padding: 1.4rem 3.75rem 1rem 1.15rem;
+    padding: max(1.15rem, env(safe-area-inset-top)) 3.75rem 0.9rem 1.15rem;
   }
 
-  .request-form {
-    padding: 1.15rem;
+  .request-guide-dialog > button {
+    top: max(0.75rem, env(safe-area-inset-top));
+    right: max(0.75rem, env(safe-area-inset-right));
+  }
+
+  .request-form-body {
+    padding: 1rem 1.15rem 1.5rem;
+    scrollbar-gutter: auto;
   }
 
   .request-form-grid {
@@ -2731,11 +2768,13 @@ a {
   }
 
   .request-form-footer {
+    padding: 0.85rem 1.15rem max(0.85rem, env(safe-area-inset-bottom));
     align-items: stretch;
     flex-direction: column;
   }
 
   .request-form-footer .btn {
     width: 100%;
+    min-width: 0;
   }
 }

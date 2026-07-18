@@ -103,7 +103,8 @@ export default function RequestGuideDialog({
         </DialogHeader>
 
         <form className="request-form" onSubmit={handleSubmit} noValidate>
-          <div className="request-form-grid">
+          <div className="request-form-body">
+            <div className="request-form-grid">
             <div className="request-field">
               <label htmlFor="request-destination">
                 Destination / Area <span aria-hidden="true">*</span>
@@ -264,6 +265,7 @@ export default function RequestGuideDialog({
                 placeholder="Tell us about accessibility needs, interests, or anything that would make the experience more comfortable."
                 rows={3}
               />
+            </div>
             </div>
           </div>
 
