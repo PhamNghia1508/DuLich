@@ -4,6 +4,8 @@
 
 :root {
   --profile-header-height: 76px;
+  --profile-nav-height: 52px;
+  --profile-sticky-offset: calc(var(--profile-header-height) + var(--profile-nav-height) + 16px);
   --profile-section-gap: 2.8rem;
 }
 
@@ -156,7 +158,7 @@
 .rich-profile-content { min-width: 0; }
 .rich-profile-sidebar {
   position: sticky;
-  top: calc(var(--profile-header-height) + 20px);
+  top: var(--profile-sticky-offset);
   min-width: 0;
 }
 
@@ -166,7 +168,7 @@
 .rich-section {
   padding: var(--profile-section-gap) 0;
   border-bottom: 1px solid var(--color-border, #e8e4dc);
-  scroll-margin-top: calc(var(--profile-header-height) + 24px);
+  scroll-margin-top: calc(var(--profile-sticky-offset) + 8px);
 }
 .rich-section:first-child { padding-top: 0; }
 .rich-section > header { max-width: 47rem; margin-bottom: 1.2rem; }
@@ -176,7 +178,7 @@
 /* ============================================================
    At a Glance
    ============================================================ */
-.rich-glance { padding: 0 0 var(--profile-section-gap); scroll-margin-top: calc(var(--profile-header-height) + 24px); }
+.rich-glance { padding: 0 0 var(--profile-section-gap); scroll-margin-top: calc(var(--profile-sticky-offset) + 8px); }
 .rich-glance-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; }
 .rich-glance-grid > div { min-width: 0; padding: .8rem; border: 1px solid var(--color-border, #e8e4dc); border-radius: .85rem; background: white; }
 .rich-glance-grid dt { display: flex; align-items: center; gap: .35rem; color: #66736d; font-size: .65rem; font-weight: 800; }
@@ -234,7 +236,7 @@
 /* ============================================================
    Availability Calendar
    ============================================================ */
-.rich-availability { scroll-margin-top: calc(var(--profile-header-height) + 24px); }
+.rich-availability { scroll-margin-top: calc(var(--profile-sticky-offset) + 8px); }
 .rich-availability-heading { margin-bottom: .85rem; }
 .rich-date-rail { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: .4rem; }
 .rich-date-chip { display: grid; min-width: 0; min-height: 5rem; place-items: center; align-content: center; gap: .12rem; padding: .5rem .25rem; border: 1px solid var(--color-border, #e8e4dc); border-radius: .85rem; background: white; color: #53615a; }
