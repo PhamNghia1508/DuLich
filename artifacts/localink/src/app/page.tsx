@@ -11,10 +11,16 @@ import SupportChat from '@/components/home/SupportChat';
 import { matchGuides } from '@/components/home/guideMatching';
 import { MOCK_GUIDES } from '@/components/home/mockGuideData';
 import type { RequestGuideDraft } from '@/components/home/requestGuideValidation';
+import { useTravelerPrototype } from '@/components/traveler/TravelerPrototypeContext';
 
 export default function Home() {
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
-  const [requestDraft, setRequestDraft] = useState<RequestGuideDraft | null>(null);
+  const {
+    requestDraft,
+    resetPrototype,
+    setRecommendation,
+    submitRequest,
+  } = useTravelerPrototype();
   const resultsHeadingRef = useRef<HTMLHeadingElement>(null);
   const guideResults = useMemo(
     () => requestDraft ? matchGuides(requestDraft, MOCK_GUIDES) : [],
@@ -33,7 +39,7 @@ export default function Home() {
   }, [requestDraft]);
 
   const handleRequestSubmit = (draft: RequestGuideDraft) => {
-    setRequestDraft(draft);
+    submitRequest(draft);
     setRequestDialogOpen(false);
   };
 
@@ -55,10 +61,14 @@ export default function Home() {
               <RequestSummaryBar
                 request={requestDraft}
                 onEdit={openRequestDialog}
-                onStartOver={() => setRequestDraft(null)}
+                onStartOver={resetPrototype}
               />
 
-              <GuideResults results={guideResults} onEditRequest={openRequestDialog} />
+              <GuideResults
+                results={guideResults}
+                onEditRequest={openRequestDialog}
+                onViewProfile={(guideId, matchReasons) => setRecommendation({ guideId, matchReasons })}
+              />
             </div>
           </div>
         ) : (

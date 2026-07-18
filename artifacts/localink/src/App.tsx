@@ -13,6 +13,7 @@ import SignUpPage from '@/app/signup/page';
 import NotFound from '@/pages/not-found';
 import ScrollToTop from '@/components/ScrollToTop';
 import { AuthProvider } from '@/hooks/useAuth';
+import { TravelerPrototypeProvider } from '@/components/traveler/TravelerPrototypeContext';
 
 function Router() {
   return (
@@ -35,11 +36,13 @@ function Router() {
 function App() {
   return (
     <AuthProvider>
-      <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+      <TravelerPrototypeProvider>
+        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
         {/* Reset scroll về đầu trang mỗi khi route thay đổi */}
         <ScrollToTop />
         <Router />
-      </WouterRouter>
+        </WouterRouter>
+      </TravelerPrototypeProvider>
     </AuthProvider>
   );
 }

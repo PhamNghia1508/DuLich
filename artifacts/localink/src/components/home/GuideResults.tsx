@@ -11,6 +11,7 @@ import { selectVisibleMatchReasons } from './matchReasonPresentation';
 interface GuideResultsProps {
   results: GuideMatchResult[];
   onEditRequest: () => void;
+  onViewProfile: (guideId: string, matchReasons: string[]) => void;
 }
 
 function languageName(code: string) {
@@ -18,7 +19,7 @@ function languageName(code: string) {
   return SUPPORTED_LANGUAGES.find((language) => language.code === code)?.name ?? code;
 }
 
-export default function GuideResults({ results, onEditRequest }: GuideResultsProps) {
+export default function GuideResults({ results, onEditRequest, onViewProfile }: GuideResultsProps) {
   const [imageErrors, setImageErrors] = useState<string[]>([]);
   const visibleResults = results.slice(0, 6);
   const visibleReasonSets = selectVisibleMatchReasons(
@@ -84,7 +85,11 @@ export default function GuideResults({ results, onEditRequest }: GuideResultsPro
                 <span>From <strong>{formatCurrency(guide.hourlyRate, guide.currency)}/hr</strong></span>
               ) : <span />}
               {guide.profileId && (
-                <Link href={`/guides/${guide.profileId}`} className="guide-profile-link">
+                <Link
+                  href={`/guides/${guide.profileId}`}
+                  className="guide-profile-link"
+                  onClick={() => onViewProfile(guide.profileId!, visibleReasonSets[index] ?? [])}
+                >
                   View Profile <ArrowRight size={16} aria-hidden="true" />
                 </Link>
               )}
