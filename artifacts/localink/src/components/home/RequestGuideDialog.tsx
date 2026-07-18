@@ -28,26 +28,34 @@ const EXPERIENCE_OPTIONS = [
 
 interface RequestGuideDialogProps {
   open: boolean;
+  initialDraft?: RequestGuideDraft | null;
   onOpenChange: (open: boolean) => void;
   onSubmit: (draft: RequestGuideDraft) => void;
 }
 
+function cloneDraft(draft: RequestGuideDraft | null | undefined): RequestGuideDraft {
+  const source = draft ?? EMPTY_REQUEST_GUIDE_DRAFT;
+
+  return {
+    ...source,
+    languages: [...source.languages],
+    experiencePreferences: [...source.experiencePreferences],
+  };
+}
+
 export default function RequestGuideDialog({
   open,
+  initialDraft,
   onOpenChange,
   onSubmit,
 }: RequestGuideDialogProps) {
-  const [draft, setDraft] = useState<RequestGuideDraft>({
-    ...EMPTY_REQUEST_GUIDE_DRAFT,
-  });
+  const [draft, setDraft] = useState<RequestGuideDraft>(() => cloneDraft(initialDraft));
   const [errors, setErrors] = useState<RequestGuideErrors>({});
 
   useEffect(() => {
-    if (!open) {
-      setDraft({ ...EMPTY_REQUEST_GUIDE_DRAFT });
-      setErrors({});
-    }
-  }, [open]);
+    setDraft(cloneDraft(open ? initialDraft : null));
+    setErrors({});
+  }, [initialDraft, open]);
 
   const clearError = (field: keyof RequestGuideErrors) => {
     setErrors((current) => {
