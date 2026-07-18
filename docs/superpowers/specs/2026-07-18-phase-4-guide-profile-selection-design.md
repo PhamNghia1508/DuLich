@@ -62,4 +62,3 @@ Pure unit tests will cover profile lookup, missing ids, normalization, recommend
 1. Reuse the current full profile and booking card: rejected because it exposes authentication, messaging, scheduling, and production-style booking behavior.
 2. Add a query-parameter mode inside the existing profile: rejected because it would keep two conflicting compositions and increase conditional complexity.
 3. Keep `/guides/:id` but replace its page composition with the Phase 4 profile and use a separate handoff route: selected because it preserves valid URLs while isolating the prototype boundary.
-

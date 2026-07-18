@@ -156,4 +156,3 @@ Verify the request/results/profile/back/choose/handoff flow, direct profile, mis
 - [ ] **Step 5: Run diff hygiene and commit**
 
 Run: `git diff --check`, inspect every changed file, then commit Phase 4 without pushing or merging.
-
