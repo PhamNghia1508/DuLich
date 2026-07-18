@@ -1,4 +1,4 @@
-import { BadgeCheck, CalendarDays, Check, Clock3, MapPin, MessageCircleOff, ReceiptText } from 'lucide-react';
+import { BadgeCheck, CalendarDays, Check, Clock3, MapPin, ReceiptText } from 'lucide-react';
 import { Link, useParams } from 'wouter';
 
 import SupportChat from '@/components/home/SupportChat';
@@ -59,15 +59,12 @@ export default function BookingSuccessPage() {
             <div className="prototype-success-total"><dt>Total</dt><dd>{formatPrototypeMoney(booking.price.total, booking.price.currency)}</dd></div>
           </dl>
 
-          <div className="prototype-success-chat-note">
-            <MessageCircleOff size={19} aria-hidden="true" />
-            <p><strong>Chat is not active yet.</strong> Chat with your guide will be available in the next step.</p>
-          </div>
         </section>
 
         <div className="prototype-success-actions">
-          <a href="#prototype-booking-detail" className="btn btn-accent">View Booking</a>
-          <Link href="/" className="prototype-success-home">Back to Home</Link>
+          <Link href={`/bookings/${booking.id}`} className="btn btn-accent">View Booking</Link>
+          <Link href={`/bookings/${booking.id}/chat`} className="btn btn-outline">Chat with {guide.name}</Link>
+          <Link href="/bookings" className="prototype-success-home">All Bookings</Link>
         </div>
       </main>
       <Footer variant="home" />

@@ -7,6 +7,9 @@ import BookingRequestPage from '@/app/book/[guideId]/page';
 import BookingHandoffPage from '@/app/booking-handoff/[guideId]/page';
 import PaymentPage from '@/app/payment/[guideId]/page';
 import BookingSuccessPage from '@/app/booking-success/[guideId]/page';
+import BookingListPage from '@/app/bookings/page';
+import BookingDetailPage from '@/app/bookings/[bookingId]/page';
+import BookingChatPage from '@/app/bookings/[bookingId]/chat/page';
 import DashboardPage from '@/app/dashboard/page';
 import GuideDashboardPage from '@/app/guide-dashboard/page';
 import MatchPage from '@/app/match/page';
@@ -27,6 +30,9 @@ function Router() {
       <Route path="/booking-handoff/:guideId" component={BookingHandoffPage} />
       <Route path="/payment/:guideId" component={PaymentPage} />
       <Route path="/booking-success/:guideId" component={BookingSuccessPage} />
+      <Route path="/bookings" component={BookingListPage} />
+      <Route path="/bookings/:bookingId" component={BookingDetailPage} />
+      <Route path="/bookings/:bookingId/chat" component={BookingChatPage} />
       <Route path="/book/:guideId" component={BookingRequestPage} />
       <Route path="/dashboard" component={DashboardPage} />
       <Route path="/guide-dashboard" component={GuideDashboardPage} />

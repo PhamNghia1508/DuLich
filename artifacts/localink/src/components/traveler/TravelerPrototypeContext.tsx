@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 
 import type { RequestGuideDraft } from '../home/requestGuideValidation';
 import type { TravelerRecommendation } from './guideProfileData';
@@ -7,6 +7,17 @@ import type {
   PrototypeBookingDraft,
   PrototypePaymentMethod,
 } from './bookingPrototype';
+import type { PrototypeHistoryBooking } from './bookingHistoryData';
+import type { PrototypeChatMessage } from './chatPrototypeData';
+import type { PrototypeTravelerReview } from './reviewPrototypeData';
+import {
+  SEEDED_BOOKING_HISTORY,
+  mergePrototypeBookingHistory,
+  findBookingById,
+} from './bookingHistoryData';
+import { getSeededMessages, createChatMessage, createAutoReply } from './chatPrototypeData';
+import { createPrototypeReview } from './reviewPrototypeData';
+import type { PrototypeReviewDraft } from './reviewPrototypeData';
 
 interface TravelerPrototypeValue {
   requestDraft: RequestGuideDraft | null;
@@ -15,6 +26,9 @@ interface TravelerPrototypeValue {
   bookingDraft: PrototypeBookingDraft | null;
   paymentMethod: PrototypePaymentMethod | null;
   confirmedBooking: PrototypeBooking | null;
+  bookingHistory: PrototypeHistoryBooking[];
+  chatMessagesByBookingId: Record<string, PrototypeChatMessage[]>;
+  submittedReviewsByBookingId: Record<string, PrototypeTravelerReview>;
   submitRequest: (draft: RequestGuideDraft) => void;
   setRecommendation: (recommendation: TravelerRecommendation) => void;
   selectGuide: (guideId: string) => void;
@@ -22,6 +36,11 @@ interface TravelerPrototypeValue {
   setPaymentMethod: (method: PrototypePaymentMethod | null) => void;
   confirmBooking: (booking: PrototypeBooking) => void;
   resetPrototype: () => void;
+  getBookingById: (bookingId: string) => PrototypeHistoryBooking | undefined;
+  getChatMessages: (bookingId: string, bookingDate: string) => PrototypeChatMessage[];
+  appendChatMessage: (bookingId: string, text: string, guideName: string) => void;
+  submitReview: (bookingId: string, guideId: string, draft: PrototypeReviewDraft) => void;
+  getReview: (bookingId: string) => PrototypeTravelerReview | undefined;
 }
 
 const TravelerPrototypeContext = createContext<TravelerPrototypeValue | null>(null);
@@ -33,12 +52,49 @@ export function TravelerPrototypeProvider({ children }: { children: React.ReactN
   const [bookingDraft, setBookingDraft] = useState<PrototypeBookingDraft | null>(null);
   const [paymentMethod, setPaymentMethodState] = useState<PrototypePaymentMethod | null>(null);
   const [confirmedBooking, setConfirmedBooking] = useState<PrototypeBooking | null>(null);
+  const [liveChatMessages, setLiveChatMessages] = useState<Record<string, PrototypeChatMessage[]>>({});
+  const [submittedReviews, setSubmittedReviews] = useState<Record<string, PrototypeTravelerReview>>({});
 
   const clearBookingFlow = () => {
     setBookingDraft(null);
     setPaymentMethodState(null);
     setConfirmedBooking(null);
   };
+
+  const bookingHistory = useMemo(
+    () => mergePrototypeBookingHistory(SEEDED_BOOKING_HISTORY, confirmedBooking),
+    [confirmedBooking],
+  );
+
+  const getChatMessages = useCallback((bookingId: string, bookingDate: string): PrototypeChatMessage[] => {
+    const seeded = getSeededMessages(bookingId, bookingDate);
+    const live = liveChatMessages[bookingId] ?? [];
+    return [...seeded, ...live];
+  }, [liveChatMessages]);
+
+  const appendChatMessage = useCallback((bookingId: string, text: string, guideName: string) => {
+    setLiveChatMessages((prev) => {
+      const travelerMsg = createChatMessage(bookingId, 'traveler', text);
+      const guideReply = createAutoReply(bookingId, guideName, text);
+      const existing = prev[bookingId] ?? [];
+      return { ...prev, [bookingId]: [...existing, travelerMsg, guideReply] };
+    });
+  }, []);
+
+  const submitReview = useCallback((bookingId: string, guideId: string, draft: PrototypeReviewDraft) => {
+    const review = createPrototypeReview(bookingId, guideId, draft);
+    setSubmittedReviews((prev) => ({ ...prev, [bookingId]: review }));
+  }, []);
+
+  const getBookingById = useCallback(
+    (bookingId: string) => findBookingById(bookingHistory, bookingId),
+    [bookingHistory],
+  );
+
+  const getReview = useCallback(
+    (bookingId: string) => submittedReviews[bookingId],
+    [submittedReviews],
+  );
 
   const value = useMemo<TravelerPrototypeValue>(() => ({
     requestDraft,
@@ -47,6 +103,9 @@ export function TravelerPrototypeProvider({ children }: { children: React.ReactN
     bookingDraft,
     paymentMethod,
     confirmedBooking,
+    bookingHistory,
+    chatMessagesByBookingId: liveChatMessages,
+    submittedReviewsByBookingId: submittedReviews,
     submitRequest: (draft) => {
       setRequestDraft(draft);
       setRecommendationState(null);
@@ -71,6 +130,11 @@ export function TravelerPrototypeProvider({ children }: { children: React.ReactN
       setSelectedGuideId(null);
       clearBookingFlow();
     },
+    getBookingById,
+    getChatMessages,
+    appendChatMessage,
+    submitReview,
+    getReview,
   }), [
     bookingDraft,
     confirmedBooking,
@@ -78,6 +142,14 @@ export function TravelerPrototypeProvider({ children }: { children: React.ReactN
     recommendation,
     requestDraft,
     selectedGuideId,
+    bookingHistory,
+    liveChatMessages,
+    submittedReviews,
+    getBookingById,
+    getChatMessages,
+    appendChatMessage,
+    submitReview,
+    getReview,
   ]);
 
   return (
