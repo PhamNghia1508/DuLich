@@ -1,4 +1,4 @@
-import { GUIDES } from '@/data/mockData';
+import { GUIDES } from '../../data/mockData.ts';
 
 import type { MockGuide } from './guideMatching';
 
@@ -69,6 +69,7 @@ const existingGuides: MockGuide[] = GUIDES.map((guide) => {
 const prototypeOnlyGuides: MockGuide[] = [
   {
     id: 'prototype-guide-009',
+    profileId: 'prototype-guide-009',
     name: 'Mai Z.',
     image: '/images/guides/thu.webp',
     city: 'Da Nang',
@@ -86,6 +87,7 @@ const prototypeOnlyGuides: MockGuide[] = [
   },
   {
     id: 'prototype-guide-010',
+    profileId: 'prototype-guide-010',
     name: 'Anya K.',
     image: '/images/guides/yuki.webp',
     city: 'Hanoi',
@@ -103,6 +105,7 @@ const prototypeOnlyGuides: MockGuide[] = [
   },
   {
     id: 'prototype-guide-011',
+    profileId: 'prototype-guide-011',
     name: 'Sofia R.',
     image: '/images/guides/linh.webp',
     city: 'Hoi An',
