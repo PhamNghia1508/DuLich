@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link, useLocation, useParams } from 'wouter';
 
 import Footer from '@/components/layout/Footer';
@@ -17,6 +18,14 @@ export default function GuideProfilePage() {
   const [, navigate] = useLocation();
   const { recommendation, selectGuide } = useTravelerPrototype();
   const guide = createRichGuideProfileViewModel(id, recommendation);
+
+  useEffect(() => {
+    const previousTitle = document.title;
+    document.title = guide
+      ? `${guide.fullName} · FriendLocalTrip`
+      : 'Guide not found · FriendLocalTrip';
+    return () => { document.title = previousTitle; };
+  }, [guide?.fullName]);
 
   if (!guide) {
     return (
