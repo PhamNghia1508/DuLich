@@ -4,6 +4,7 @@ import HomePage from '@/app/page';
 import GuidesPage from '@/app/guides/page';
 import GuideProfilePage from '@/app/guides/[id]/page';
 import BookingRequestPage from '@/app/book/[guideId]/page';
+import BookingHandoffPage from '@/app/booking-handoff/[guideId]/page';
 import DashboardPage from '@/app/dashboard/page';
 import GuideDashboardPage from '@/app/guide-dashboard/page';
 import MatchPage from '@/app/match/page';
@@ -21,6 +22,7 @@ function Router() {
       <Route path="/" component={HomePage} />
       <Route path="/guides" component={GuidesPage} />
       <Route path="/guides/:id" component={GuideProfilePage} />
+      <Route path="/booking-handoff/:guideId" component={BookingHandoffPage} />
       <Route path="/book/:guideId" component={BookingRequestPage} />
       <Route path="/dashboard" component={DashboardPage} />
       <Route path="/guide-dashboard" component={GuideDashboardPage} />
