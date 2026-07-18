@@ -6,6 +6,7 @@ import Navbar from '@/components/layout/Navbar';
 import SupportChat from '@/components/home/SupportChat';
 import PrototypeGuideProfile from '@/components/traveler/PrototypeGuideProfile';
 import {
+  createProfileBookingDraftDefaults,
   createProfileBookingHandoff,
   createRichGuideProfileViewModel,
 } from '@/components/traveler/richGuideProfileData';
@@ -16,7 +17,7 @@ import './profile.css';
 export default function GuideProfilePage() {
   const { id = '' } = useParams<{ id: string }>();
   const [, navigate] = useLocation();
-  const { recommendation, selectGuide } = useTravelerPrototype();
+  const { recommendation, requestDraft, saveBookingDraft, selectGuide } = useTravelerPrototype();
   const guide = createRichGuideProfileViewModel(id, recommendation);
 
   useEffect(() => {
@@ -42,10 +43,12 @@ export default function GuideProfilePage() {
     );
   }
 
-  const handleChoose = () => {
+  const handleChoose = (defaults: Parameters<typeof createProfileBookingDraftDefaults>[2]) => {
     const handoff = createProfileBookingHandoff(guide.id);
     if (!handoff) return;
+    const draft = createProfileBookingDraftDefaults(guide.id, requestDraft, defaults);
     selectGuide(handoff.selectedGuideId);
+    if (draft) saveBookingDraft(draft);
     navigate(handoff.href);
   };
 

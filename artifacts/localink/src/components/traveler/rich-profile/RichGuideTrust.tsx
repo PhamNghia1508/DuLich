@@ -1,28 +1,10 @@
-import { BadgeCheck, CalendarDays, CheckCircle2, Languages, ShieldCheck, Star } from 'lucide-react';
-import { useState } from 'react';
+import { BadgeCheck, Languages, ShieldCheck, Star } from 'lucide-react';
 
 import type { RichGuideProfileViewModel } from '../richGuideProfileData';
 
 export default function RichGuideTrust({ guide }: { guide: RichGuideProfileViewModel }) {
-  const firstAvailable = guide.availability.find((day) => day.status === 'available')?.date ?? '';
-  const [selectedDate, setSelectedDate] = useState(firstAvailable);
-  const selectedDay = guide.availability.find((day) => day.date === selectedDate);
-
   return (
     <>
-      <section className="rich-section rich-availability" aria-labelledby="rich-availability-title">
-        <header><p className="rich-eyebrow">Display-only schedule</p><h2 id="rich-availability-title">Availability</h2><p>Selecting a day here does not create or modify a booking.</p></header>
-        <div className="rich-availability-legend" aria-label="Availability legend"><span className="is-available">Available</span><span className="is-hold">Hold</span><span className="is-unavailable">Unavailable</span></div>
-        <div className="rich-availability-grid" aria-label={`${guide.displayName} availability`}>
-          {guide.availability.map((day) => (
-            <button key={day.date} type="button" className={`is-${day.status}`} disabled={day.status === 'unavailable'} aria-pressed={selectedDate === day.date} onClick={() => setSelectedDate(day.date)}>
-              <CalendarDays size={17} aria-hidden="true" /><span>{day.label}</span><strong>{day.status === 'available' ? 'Available' : day.status === 'hold' ? 'On hold' : 'Booked'}</strong>
-            </button>
-          ))}
-        </div>
-        {selectedDay && <p className="rich-selected-availability"><CheckCircle2 size={16} aria-hidden="true" /> Preview times: {selectedDay.timeSlots.join(' · ') || 'No times available'}</p>}
-      </section>
-
       <section className="rich-section" aria-labelledby="rich-credentials-title">
         <header><p className="rich-eyebrow">Marketplace trust</p><h2 id="rich-credentials-title">Credentials & Verification</h2></header>
         <div className="rich-credential-grid">

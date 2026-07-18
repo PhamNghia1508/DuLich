@@ -1,13 +1,19 @@
 import { GUIDES } from '../../data/mockData.ts';
 import { MOCK_GUIDES } from '../home/mockGuideData.ts';
+import type { RequestGuideDraft } from '../home/requestGuideValidation.ts';
+import {
+  calculatePrototypePrice,
+  createInitialBookingDraft,
+} from './bookingPrototype.ts';
 import {
   getGuideRecommendation,
   getPrototypeGuideProfile,
 } from './guideProfileData.ts';
 
+import type { PrototypeDurationHours } from './bookingPrototype.ts';
 import type { TravelerRecommendation } from './guideProfileData.ts';
 
-export type RichAvailabilityStatus = 'available' | 'hold' | 'unavailable';
+export type RichAvailabilityStatus = 'available' | 'hold' | 'booked';
 
 export interface RichGuideExperience {
   id: string;
@@ -34,11 +40,29 @@ export interface RichGuideReview {
   avatar: string;
 }
 
+export interface RichGuideAvailabilitySlot {
+  time: string;
+  label: string;
+  status: RichAvailabilityStatus;
+}
+
 export interface RichGuideAvailabilityDay {
   date: string;
   label: string;
+  weekday: string;
+  dayNumber: string;
   status: RichAvailabilityStatus;
-  timeSlots: string[];
+  slots: RichGuideAvailabilitySlot[];
+}
+
+export interface RichProfileScheduleSelection {
+  date: string;
+  time: string;
+}
+
+export interface RichProfileBookingDefaults extends RichProfileScheduleSelection {
+  durationHours: PrototypeDurationHours;
+  groupSize: number;
 }
 
 export interface RichRelatedGuide {
@@ -118,6 +142,21 @@ const STYLE_OPTIONS = [
   ['Warm storyteller', 'Flexible planner', 'Food curious'],
   ['Calm expert', 'Thoughtful listener', 'History minded'],
   ['Energetic local friend', 'Practical navigator', 'Photo friendly'],
+] as const;
+
+const PROFILE_DATES = [
+  ['2026-08-10', 'Mon, Aug 10', 'Mon', '10'],
+  ['2026-08-11', 'Tue, Aug 11', 'Tue', '11'],
+  ['2026-08-12', 'Wed, Aug 12', 'Wed', '12'],
+  ['2026-08-13', 'Thu, Aug 13', 'Thu', '13'],
+  ['2026-08-14', 'Fri, Aug 14', 'Fri', '14'],
+  ['2026-08-15', 'Sat, Aug 15', 'Sat', '15'],
+  ['2026-08-16', 'Sun, Aug 16', 'Sun', '16'],
+] as const;
+
+const PROFILE_TIMES = [
+  '08:00', '09:00', '10:00', '11:00', '12:00', '13:00', '14:00',
+  '15:00', '16:00', '17:00', '18:00', '19:00', '20:00',
 ] as const;
 
 function stableSeed(value: string) {
@@ -206,20 +245,78 @@ function createReviews(
   }));
 }
 
+function formatProfileTime(time: string) {
+  const [hourText, minute] = time.split(':');
+  const hour = Number(hourText);
+  return `${hour % 12 || 12}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
+}
+
 function createAvailability(guideId: string): RichGuideAvailabilityDay[] {
   const profile = getPrototypeGuideProfile(guideId);
   if (!profile) return [];
-  const availableIndices = profile.availability
-    .map((day, index) => day.available ? index : -1)
-    .filter((index) => index >= 0);
-  const holdIndex = availableIndices[stableSeed(guideId) % availableIndices.length];
+  const seed = stableSeed(guideId);
+  const availableDates = profile.availability
+    .filter((day) => day.available)
+    .map((day) => day.date);
+  const holdDate = availableDates[seed % availableDates.length];
 
-  return profile.availability.map((day, index) => ({
-    date: day.date,
-    label: day.label,
-    status: !day.available ? 'unavailable' : index === holdIndex ? 'hold' : 'available',
-    timeSlots: day.available ? ['09:00', '13:30', '17:00'] : [],
-  }));
+  return PROFILE_DATES.map(([date, label, weekday, dayNumber], dayIndex) => {
+    const fullyBooked = profile.availability.find((day) => day.date === date)?.available === false;
+    const slots = PROFILE_TIMES.map((time, slotIndex): RichGuideAvailabilitySlot => {
+      let status: RichAvailabilityStatus = 'available';
+      if (fullyBooked || slotIndex === (seed + dayIndex) % PROFILE_TIMES.length) {
+        status = 'booked';
+      } else if (date === holdDate && slotIndex % 4 === 1) {
+        status = 'hold';
+      }
+      return { time, label: formatProfileTime(time), status };
+    });
+    const status: RichAvailabilityStatus = slots.every((slot) => slot.status === 'booked')
+      ? 'booked'
+      : slots.some((slot) => slot.status === 'hold') ? 'hold' : 'available';
+
+    return { date, label, weekday, dayNumber, status, slots };
+  });
+}
+
+export function isProfileSlotSelectable(day: RichGuideAvailabilityDay, time: string) {
+  const slot = day.slots.find((candidate) => candidate.time === time);
+  return slot?.status === 'available' || slot?.status === 'hold';
+}
+
+export function changeProfileScheduleDate(
+  availability: readonly RichGuideAvailabilityDay[],
+  date: string,
+  currentTime: string,
+): RichProfileScheduleSelection {
+  const day = availability.find((candidate) => candidate.date === date);
+  return {
+    date,
+    time: day && isProfileSlotSelectable(day, currentTime) ? currentTime : '',
+  };
+}
+
+export function createProfileBookingDraftDefaults(
+  guideId: string,
+  request: RequestGuideDraft | null,
+  defaults: RichProfileBookingDefaults,
+) {
+  const guide = getPrototypeGuideProfile(guideId);
+  const draft = createInitialBookingDraft(guide, request);
+  if (!guide || !draft) return undefined;
+
+  return {
+    ...draft,
+    bookingDate: defaults.date,
+    startTime: defaults.time,
+    durationHours: defaults.durationHours,
+    groupSize: defaults.groupSize,
+    price: calculatePrototypePrice(
+      guide.hourlyRate ?? 0,
+      defaults.durationHours,
+      guide.currency ?? 'USD',
+    ),
+  };
 }
 
 function createRelatedGuides(currentGuideId: string, city: string): RichRelatedGuide[] {

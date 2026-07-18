@@ -3,8 +3,11 @@ import test from 'node:test';
 
 import { MOCK_GUIDES } from '../home/mockGuideData.ts';
 import {
+  changeProfileScheduleDate,
+  createProfileBookingDraftDefaults,
   createProfileBookingHandoff,
   createRichGuideProfileViewModel,
+  isProfileSlotSelectable,
 } from './richGuideProfileData.ts';
 
 test('creates a complete rich profile view model for all 11 mock guide ids', () => {
@@ -22,7 +25,8 @@ test('creates a complete rich profile view model for all 11 mock guide ids', () 
     assert.ok(profile.experiences.length >= 2);
     assert.ok(profile.credentials.length >= 3);
     assert.ok(profile.reviews.length >= 2);
-    assert.ok(profile.availability.length >= 6);
+    assert.equal(profile.availability.length, 7);
+    assert.ok(profile.availability.every((day) => day.slots.length === 13));
   }
 });
 
@@ -41,14 +45,89 @@ test('guide-specific fallback content is deterministic', () => {
   assert.ok(first.experiences.every((experience) => experience.id.startsWith('prototype-guide-010')));
 });
 
-test('availability mapping exposes available, hold, and unavailable states', () => {
+test('availability mapping exposes available, hold, and booked slot states', () => {
   for (const guide of MOCK_GUIDES) {
-    const statuses = createRichGuideProfileViewModel(guide.id)?.availability.map((day) => day.status);
+    const statuses = createRichGuideProfileViewModel(guide.id)?.availability.flatMap((day) => (
+      day.slots.map((slot) => slot.status)
+    ));
 
     assert.ok(statuses?.includes('available'), `${guide.id} has no available day`);
     assert.ok(statuses?.includes('hold'), `${guide.id} has no hold day`);
-    assert.ok(statuses?.includes('unavailable'), `${guide.id} has no unavailable day`);
+    assert.ok(statuses?.includes('booked'), `${guide.id} has no booked day`);
   }
+});
+
+test('available and hold slots can be selected while booked slots cannot', () => {
+  const profile = createRichGuideProfileViewModel('guide-001');
+  assert.ok(profile);
+  const slots = profile.availability.flatMap((day) => day.slots.map((slot) => ({ day, slot })));
+  const available = slots.find(({ slot }) => slot.status === 'available');
+  const hold = slots.find(({ slot }) => slot.status === 'hold');
+  const booked = slots.find(({ slot }) => slot.status === 'booked');
+
+  assert.ok(available && hold && booked);
+  assert.equal(isProfileSlotSelectable(available.day, available.slot.time), true);
+  assert.equal(isProfileSlotSelectable(hold.day, hold.slot.time), true);
+  assert.equal(isProfileSlotSelectable(booked.day, booked.slot.time), false);
+});
+
+test('changing profile dates clears a time that is not selectable on the next day', () => {
+  const profile = createRichGuideProfileViewModel('guide-001');
+  assert.ok(profile);
+  const nextDay = profile.availability.find((day) => day.slots.some((slot) => slot.status === 'booked'))!;
+  const bookedTime = nextDay.slots.find((slot) => slot.status === 'booked')!.time;
+
+  assert.deepEqual(changeProfileScheduleDate(profile.availability, nextDay.date, bookedTime), {
+    date: nextDay.date,
+    time: '',
+  });
+});
+
+test('changing profile dates retains a time that is available or on hold', () => {
+  const profile = createRichGuideProfileViewModel('guide-002');
+  assert.ok(profile);
+  const nextDay = profile.availability.find((day) => day.slots.some((slot) => slot.status === 'hold'))!;
+  const holdTime = nextDay.slots.find((slot) => slot.status === 'hold')!.time;
+
+  assert.deepEqual(changeProfileScheduleDate(profile.availability, nextDay.date, holdTime), {
+    date: nextDay.date,
+    time: holdTime,
+  });
+});
+
+test('maps selected profile schedule into existing booking draft defaults', () => {
+  const profile = createRichGuideProfileViewModel('guide-001');
+  assert.ok(profile);
+  const day = profile.availability.find((candidate) => candidate.slots.some((slot) => slot.status === 'available'))!;
+  const time = day.slots.find((slot) => slot.status === 'available')!.time;
+  const draft = createProfileBookingDraftDefaults('guide-001', null, {
+    date: day.date,
+    time,
+    durationHours: 4,
+    groupSize: 3,
+  });
+
+  assert.ok(draft);
+  assert.equal(draft.guideId, 'guide-001');
+  assert.equal(draft.bookingDate, day.date);
+  assert.equal(draft.startTime, time);
+  assert.equal(draft.durationHours, 4);
+  assert.equal(draft.groupSize, 3);
+  assert.equal(createProfileBookingDraftDefaults('unknown-guide', null, {
+    date: day.date,
+    time,
+    durationHours: 4,
+    groupSize: 3,
+  }), undefined);
+});
+
+test('schedule generation is deterministic and does not mutate mock guide data', () => {
+  const guidesBefore = structuredClone(MOCK_GUIDES);
+  const first = createRichGuideProfileViewModel('guide-004')?.availability;
+  const second = createRichGuideProfileViewModel('guide-004')?.availability;
+
+  assert.deepEqual(first, second);
+  assert.deepEqual(MOCK_GUIDES, guidesBefore);
 });
 
 test('maps at most two recommendation reasons only for the current guide', () => {
