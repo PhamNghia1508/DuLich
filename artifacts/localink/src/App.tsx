@@ -6,6 +6,7 @@ import GuideProfilePage from '@/app/guides/[id]/page';
 import BookingRequestPage from '@/app/book/[guideId]/page';
 import BookingHandoffPage from '@/app/booking-handoff/[guideId]/page';
 import PaymentPage from '@/app/payment/[guideId]/page';
+import BookingSuccessPage from '@/app/booking-success/[guideId]/page';
 import DashboardPage from '@/app/dashboard/page';
 import GuideDashboardPage from '@/app/guide-dashboard/page';
 import MatchPage from '@/app/match/page';
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/guides/:id" component={GuideProfilePage} />
       <Route path="/booking-handoff/:guideId" component={BookingHandoffPage} />
       <Route path="/payment/:guideId" component={PaymentPage} />
+      <Route path="/booking-success/:guideId" component={BookingSuccessPage} />
       <Route path="/book/:guideId" component={BookingRequestPage} />
       <Route path="/dashboard" component={DashboardPage} />
       <Route path="/guide-dashboard" component={GuideDashboardPage} />
