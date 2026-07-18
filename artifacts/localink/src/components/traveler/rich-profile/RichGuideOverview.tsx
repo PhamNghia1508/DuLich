@@ -5,7 +5,7 @@ import type { RichGuideProfileViewModel } from '../richGuideProfileData';
 export default function RichGuideOverview({ guide }: { guide: RichGuideProfileViewModel }) {
   return (
     <>
-      <section className="rich-section rich-glance" aria-labelledby="rich-glance-title">
+      <section id="overview" className="rich-section rich-glance" aria-labelledby="rich-glance-title">
         <header><p className="rich-eyebrow">How {guide.displayName} guides</p><h2 id="rich-glance-title">At a glance</h2></header>
         <dl className="rich-glance-grid">
           <div><dt><Users size={18} aria-hidden="true" /> Best group size</dt><dd>{guide.bestGroupSize}</dd></div>
@@ -29,12 +29,12 @@ export default function RichGuideOverview({ guide }: { guide: RichGuideProfileVi
         </div>
       </section>
 
-      <section className="rich-section" aria-labelledby="rich-experiences-title">
+      <section id="experiences" className="rich-section" aria-labelledby="rich-experiences-title">
         <header><p className="rich-eyebrow">Designed by {guide.displayName}</p><h2 id="rich-experiences-title">Signature Experiences</h2><p>Flexible starting points for a private day shaped around your interests.</p></header>
         <div className="rich-experience-grid">
           {guide.experiences.map((experience) => (
             <article key={experience.id} className="rich-experience-card">
-              <img src={experience.image} alt="" />
+              <img src={experience.image} alt={`${experience.name} in ${guide.city}`} />
               <div>
                 <p>{experience.duration}</p>
                 <h3>{experience.name}</h3>

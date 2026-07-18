@@ -6,9 +6,10 @@ import type { RichGuideProfileViewModel } from '../richGuideProfileData';
 interface RichGuideHeroProps {
   guide: RichGuideProfileViewModel;
   onChoose: () => void;
+  onCheckAvailability: () => void;
 }
 
-export default function RichGuideHero({ guide, onChoose }: RichGuideHeroProps) {
+export default function RichGuideHero({ guide, onCheckAvailability }: RichGuideHeroProps) {
   return (
     <div className="rich-profile-top">
       <Link href="/" className="rich-profile-back">
@@ -51,8 +52,8 @@ export default function RichGuideHero({ guide, onChoose }: RichGuideHeroProps) {
           </dl>
 
           <div className="rich-profile-hero-actions">
-            <button type="button" className="btn btn-accent" onClick={onChoose}>Continue to Booking</button>
-            <span>Booking details and payment remain on the next steps.</span>
+            <button type="button" className="btn btn-outline" onClick={onCheckAvailability}>Check Availability</button>
+            <span>Use the sidebar to continue to booking details.</span>
           </div>
         </div>
       </section>

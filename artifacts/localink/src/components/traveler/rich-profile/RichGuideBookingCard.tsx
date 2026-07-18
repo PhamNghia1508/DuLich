@@ -1,4 +1,4 @@
-import { CalendarDays, Clock3, MessageCircle, ShieldCheck, Star, Users } from 'lucide-react';
+import { CalendarDays, Clock3, ShieldCheck, Star, Users } from 'lucide-react';
 import { useMemo } from 'react';
 
 import { calculatePrototypePrice, formatPrototypeMoney } from '../bookingPrototype';
@@ -49,19 +49,24 @@ export default function RichGuideBookingCard({
           ) : (
             <strong>Select a date and time from the calendar</strong>
           )}
-          <a href="#availability-section">Change in calendar</a>
+          <a href="#availability">Change in calendar</a>
           {selectedSlot?.status === 'hold' && <small>Final availability is confirmed during booking.</small>}
         </div>
 
-        <label htmlFor="profile-duration"><Clock3 size={15} aria-hidden="true" /> Duration</label>
-        <select id="profile-duration" value={durationHours} onChange={(event) => onDurationChange(Number(event.target.value) as PrototypeDurationHours)}>
-          {DURATION_OPTIONS.map((duration) => <option key={duration} value={duration}>{duration} hours</option>)}
-        </select>
-
-        <label htmlFor="profile-group"><Users size={15} aria-hidden="true" /> Group</label>
-        <select id="profile-group" value={groupSize} onChange={(event) => onGroupSizeChange(Number(event.target.value))}>
-          {[1, 2, 3, 4, 5, 6, 7, 8].map((size) => <option key={size} value={size}>{size}</option>)}
-        </select>
+        <div className="rich-booking-control-row">
+          <div>
+            <label htmlFor="profile-duration"><Clock3 size={15} aria-hidden="true" /> Duration</label>
+            <select id="profile-duration" value={durationHours} onChange={(event) => onDurationChange(Number(event.target.value) as PrototypeDurationHours)}>
+              {DURATION_OPTIONS.map((duration) => <option key={duration} value={duration}>{duration} hours</option>)}
+            </select>
+          </div>
+          <div>
+            <label htmlFor="profile-group"><Users size={15} aria-hidden="true" /> Group</label>
+            <select id="profile-group" value={groupSize} onChange={(event) => onGroupSizeChange(Number(event.target.value))}>
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((size) => <option key={size} value={size}>{size}</option>)}
+            </select>
+          </div>
+        </div>
       </div>
 
       <dl className="rich-booking-price">
@@ -72,10 +77,7 @@ export default function RichGuideBookingCard({
 
       <button type="button" className="btn btn-accent rich-booking-primary" onClick={onChoose}>Continue to Booking</button>
       {!selection.time && <p className="rich-booking-prompt">Select a date and time, or continue to choose them during booking.</p>}
-      <button type="button" className="rich-message-disabled" disabled title="Messaging becomes available after booking confirmation">
-        <MessageCircle size={16} aria-hidden="true" /> Message Guide · Available after booking
-      </button>
-      <p className="rich-booking-assurance"><ShieldCheck size={16} aria-hidden="true" /> No booking or payment is created on this profile.</p>
+      <p className="rich-booking-assurance"><ShieldCheck size={16} aria-hidden="true" /> Prototype preview — no real booking or payment is created.</p>
     </section>
   );
 }

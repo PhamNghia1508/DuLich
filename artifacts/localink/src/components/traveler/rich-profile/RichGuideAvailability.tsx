@@ -14,7 +14,7 @@ export default function RichGuideAvailability({ guide, selection, onDateChange, 
   const selectedDay = guide.availability.find((day) => day.date === selection.date) ?? guide.availability[0];
 
   return (
-    <section id="availability-section" className="rich-section rich-availability" aria-labelledby="rich-availability-title">
+    <section id="availability" className="rich-section rich-availability" aria-labelledby="rich-availability-title">
       <header className="rich-availability-heading">
         <div>
           <p className="rich-eyebrow">Availability</p>

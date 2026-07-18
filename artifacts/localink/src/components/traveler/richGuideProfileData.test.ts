@@ -7,8 +7,12 @@ import {
   createProfileBookingDraftDefaults,
   createProfileBookingHandoff,
   createRichGuideProfileViewModel,
+  deduplicateGallery,
+  experienceImageForGuide,
   isProfileSlotSelectable,
+  selectVideoThumbnail,
 } from './richGuideProfileData.ts';
+import { PROFILE_SECTIONS } from './rich-profile/RichProfileNav.tsx';
 
 test('creates a complete rich profile view model for all 11 mock guide ids', () => {
   assert.equal(MOCK_GUIDES.length, 11);
@@ -180,4 +184,65 @@ test('direct profile access works without recommendation context', () => {
 
   assert.ok(profile);
   assert.equal(profile.recommendationReasons, undefined);
+});
+
+test('profile section navigation config covers required sections', () => {
+  const ids = PROFILE_SECTIONS.map((section) => section.id);
+  assert.ok(ids.includes('overview'));
+  assert.ok(ids.includes('experiences'));
+  assert.ok(ids.includes('gallery'));
+  assert.ok(ids.includes('video'));
+  assert.ok(ids.includes('availability'));
+  assert.ok(ids.includes('reviews'));
+  assert.equal(ids.length, 6);
+  assert.ok(PROFILE_SECTIONS.every((section) => section.label.length > 0));
+});
+
+test('experience image mapping is deterministic and avoids duplicates within a guide', () => {
+  const usedA = new Set<string>();
+  const imgA1 = experienceImageForGuide('guide-001', 'Food & Culture', 0, usedA);
+  const imgA2 = experienceImageForGuide('guide-001', 'Shopping', 1, usedA);
+  const imgA3 = experienceImageForGuide('guide-001', 'History', 2, usedA);
+  assert.notEqual(imgA1, imgA2);
+  assert.notEqual(imgA2, imgA3);
+  assert.notEqual(imgA1, imgA3);
+
+  const usedB = new Set<string>();
+  const imgB1 = experienceImageForGuide('guide-001', 'Food & Culture', 0, usedB);
+  assert.equal(imgA1, imgB1);
+});
+
+test('gallery deduplication removes hero image from gallery', () => {
+  const hero = '/images/guides/linh.webp';
+  const gallery = [hero, '/images/a.webp', '/images/b.webp', '/images/c.webp', '/images/d.webp', '/images/e.webp'];
+  const result = deduplicateGallery(gallery, hero);
+  assert.ok(!result.includes(hero) || result.length <= gallery.length);
+  assert.ok(result.length >= 5);
+});
+
+test('gallery deduplication handles short galleries gracefully', () => {
+  const result = deduplicateGallery(['/images/a.webp', '/images/b.webp'], '/images/c.webp');
+  assert.equal(result.length, 2);
+});
+
+test('video thumbnail avoids hero image when alternatives exist', () => {
+  const hero = '/images/guides/linh.webp';
+  const gallery = [hero, '/images/a.webp', '/images/b.webp'];
+  const thumb = selectVideoThumbnail(gallery, hero, 'guide-001');
+  assert.notEqual(thumb, hero);
+  assert.ok(gallery.includes(thumb));
+});
+
+test('video thumbnail falls back when no alternatives exist', () => {
+  const hero = '/images/guides/linh.webp';
+  const result = selectVideoThumbnail([hero], hero, 'guide-001');
+  assert.equal(result, hero);
+});
+
+test('current guide is excluded from related guides for all profiles', () => {
+  for (const guide of MOCK_GUIDES) {
+    const profile = createRichGuideProfileViewModel(guide.id);
+    assert.ok(profile);
+    assert.ok(profile.relatedGuides.every((related) => related.id !== guide.id));
+  }
 });

@@ -116,7 +116,21 @@ const PROFILE_ONLY_NAMES: Record<string, string> = {
   'prototype-guide-011': 'Sofia Rivera',
 };
 
-const EXPERIENCE_IMAGES: Record<string, string> = {
+const EXPERIENCE_IMAGE_POOL = [
+  '/images/experiences/culture.webp',
+  '/images/experiences/hidden-hoi-an.webp',
+  '/images/experiences/architecture.webp',
+  '/images/experiences/accessible-path.webp',
+  '/images/experiences/nightlife.webp',
+  '/images/experiences/neighborhoods.webp',
+  '/images/experiences/photography-vietnam.webp',
+  '/images/experiences/family-vietnam.webp',
+  '/images/experiences/photography.webp',
+  '/images/experiences/accessible.webp',
+  '/images/experiences/family.webp',
+] as const;
+
+const SPECIALTY_IMAGE_MAP: Record<string, string> = {
   'Food & Culture': '/images/experiences/culture.webp',
   Shopping: '/images/experiences/hidden-hoi-an.webp',
   History: '/images/experiences/architecture.webp',
@@ -163,12 +177,29 @@ function stableSeed(value: string) {
   return Array.from(value).reduce((total, character) => total + character.charCodeAt(0), 0);
 }
 
-function experienceImage(name: string, index: number) {
-  return EXPERIENCE_IMAGES[name] ?? [
-    '/images/experiences/culture.webp',
-    '/images/experiences/photography-vietnam.webp',
-    '/images/experiences/family-vietnam.webp',
-  ][index % 3];
+export function experienceImageForGuide(
+  guideId: string,
+  specialty: string,
+  index: number,
+  usedImages: Set<string>,
+): string {
+  const mapped = SPECIALTY_IMAGE_MAP[specialty];
+  if (mapped && !usedImages.has(mapped)) {
+    usedImages.add(mapped);
+    return mapped;
+  }
+
+  const seed = stableSeed(guideId);
+  const poolSize = EXPERIENCE_IMAGE_POOL.length;
+  for (let attempt = 0; attempt < poolSize; attempt++) {
+    const candidate = EXPERIENCE_IMAGE_POOL[(seed + index + attempt) % poolSize];
+    if (!usedImages.has(candidate)) {
+      usedImages.add(candidate);
+      return candidate;
+    }
+  }
+
+  return EXPERIENCE_IMAGE_POOL[(seed + index) % poolSize];
 }
 
 function createExperiences(
@@ -178,13 +209,14 @@ function createExperiences(
   preferences: readonly string[],
 ) {
   const legacyGuide = GUIDES.find((guide) => guide.id === guideId);
+  const usedImages = new Set<string>();
   const legacyExperiences = legacyGuide?.sampleItineraries.slice(0, 3).map((itinerary, index) => ({
       id: `${guideId}-experience-${index + 1}`,
       name: itinerary.title,
       duration: itinerary.duration,
       description: `A flexible ${city} experience shaped by ${guideName}'s local knowledge and your group's pace.`,
       highlights: [...itinerary.highlights].slice(0, 3),
-      image: experienceImage(preferences[index % preferences.length] ?? '', index),
+      image: experienceImageForGuide(guideId, preferences[index % preferences.length] ?? '', index, usedImages),
     })) ?? [];
 
   const fallbackExperiences = preferences.slice(0, 3).map((preference, index) => ({
@@ -197,7 +229,7 @@ function createExperiences(
       `Flexible stops around ${city}`,
       'Pacing adapted to your group',
     ],
-    image: experienceImage(preference, index),
+    image: experienceImageForGuide(guideId, preference, legacyExperiences.length + index, usedImages),
   }));
 
   return [...legacyExperiences, ...fallbackExperiences]
@@ -319,6 +351,40 @@ export function createProfileBookingDraftDefaults(
   };
 }
 
+export function deduplicateGallery(
+  galleryImages: readonly string[],
+  heroImage: string,
+): string[] {
+  const seen = new Set<string>([heroImage]);
+  const deduped: string[] = [];
+  for (const image of galleryImages) {
+    if (!seen.has(image)) {
+      seen.add(image);
+      deduped.push(image);
+    }
+  }
+  if (deduped.length < 5) {
+    for (const image of galleryImages) {
+      if (!deduped.includes(image)) deduped.push(image);
+      if (deduped.length >= 5) break;
+    }
+  }
+  return deduped;
+}
+
+export function selectVideoThumbnail(
+  galleryImages: readonly string[],
+  heroImage: string,
+  guideId: string,
+): string {
+  const seed = stableSeed(guideId);
+  const candidates = galleryImages.filter((image) => image !== heroImage);
+  if (candidates.length > 0) {
+    return candidates[seed % candidates.length];
+  }
+  return galleryImages[1] ?? heroImage;
+}
+
 function createRelatedGuides(currentGuideId: string, city: string): RichRelatedGuide[] {
   return [...MOCK_GUIDES]
     .filter((guide) => guide.id !== currentGuideId)
@@ -362,14 +428,18 @@ export function createRichGuideProfileViewModel(
     guide.experiencePreferences,
   );
 
+  const rawGallery = [...profile.galleryImages];
+  const heroImage = profile.portrait;
+  const galleryImages = deduplicateGallery(rawGallery, heroImage);
+
   return {
     id: guide.id,
     displayName: guide.name,
     fullName,
     tagline: profile.introduction,
-    heroImage: profile.portrait,
-    galleryImages: [...profile.galleryImages],
-    videoThumbnail: profile.galleryImages[1] ?? profile.portrait,
+    heroImage,
+    galleryImages,
+    videoThumbnail: selectVideoThumbnail(rawGallery, heroImage, guideId),
     city: guide.city,
     operatingAreas: [...guide.serviceAreas],
     languages: profile.languages.map((language) => language.name),

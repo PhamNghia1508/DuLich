@@ -7,6 +7,7 @@ import RichGuideHero from './rich-profile/RichGuideHero';
 import RichGuideMedia from './rich-profile/RichGuideMedia';
 import RichGuideOverview from './rich-profile/RichGuideOverview';
 import RichGuideTrust from './rich-profile/RichGuideTrust';
+import RichProfileNav from './rich-profile/RichProfileNav';
 import RichRelatedGuides from './rich-profile/RichRelatedGuides';
 import { changeProfileScheduleDate } from './richGuideProfileData';
 
@@ -31,9 +32,18 @@ export default function PrototypeGuideProfile({ guide, onChoose }: PrototypeGuid
   const [groupSize, setGroupSize] = useState(2);
   const continueToBooking = () => onChoose({ ...selection, durationHours, groupSize });
 
+  const scrollToAvailability = () => {
+    const target = document.getElementById('availability');
+    if (target) {
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
+    }
+  };
+
   return (
     <>
-      <RichGuideHero guide={guide} onChoose={continueToBooking} />
+      <RichGuideHero guide={guide} onChoose={continueToBooking} onCheckAvailability={scrollToAvailability} />
+      <RichProfileNav />
       <div className="rich-profile-commerce">
         <div className="rich-profile-content">
           <RichGuideOverview guide={guide} />
