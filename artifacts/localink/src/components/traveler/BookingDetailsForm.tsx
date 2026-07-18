@@ -4,6 +4,7 @@ import type { RequestGuideDraft } from '../home/requestGuideValidation';
 import type { PrototypeGuideProfile } from './guideProfileData';
 import {
   calculatePrototypePrice,
+  isBookingDateWithinRequest,
   normalizePrototypeBookingDraft,
   PROTOTYPE_DURATION_OPTIONS,
   validatePrototypeBookingDraft,
@@ -86,6 +87,23 @@ export default function BookingDetailsForm({
               onChange={(event) => update('bookingDate', event.target.value)}
             />
             <FieldError id="prototype-booking-date-error" message={errors.bookingDate} />
+            <div className="prototype-quick-dates" aria-label="Guide availability dates">
+              {guide.availability.map((day) => {
+                const selectable = day.available && isBookingDateWithinRequest(day.date, request);
+                return (
+                  <button
+                    key={day.date}
+                    type="button"
+                    disabled={!selectable}
+                    aria-pressed={draft.bookingDate === day.date}
+                    onClick={() => update('bookingDate', day.date)}
+                  >
+                    <span>{day.label}</span>
+                    <small>{selectable ? 'Available' : 'Unavailable'}</small>
+                  </button>
+                );
+              })}
+            </div>
           </div>
           <div className="prototype-field">
             <label htmlFor="prototype-start-time">Start Time <span aria-hidden="true">*</span></label>

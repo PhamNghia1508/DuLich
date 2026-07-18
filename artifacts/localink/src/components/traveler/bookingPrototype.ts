@@ -58,6 +58,16 @@ function roundCurrency(value: number) {
   return Math.round((value + Number.EPSILON) * 100) / 100;
 }
 
+export function formatPrototypeMoney(value: number, currency: string) {
+  const hasCents = Number.isFinite(value) && Math.abs(value % 1) > Number.EPSILON;
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency,
+    minimumFractionDigits: hasCents ? 2 : 0,
+    maximumFractionDigits: 2,
+  }).format(Number.isFinite(value) ? value : 0);
+}
+
 function isSupportedDuration(value: number): value is PrototypeDurationHours {
   return PROTOTYPE_DURATION_OPTIONS.some((duration) => duration === value);
 }

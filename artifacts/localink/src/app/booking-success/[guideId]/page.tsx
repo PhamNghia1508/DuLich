@@ -4,10 +4,9 @@ import { Link, useParams } from 'wouter';
 import SupportChat from '@/components/home/SupportChat';
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
-import { prototypePaymentLabel } from '@/components/traveler/bookingPrototype';
+import { formatPrototypeMoney, prototypePaymentLabel } from '@/components/traveler/bookingPrototype';
 import { getPrototypeGuideProfile } from '@/components/traveler/guideProfileData';
 import { useTravelerPrototype } from '@/components/traveler/TravelerPrototypeContext';
-import { formatCurrency } from '@/lib/utils';
 
 import './booking-success.css';
 
@@ -57,7 +56,7 @@ export default function BookingSuccessPage() {
             <div><dt><MapPin size={16} aria-hidden="true" /> Meeting point</dt><dd>{booking.meetingPoint}</dd></div>
             <div><dt>Experience</dt><dd>{booking.experiencePreference}</dd></div>
             <div><dt>Demo payment</dt><dd>{prototypePaymentLabel(booking.paymentMethod)}</dd></div>
-            <div className="prototype-success-total"><dt>Total</dt><dd>{formatCurrency(booking.price.total, booking.price.currency)}</dd></div>
+            <div className="prototype-success-total"><dt>Total</dt><dd>{formatPrototypeMoney(booking.price.total, booking.price.currency)}</dd></div>
           </dl>
 
           <div className="prototype-success-chat-note">

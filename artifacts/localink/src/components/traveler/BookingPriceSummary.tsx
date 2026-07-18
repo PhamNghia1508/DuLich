@@ -1,5 +1,4 @@
-import { formatCurrency } from '@/lib/utils';
-
+import { formatPrototypeMoney } from './bookingPrototype';
 import type { PrototypePriceBreakdown } from './bookingPrototype';
 
 interface BookingPriceSummaryProps {
@@ -9,7 +8,7 @@ interface BookingPriceSummaryProps {
 }
 
 export default function BookingPriceSummary({ price, actionLabel, formId }: BookingPriceSummaryProps) {
-  const money = (value: number) => formatCurrency(value, price.currency);
+  const money = (value: number) => formatPrototypeMoney(value, price.currency);
 
   return (
     <section className="prototype-price-card" aria-labelledby="prototype-price-title">

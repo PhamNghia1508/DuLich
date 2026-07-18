@@ -7,6 +7,7 @@ import {
   calculatePrototypePrice,
   createInitialBookingDraft,
   createPrototypeBooking,
+  formatPrototypeMoney,
   isBookingDateWithinRequest,
   isGuideAvailableOnDate,
   normalizePrototypeBookingDraft,
@@ -47,6 +48,12 @@ test('invalid numeric pricing inputs never produce NaN or negative totals', () =
       currency: 'USD',
     });
   }
+});
+
+test('formats fractional prototype prices without hiding cents', () => {
+  assert.equal(formatPrototypeMoney(18, 'USD'), '$18');
+  assert.equal(formatPrototypeMoney(2.7, 'USD'), '$2.70');
+  assert.equal(formatPrototypeMoney(56.7, 'USD'), '$56.70');
 });
 
 test('checks booking dates inclusively against the request range', () => {
