@@ -157,7 +157,7 @@ export default function BookingDetailPage() {
             <h2 id="review-form-title">Leave a Review</h2>
             <p className="booking-detail-review-subtitle">Share your experience with {booking.guideName}.</p>
             <form onSubmit={handleReviewSubmit} className="review-form">
-              <fieldset className="review-stars">
+              <fieldset className="review-stars" aria-describedby={reviewErrors.rating ? 'review-rating-error' : undefined}>
                 <legend>Rating</legend>
                 <div className="review-star-row">
                   {[1, 2, 3, 4, 5].map((star) => (
@@ -172,20 +172,24 @@ export default function BookingDetailPage() {
                     </button>
                   ))}
                 </div>
-                {reviewErrors.rating && <p className="review-error">{reviewErrors.rating}</p>}
+                {reviewErrors.rating && <p id="review-rating-error" className="review-error" role="alert">{reviewErrors.rating}</p>}
               </fieldset>
               <label className="review-comment-label">
                 Comment
                 <textarea
+                  id="review-comment"
                   className="review-comment-input"
+                  aria-label="Comment"
                   rows={3}
                   placeholder="What stood out about this experience?"
                   value={reviewDraft.comment}
                   onChange={(e) => setReviewDraft((d) => ({ ...d, comment: e.target.value }))}
+                  aria-invalid={Boolean(reviewErrors.comment)}
+                  aria-describedby={reviewErrors.comment ? 'review-comment-error' : undefined}
                 />
-                {reviewErrors.comment && <p className="review-error">{reviewErrors.comment}</p>}
+                {reviewErrors.comment && <p id="review-comment-error" className="review-error" role="alert">{reviewErrors.comment}</p>}
               </label>
-              <button type="submit" className="btn btn-accent review-submit-btn">Submit Review</button>
+              <button type="submit" className="btn btn-accent review-submit-btn">Submit Demo Review</button>
             </form>
           </section>
         )}

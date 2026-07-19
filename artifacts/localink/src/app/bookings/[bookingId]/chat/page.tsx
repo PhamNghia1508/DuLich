@@ -70,7 +70,7 @@ export default function BookingChatPage() {
         </Link>
         <img src={booking.guidePortrait} alt="" className="chat-header-avatar" />
         <div className="chat-header-info">
-          <strong>{booking.guideName}</strong>
+          <h1>{booking.guideName}</h1>
           <span>{booking.experiencePreference} · {booking.bookingDate}</span>
         </div>
       </header>
@@ -124,6 +124,7 @@ export default function BookingChatPage() {
         <textarea
           ref={inputRef}
           className="chat-input"
+          aria-label={`Message ${booking.guideName}`}
           placeholder="Type a message…"
           value={inputText}
           onChange={(e) => setInputText(e.target.value)}
