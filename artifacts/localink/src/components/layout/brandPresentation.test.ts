@@ -14,7 +14,7 @@ test('uses FriendLocalTrip as the only public brand name', () => {
 });
 
 test('public navigation only points at current approved flows', () => {
-  assert.deepEqual(PUBLIC_NAV_LINKS, [
+  assert.deepEqual(PUBLIC_NAV_LINKS.map(({ label, href }) => ({ label, href })), [
     { label: 'Browse Guides', href: '/guides' },
     { label: 'For Travelers', href: '/' },
     { label: 'Local Guide', href: '/local-guide' },

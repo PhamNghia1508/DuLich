@@ -17,6 +17,7 @@ export const LEGACY_RECOVERY_OPTIONS: Record<LegacyRecoveryKind, readonly Legacy
     { label: 'Local Guide Dashboard', href: '/local-guide/dashboard', description: 'Open the seeded guide workspace.' },
     { label: 'Partner Dashboard — Demo', href: '/partner/dashboard', description: 'Review referral and commission examples.' },
     { label: 'Admin Demo', href: '/admin/dashboard', description: 'Open the prototype operations workspace.' },
+    { label: 'View All Demo Workspaces', href: '/demo', description: 'Compare every customer-review journey in one place.' },
   ],
   signin: [
     { label: 'For Travelers', href: '/', description: 'Request a guide without creating an account.' },

@@ -30,6 +30,7 @@ test('ambiguous dashboard recovery offers every approved workspace', () => {
       { label: 'Local Guide Dashboard', href: '/local-guide/dashboard' },
       { label: 'Partner Dashboard — Demo', href: '/partner/dashboard' },
       { label: 'Admin Demo', href: '/admin/dashboard' },
+      { label: 'View All Demo Workspaces', href: '/demo' },
     ],
   );
 });
