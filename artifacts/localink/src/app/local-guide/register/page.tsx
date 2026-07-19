@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import { ArrowLeft, ArrowRight, Check, User } from 'lucide-react';
 
 import Navbar from '@/components/layout/Navbar';
+import SupportChat from '@/components/home/SupportChat';
 import { useLocalGuidePrototype } from '@/components/local-guide/LocalGuidePrototypeContext';
 import {
   type PrototypeGuideApplication,
@@ -23,14 +24,15 @@ import {
   normalizeApplication,
   calculateGuideProfileCompleteness,
 } from '@/components/local-guide/localGuideRegistrationData';
+import { createRegistrationReviewGroups } from '@/components/local-guide/localGuidePresentation';
 
 import '../local-guide.css';
 
 export default function LocalGuideRegisterPage() {
   const [, navigate] = useLocation();
-  const { submitApplication } = useLocalGuidePrototype();
+  const { submitApplication, submittedApplication } = useLocalGuidePrototype();
   const [step, setStep] = useState<RegistrationStep>(1);
-  const [draft, setDraft] = useState<PrototypeGuideApplication>(createDefaultRegistrationDraft());
+  const [draft, setDraft] = useState<PrototypeGuideApplication>(() => submittedApplication ?? createDefaultRegistrationDraft());
   const [errors, setErrors] = useState<RegistrationErrors>({});
 
   const completeness = calculateGuideProfileCompleteness(draft);
@@ -73,19 +75,35 @@ export default function LocalGuideRegisterPage() {
   return (
     <div className="lg-page">
       <Navbar variant="home" />
-      <main className="lg-reg-layout">
+      <main className="lg-reg-shell">
+        <header className="lg-reg-header">
+          <p className="lg-eyebrow">Guide application</p>
+          <h1>Create your Local Guide profile</h1>
+          <p>Complete four focused steps. Your progress stays only in this prototype session.</p>
+        </header>
+        <div className="lg-reg-mobile-progress">
+          <div><strong>Step {step} of 4</strong><span>{REGISTRATION_STEPS[step - 1].label}</span></div>
+          <div className="lg-reg-mobile-track"><span style={{ width: `${step * 25}%` }} /></div>
+        </div>
+        <div className="lg-reg-layout">
         <div className="lg-reg-form">
-          <div className="lg-reg-progress">
+          <ol className="lg-reg-progress" aria-label="Application progress">
             {REGISTRATION_STEPS.map((s) => (
-              <div
+              <li
                 key={s.step}
+                aria-current={step === s.step ? 'step' : undefined}
                 className={`lg-reg-progress-step ${step === s.step ? 'lg-reg-progress-step--active' : ''} ${step > s.step ? 'lg-reg-progress-step--done' : ''}`}
               >
                 <span className="lg-reg-progress-num">{step > s.step ? <Check size={12} /> : s.step}</span>
                 <span className="lg-reg-progress-label">{s.label}</span>
-              </div>
+              </li>
             ))}
-          </div>
+          </ol>
+
+          <details className="lg-reg-mobile-preview">
+            <summary>Preview your guide profile · {completeness.percentage}% complete</summary>
+            <ProfilePreview draft={draft} />
+          </details>
 
           {step === 1 && <Step1 draft={draft} errors={errors} updateDraft={updateDraft} toggleArrayField={toggleArrayField} />}
           {step === 2 && <Step2 draft={draft} errors={errors} updateDraft={updateDraft} toggleArrayField={toggleArrayField} />}
@@ -104,44 +122,36 @@ export default function LocalGuideRegisterPage() {
               </button>
             ) : (
               <button className="btn btn-accent" onClick={handleSubmit} type="button">
-                Submit Application <Check size={14} />
+                Submit Guide Application <Check size={14} />
               </button>
             )}
           </div>
         </div>
 
-        <aside className="lg-reg-preview">
-          <div className="lg-reg-preview-inner">
-            <div className="lg-preview-avatar-wrap">
-              {draft.selectedProfileImage ? (
-                <img src={draft.selectedProfileImage} alt="Profile preview" />
-              ) : (
-                <User size={40} />
-              )}
-            </div>
-            <h3>{draft.displayName || 'Your Name'}</h3>
-            <p className="lg-preview-tagline">{draft.tagline || 'Your tagline'}</p>
-            <p className="lg-preview-city">{draft.city || 'Select a city'}</p>
-            <div className="lg-preview-completeness">
-              <div className="lg-completeness-bar">
-                <div className="lg-completeness-fill" style={{ width: `${completeness.percentage}%` }} />
-              </div>
-              <span>{completeness.percentage}% complete</span>
-            </div>
-            {completeness.missing.length > 0 && (
-              <div className="lg-preview-missing">
-                <p>Missing:</p>
-                <ul>
-                  {completeness.missing.slice(0, 4).map((m) => (
-                    <li key={m}>{m}</li>
-                  ))}
-                  {completeness.missing.length > 4 && <li>+{completeness.missing.length - 4} more</li>}
-                </ul>
-              </div>
-            )}
-          </div>
-        </aside>
+        <aside className="lg-reg-preview"><ProfilePreview draft={draft} /></aside>
+        </div>
       </main>
+      <SupportChat />
+    </div>
+  );
+}
+
+function ProfilePreview({ draft }: { draft: PrototypeGuideApplication }) {
+  const completeness = calculateGuideProfileCompleteness(draft);
+  return (
+    <div className="lg-reg-preview-inner">
+      <p className="lg-preview-kicker">Traveler preview</p>
+      <div className="lg-preview-avatar-wrap">
+        {draft.selectedProfileImage ? <img src={draft.selectedProfileImage} alt="Profile preview" /> : <User size={36} />}
+      </div>
+      <h3>{draft.displayName || 'Your Name'}</h3>
+      <p className="lg-preview-tagline">{draft.tagline || 'Your short guide tagline will appear here.'}</p>
+      <p className="lg-preview-city">{draft.city || 'Select a city'}</p>
+      <div className="lg-preview-completeness">
+        <div className="lg-completeness-bar"><div className="lg-completeness-fill" style={{ width: `${completeness.percentage}%` }} /></div>
+        <span>{completeness.percentage}% complete</span>
+      </div>
+      {completeness.missing.length > 0 && <p className="lg-preview-next">Next: {completeness.missing.slice(0, 2).join(' · ')}</p>}
     </div>
   );
 }
@@ -157,7 +167,7 @@ function Step1({ draft, errors, updateDraft, toggleArrayField }: StepProps) {
   const areas = draft.city ? GUIDE_AREA_OPTIONS[draft.city] ?? [] : [];
   return (
     <div className="lg-register-step">
-      <h2>Basic Information</h2>
+      <div className="lg-step-heading"><span>01</span><div><h2>Basic Information</h2><p>Start with the details travelers use to recognize and contact you.</p></div></div>
       <div className="lg-form-grid">
         <label className="lg-field">
           <span>Full Name *</span>
@@ -228,7 +238,7 @@ function Step1({ draft, errors, updateDraft, toggleArrayField }: StepProps) {
 function Step2({ draft, errors, updateDraft, toggleArrayField }: StepProps) {
   return (
     <div className="lg-register-step">
-      <h2>Build Your Profile</h2>
+      <div className="lg-step-heading"><span>02</span><div><h2>Build Your Profile</h2><p>Show your personality, expertise, and the experiences you can offer.</p></div></div>
 
       <fieldset className="lg-image-picker">
         <legend>Profile Photo * {errors.selectedProfileImage && <span className="lg-field-error">{errors.selectedProfileImage}</span>}</legend>
@@ -348,7 +358,7 @@ function Step3({ draft, errors, setDraft }: Step3Props) {
 
   return (
     <div className="lg-register-step">
-      <h2>Set Your Availability</h2>
+      <div className="lg-step-heading"><span>03</span><div><h2>Set Your Availability</h2><p>Choose a weekly pattern travelers can understand at a glance.</p></div></div>
       {errors.availability && <p className="lg-field-error">{errors.availability}</p>}
 
       <div className="lg-schedule-editor">
@@ -380,8 +390,6 @@ interface Step4Props {
 }
 
 function Step4({ draft, errors, setDraft }: Step4Props) {
-  const completeness = calculateGuideProfileCompleteness(draft);
-
   function toggleVerification(field: keyof typeof draft.verification, value: boolean | string) {
     setDraft((prev) => ({
       ...prev,
@@ -391,33 +399,15 @@ function Step4({ draft, errors, setDraft }: Step4Props) {
 
   return (
     <div className="lg-register-step">
-      <h2>Review & Submit</h2>
+      <div className="lg-step-heading"><span>04</span><div><h2>Review & Submit</h2><p>Check how your application is organized before submitting the demo.</p></div></div>
 
-      <div className="lg-review-summary">
-        <div className="lg-review-item">
-          <strong>Name:</strong> {draft.displayName || '—'}
-        </div>
-        <div className="lg-review-item">
-          <strong>City:</strong> {draft.city || '—'}
-        </div>
-        <div className="lg-review-item">
-          <strong>Areas:</strong> {draft.operatingAreas.join(', ') || '—'}
-        </div>
-        <div className="lg-review-item">
-          <strong>Languages:</strong> {draft.languages.join(', ') || '—'}
-        </div>
-        <div className="lg-review-item">
-          <strong>Rate:</strong> {draft.hourlyRate > 0 ? `$${draft.hourlyRate}/hr` : '—'}
-        </div>
-        <div className="lg-review-item">
-          <strong>Specialties:</strong> {draft.specialties.join(', ') || '—'}
-        </div>
-        <div className="lg-review-item">
-          <strong>Available days:</strong> {draft.weeklyAvailability.schedule.filter((d) => d.available).map((d) => d.day).join(', ') || '—'}
-        </div>
-        <div className="lg-review-item">
-          <strong>Completeness:</strong> {completeness.percentage}%
-        </div>
+      <div className="lg-review-groups">
+        {createRegistrationReviewGroups(draft).map((group) => (
+          <section className="lg-review-group" key={group.title}>
+            <h3>{group.title}</h3>
+            <dl>{group.items.map((item) => <div key={item.label}><dt>{item.label}</dt><dd>{item.value}</dd></div>)}</dl>
+          </section>
+        ))}
       </div>
 
       <fieldset className="lg-verification-checklist">

@@ -37,6 +37,13 @@ import {
   formatGuideMoney,
 } from './localGuideDashboardData.ts';
 
+import {
+  GUIDE_DASHBOARD_NAV_ITEMS,
+  createDashboardMetricCards,
+  createRegistrationReviewGroups,
+  normalizeGuideTransactionsForCards,
+} from './localGuidePresentation.ts';
+
 describe('Registration data defaults', () => {
   it('createDefaultRegistrationDraft returns valid structure', () => {
     const draft = createDefaultRegistrationDraft();
@@ -289,5 +296,63 @@ describe('Dashboard helpers', () => {
     const result = formatGuideMoney(72, 'USD');
     assert.ok(result.includes('72'));
     assert.ok(result.includes('$'));
+  });
+});
+
+describe('Local Guide presentation contracts', () => {
+  it('keeps the dashboard navigation in the approved order', () => {
+    assert.deepEqual(
+      GUIDE_DASHBOARD_NAV_ITEMS.map((item) => item.id),
+      ['overview', 'bookings', 'availability', 'earnings', 'messages', 'reviews', 'profile'],
+    );
+  });
+
+  it('prioritizes the four decision-ready overview metrics', () => {
+    const overview = computeDashboardOverview(
+      SEEDED_GUIDE_BOOKINGS,
+      SEEDED_GUIDE_TRANSACTIONS,
+      SEEDED_GUIDE_REVIEWS,
+      DEMO_GUIDE_PROFILE,
+    );
+    const cards = createDashboardMetricCards(overview);
+
+    assert.deepEqual(cards.map((card) => card.label), [
+      'Pending requests',
+      'Upcoming bookings',
+      'Estimated available earnings',
+      'Average rating',
+    ]);
+    assert.equal(cards[0].value, overview.pendingRequestCount);
+    assert.equal(cards[2].value, overview.availableBalance);
+  });
+
+  it('groups registration review data without mutating the draft', () => {
+    const draft = createDefaultRegistrationDraft();
+    draft.displayName = 'Linh N.';
+    draft.city = 'Ho Chi Minh City';
+    draft.languages = ['English', 'Vietnamese'];
+    const before = structuredClone(draft);
+    const groups = createRegistrationReviewGroups(draft);
+
+    assert.deepEqual(groups.map((group) => group.title), [
+      'Public Profile',
+      'Services',
+      'Pricing',
+      'Availability',
+      'Verification',
+    ]);
+    assert.equal(groups[0].items.find((item) => item.label === 'Display name')?.value, 'Linh N.');
+    assert.deepEqual(draft, before);
+  });
+
+  it('normalizes transactions for responsive cards without changing fee data', () => {
+    const source = structuredClone(SEEDED_GUIDE_TRANSACTIONS);
+    const cards = normalizeGuideTransactionsForCards(source);
+
+    assert.equal(cards.length, source.length);
+    assert.equal(cards[0].bookingId, source[0].bookingId);
+    assert.equal(cards[0].platformFee, source[0].platformFee);
+    assert.equal(cards[0].net, source[0].net);
+    assert.deepEqual(source, SEEDED_GUIDE_TRANSACTIONS);
   });
 });
