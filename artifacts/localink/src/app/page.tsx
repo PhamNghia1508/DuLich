@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { useLocation, useSearch } from 'wouter';
 
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -11,10 +12,13 @@ import SupportChat from '@/components/home/SupportChat';
 import { matchGuides } from '@/components/home/guideMatching';
 import { MOCK_GUIDES } from '@/components/home/mockGuideData';
 import type { RequestGuideDraft } from '@/components/home/requestGuideValidation';
+import { shouldOpenRequestFromSearch } from '@/components/home/requestEntrySignal';
 import { useTravelerPrototype } from '@/components/traveler/TravelerPrototypeContext';
 
 export default function Home() {
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
+  const [, navigate] = useLocation();
+  const search = useSearch();
   const {
     requestDraft,
     resetPrototype,
@@ -22,10 +26,18 @@ export default function Home() {
     submitRequest,
   } = useTravelerPrototype();
   const resultsHeadingRef = useRef<HTMLHeadingElement>(null);
+  const handledLegacyRequestRef = useRef(false);
   const guideResults = useMemo(
     () => requestDraft ? matchGuides(requestDraft, MOCK_GUIDES) : [],
     [requestDraft],
   );
+
+  useEffect(() => {
+    if (handledLegacyRequestRef.current || !shouldOpenRequestFromSearch(search)) return;
+    handledLegacyRequestRef.current = true;
+    setRequestDialogOpen(true);
+    navigate('/', { replace: true });
+  }, [navigate, search]);
 
   useEffect(() => {
     if (!requestDraft) return;
