@@ -25,6 +25,8 @@ import LocalGuideDashboardPage from '@/app/local-guide/dashboard/page';
 import { AuthProvider } from '@/hooks/useAuth';
 import { TravelerPrototypeProvider } from '@/components/traveler/TravelerPrototypeContext';
 import { LocalGuidePrototypeProvider } from '@/components/local-guide/LocalGuidePrototypeContext';
+import { PartnerPrototypeProvider } from '@/components/partner/PartnerPrototypeContext';
+import { AdminPrototypeProvider } from '@/components/admin/AdminPrototypeContext';
 
 function Router() {
   return (
@@ -59,10 +61,14 @@ function App() {
     <AuthProvider>
       <TravelerPrototypeProvider>
         <LocalGuidePrototypeProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-            <ScrollToTop />
-            <Router />
-          </WouterRouter>
+          <PartnerPrototypeProvider>
+            <AdminPrototypeProvider>
+              <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+                <ScrollToTop />
+                <Router />
+              </WouterRouter>
+            </AdminPrototypeProvider>
+          </PartnerPrototypeProvider>
         </LocalGuidePrototypeProvider>
       </TravelerPrototypeProvider>
     </AuthProvider>
