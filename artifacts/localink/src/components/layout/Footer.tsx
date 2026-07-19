@@ -2,6 +2,7 @@ import { Link } from 'wouter';
 import { Compass, Mail, MapPin, Shield, Star } from 'lucide-react';
 
 import { PUBLIC_FOOTER_LINKS } from './brandPresentation';
+import { DEMO_FOOTER_ITEMS, prototypeNavigationEnabled } from '@/components/navigation/prototypeNavigation';
 
 interface FooterProps {
   variant?: 'default' | 'home';
@@ -16,6 +17,7 @@ function HomeFooter() {
           FriendLocalTrip
         </Link>
         <a href="mailto:support@friendlocaltrip.com">support@friendlocaltrip.com</a>
+        {prototypeNavigationEnabled && <Link href="/demo">Explore Demo Workspaces</Link>}
         <small>© {new Date().getFullYear()} FriendLocalTrip</small>
       </div>
     </footer>
@@ -59,6 +61,14 @@ function DefaultFooter() {
               <div><MapPin size={14} aria-hidden="true" /><span>Ho Chi Minh City, Vietnam</span></div>
             </div>
           </div>
+          {prototypeNavigationEnabled && (
+            <div className="footer-col">
+              <h2 className="footer-heading">Explore Demo Workspaces</h2>
+              <nav className="footer-links" aria-label="Demo workspace navigation">
+                {DEMO_FOOTER_ITEMS.map((link) => <Link key={link.href} href={link.href}>{link.label}</Link>)}
+              </nav>
+            </div>
+          )}
         </div>
 
         <hr className="footer-divider" />
