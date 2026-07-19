@@ -1,24 +1,20 @@
+import { lazy, Suspense } from 'react';
 import { Route, Switch, Router as WouterRouter } from 'wouter';
 
 import HomePage from '@/app/page';
 import GuidesPage from '@/app/guides/page';
-import GuideProfilePage from '@/app/guides/[id]/page';
 import BookingHandoffPage from '@/app/booking-handoff/[guideId]/page';
 import PaymentPage from '@/app/payment/[guideId]/page';
 import BookingSuccessPage from '@/app/booking-success/[guideId]/page';
 import BookingListPage from '@/app/bookings/page';
 import BookingDetailPage from '@/app/bookings/[bookingId]/page';
-import BookingChatPage from '@/app/bookings/[bookingId]/chat/page';
 import AdminPage from '@/app/admin/page';
-import AdminDashboardPage from '@/app/admin/dashboard/page';
 import NotFound from '@/pages/not-found';
 import ScrollToTop from '@/components/ScrollToTop';
 import LocalGuideHubPage from '@/app/local-guide/page';
 import LocalGuideRegisterPage from '@/app/local-guide/register/page';
 import ApplicationSubmittedPage from '@/app/local-guide/application-submitted/page';
-import LocalGuideDashboardPage from '@/app/local-guide/dashboard/page';
 import PartnerEntryPage from '@/app/partner/page';
-import PartnerDashboardPage from '@/app/partner/dashboard/page';
 import { AuthProvider } from '@/hooks/useAuth';
 import { TravelerPrototypeProvider } from '@/components/traveler/TravelerPrototypeContext';
 import { LocalGuidePrototypeProvider } from '@/components/local-guide/LocalGuidePrototypeContext';
@@ -32,10 +28,18 @@ import {
   LegacySigninRecovery,
   LegacySignupRecovery,
 } from '@/components/routing/LegacyRouteBridge';
+import RouteLoadingState from '@/components/routing/RouteLoadingState';
+
+const GuideProfilePage = lazy(() => import('@/app/guides/[id]/page'));
+const BookingChatPage = lazy(() => import('@/app/bookings/[bookingId]/chat/page'));
+const LocalGuideDashboardPage = lazy(() => import('@/app/local-guide/dashboard/page'));
+const PartnerDashboardPage = lazy(() => import('@/app/partner/dashboard/page'));
+const AdminDashboardPage = lazy(() => import('@/app/admin/dashboard/page'));
 
 function Router() {
   return (
-    <Switch>
+    <Suspense fallback={<RouteLoadingState />}>
+      <Switch>
       <Route path="/" component={HomePage} />
       <Route path="/guides" component={GuidesPage} />
       <Route path="/guides/:id" component={GuideProfilePage} />
@@ -59,8 +63,9 @@ function Router() {
       <Route path="/admin/dashboard" component={AdminDashboardPage} />
       <Route path="/signin" component={LegacySigninRecovery} />
       <Route path="/signup" component={LegacySignupRecovery} />
-      <Route component={NotFound} />
-    </Switch>
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 
