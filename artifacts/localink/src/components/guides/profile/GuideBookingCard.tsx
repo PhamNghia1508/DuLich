@@ -279,7 +279,7 @@ export default function GuideBookingCard({
           <span>{formatCurrency(basePrice)}</span>
         </div>
         <div className="flex justify-between text-[#5A5A5A]">
-          <span>Friendlocalcheap Platform Fee (10%)</span>
+          <span>FriendLocalTrip Platform Fee (10%)</span>
           <span>{formatCurrency(serviceFee)}</span>
         </div>
         <div className="h-[1px] bg-[#E8E4DC] my-1"></div>

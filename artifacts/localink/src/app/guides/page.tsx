@@ -554,7 +554,7 @@ function GuidesContent() {
             <p className="guide-summary">{requestSummaryText}</p>
           </div>
           <div className="guide-header-actions">
-            <Link href="/match" className="guide-edit-link">Edit trip request</Link>
+            <Link href="/?openRequest=1" className="guide-edit-link">Edit trip request</Link>
           </div>
         </header>
 
@@ -640,11 +640,11 @@ function GuidesContent() {
                       <button type="button" className="btn btn-accent" onClick={clear}>
                         Clear filters
                       </button>
-                      <Link className="btn btn-outline" href="/match">
+                      <Link className="btn btn-outline" href="/?openRequest=1">
                         Edit trip request
                       </Link>
-                      <Link className="btn btn-ghost" href="/match">
-                        Let Friendlocalcheap help
+                      <Link className="btn btn-ghost" href="/?openRequest=1">
+                        Request a Local Guide
                       </Link>
                     </div>
                   </div>
@@ -679,10 +679,10 @@ function GuidesContent() {
             </div>
           </div>
           <div className="flex gap-3">
-            <Link className="btn btn-accent" href="/match">
+            <Link className="btn btn-accent" href="/?openRequest=1">
               Refine my trip
             </Link>
-            <a className="btn btn-ghost" href="mailto:hello@friendlocalcheap.co">
+            <a className="btn btn-ghost" href="mailto:support@friendlocaltrip.com">
               Contact support
             </a>
           </div>

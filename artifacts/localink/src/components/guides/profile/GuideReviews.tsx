@@ -141,7 +141,7 @@ export default function GuideReviews({ reviews, overallRating, reviewCount }: Gu
             
             {/* Safe platform disclosure */}
             <p className="text-[10px] text-[#8A8A8A]">
-              * Review linked to a completed Friendlocalcheap experience.
+              * Review linked to a completed FriendLocalTrip experience.
             </p>
           </div>
         ))}

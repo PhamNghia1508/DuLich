@@ -811,7 +811,7 @@ a {
 
 .footer-grid {
   display: grid;
-  grid-template-columns: 1.35fr 1fr 1fr 1.25fr;
+  grid-template-columns: 1.35fr 1fr 1.25fr;
   gap: 48px;
   margin-bottom: 52px;
 }
@@ -840,7 +840,7 @@ a {
 .footer-col { display: flex; flex-direction: column; gap: 16px; }
 
 /* Section headings — có accent underline nhỏ */
-.site-footer h4.footer-heading {
+.site-footer .footer-heading {
   font-family: var(--font-body);
   font-size: 0.6875rem;
   font-weight: 700;
@@ -2253,6 +2253,17 @@ a {
     scroll-behavior: auto !important;
     transition-duration: 0s !important;
     transition-delay: 0s !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .guide-match-help > .guide-container > div:last-child {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .guide-match-help > .guide-container > div:last-child .btn {
+    width: 100%;
   }
 }
 
