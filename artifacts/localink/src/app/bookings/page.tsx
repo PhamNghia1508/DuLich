@@ -1,5 +1,6 @@
+import { useEffect, useState } from 'react';
 import { CalendarDays, ChevronRight, MapPin, MessageCircle, Star } from 'lucide-react';
-import { Link } from 'wouter';
+import { Link, useLocation, useSearch } from 'wouter';
 
 import Footer from '@/components/layout/Footer';
 import Navbar from '@/components/layout/Navbar';
@@ -12,11 +13,25 @@ import {
   formatBookingDate,
   formatPrototypeMoney,
 } from '@/components/traveler/bookingHistoryData';
+import { consumePrototypeSignals } from '@/components/home/requestEntrySignal';
 
 import './bookings.css';
 
 export default function BookingListPage() {
   const { bookingHistory } = useTravelerPrototype();
+  const [, navigate] = useLocation();
+  const search = useSearch();
+  const [confirmation, setConfirmation] = useState('');
+
+  useEffect(() => {
+    const params = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+    if (!params.has('demoSignedIn')) return;
+    const consumed = consumePrototypeSignals(search, ['demoSignedIn']);
+    if (consumed.present.has('demoSignedIn')) {
+      setConfirmation('Demo sign-in complete. Here are your bookings.');
+    }
+    navigate(`/bookings${consumed.remainingSearch}`, { replace: true });
+  }, [navigate, search]);
 
   const upcoming = bookingHistory.filter((b) => b.status === 'confirmed');
   const past = bookingHistory.filter((b) => b.status !== 'confirmed');
@@ -24,6 +39,7 @@ export default function BookingListPage() {
   return (
     <div className="bookings-page">
       <Navbar variant="home" />
+      {confirmation && <div className="prototype-confirmation" role="status">{confirmation}</div>}
       <main className="bookings-container">
         <header className="bookings-header">
           <h1>Your Bookings</h1>

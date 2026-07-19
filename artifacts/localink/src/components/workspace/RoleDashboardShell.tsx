@@ -1,6 +1,7 @@
 import { useState, type ComponentType, type ReactNode } from 'react';
 import { ChevronDown, Compass, Menu, X } from 'lucide-react';
 import { Link } from 'wouter';
+import WorkspaceSwitcher from '@/components/navigation/WorkspaceSwitcher';
 
 import './role-dashboard.css';
 
@@ -37,7 +38,7 @@ export default function RoleDashboardShell<T extends string>({
       <header className="role-workspace-header">
         <Link href="/" aria-label="FriendLocalTrip home" className="role-workspace-brand"><Compass size={18} />FriendLocal<span>Trip</span></Link>
         <div><strong>{workspaceLabel}</strong><span>Prototype environment</span></div>
-        <Link href={role === 'partner' ? '/partner' : '/admin'} className="role-workspace-exit">Exit workspace</Link>
+        <div className="role-workspace-header-actions"><WorkspaceSwitcher /><Link href={role === 'partner' ? '/partner' : '/admin'} className="role-workspace-exit">Exit workspace</Link></div>
       </header>
 
       <div className="role-workspace-layout">

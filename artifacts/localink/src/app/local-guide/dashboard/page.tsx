@@ -6,6 +6,7 @@ import {
 } from 'lucide-react';
 
 import Navbar from '@/components/layout/Navbar';
+import WorkspaceSwitcher from '@/components/navigation/WorkspaceSwitcher';
 import SupportChat from '@/components/home/SupportChat';
 import { useLocalGuidePrototype } from '@/components/local-guide/LocalGuidePrototypeContext';
 import {
@@ -34,6 +35,7 @@ export default function GuideDashboardPage() {
   return (
     <div className="lg-page">
       <Navbar variant="home" />
+      <div className="lg-workspace-switcher-row"><WorkspaceSwitcher /></div>
       <main className="lg-dash-layout">
         <nav className="lg-dash-sidebar" aria-label="Guide dashboard">
           <div className="lg-dash-sidebar-profile">

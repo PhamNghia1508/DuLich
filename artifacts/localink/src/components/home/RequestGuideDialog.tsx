@@ -28,6 +28,7 @@ const EXPERIENCE_OPTIONS = [
 
 interface RequestGuideDialogProps {
   open: boolean;
+  notice?: string;
   initialDraft?: RequestGuideDraft | null;
   onOpenChange: (open: boolean) => void;
   onSubmit: (draft: RequestGuideDraft) => void;
@@ -45,6 +46,7 @@ function cloneDraft(draft: RequestGuideDraft | null | undefined): RequestGuideDr
 
 export default function RequestGuideDialog({
   open,
+  notice,
   initialDraft,
   onOpenChange,
   onSubmit,
@@ -108,6 +110,7 @@ export default function RequestGuideDialog({
           <DialogDescription>
             Share the essentials and we'll use them to find local guides who fit your trip.
           </DialogDescription>
+          {notice && <div className="request-dialog-notice" role="status">{notice}</div>}
         </DialogHeader>
 
         <form className="request-form" onSubmit={handleSubmit} noValidate>

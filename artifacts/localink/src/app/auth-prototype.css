@@ -1,0 +1,30 @@
+.traveler-auth-page { min-height: 100vh; display: flex; flex-direction: column; background: radial-gradient(circle at 50% 0, #eef4eb 0, #f7f7f2 45%); }
+.traveler-auth-main { flex: 1; width: min(100% - 32px, 1120px); margin: 0 auto; display: grid; place-items: center; padding: 64px 0 76px; }
+.traveler-auth-main--signup { padding-block: 42px 58px; }
+.traveler-auth-card { width: min(100%, 520px); padding: 38px; border: 1px solid #dfe5df; border-radius: 24px; background: rgba(255,255,255,.96); box-shadow: 0 22px 60px rgba(24,63,49,.10); }
+.traveler-auth-main--signup .traveler-auth-card { width: min(100%, 700px); }
+.traveler-auth-icon { width: 46px; height: 46px; display: grid; place-items: center; border-radius: 15px; background: #e6efe8; color: #173f31; }
+.traveler-auth-eyebrow { margin: 22px 0 7px; color: #6c7d74; font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; }
+.traveler-auth-card h1 { margin: 0; color: #173f31; font-family: var(--font-heading); font-size: clamp(32px, 5vw, 44px); line-height: 1.08; }
+.traveler-auth-intro { margin: 12px 0 26px; color: #637169; line-height: 1.6; }
+.traveler-auth-card form { display: grid; gap: 17px; }
+.traveler-auth-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; }
+.traveler-auth-field { min-width: 0; }
+.traveler-auth-field label { display: block; margin-bottom: 7px; color: #354a40; font-size: 13px; font-weight: 800; }
+.traveler-auth-field > div { min-height: 48px; display: flex; align-items: center; gap: 10px; border: 1px solid #cfd9d2; border-radius: 12px; padding: 0 13px; background: #fff; color: #75837c; }
+.traveler-auth-field > div:focus-within { border-color: #2e6b51; box-shadow: 0 0 0 3px rgba(46,107,81,.12); }
+.traveler-auth-field input, .traveler-auth-field select { min-width: 0; width: 100%; height: 46px; border: 0; outline: 0; background: transparent; color: #1d3128; font: inherit; }
+.traveler-auth-field small, .traveler-auth-terms-error { display: block; margin-top: 6px; color: #b3423c; font-size: 12px; }
+.traveler-auth-terms { display: flex; align-items: flex-start; gap: 10px; color: #4f6258; font-size: 13px; line-height: 1.45; cursor: pointer; }
+.traveler-auth-terms input { width: 18px; height: 18px; flex: 0 0 auto; accent-color: #173f31; }
+.traveler-auth-submit { min-height: 50px; display: flex; align-items: center; justify-content: center; gap: 9px; border: 0; border-radius: 999px; background: #173f31; color: #fff; font-weight: 800; cursor: pointer; }
+.traveler-auth-submit:hover { background: #235a45; }
+.traveler-auth-switch { margin: 22px 0 0; text-align: center; color: #66756d; font-size: 14px; }
+.traveler-auth-switch a { color: #173f31; font-weight: 800; }
+.traveler-auth-notice { margin: 15px 0 0; text-align: center; color: #85908a; font-size: 11px; }
+@media (max-width: 620px) {
+  .traveler-auth-main, .traveler-auth-main--signup { width: min(100% - 24px, 1120px); padding: 28px 0 42px; align-items: start; }
+  .traveler-auth-card { padding: 25px 20px; border-radius: 19px; }
+  .traveler-auth-card h1 { font-size: 34px; }
+  .traveler-auth-grid { grid-template-columns: 1fr; gap: 17px; }
+}

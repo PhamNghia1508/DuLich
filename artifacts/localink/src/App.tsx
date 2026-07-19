@@ -15,6 +15,9 @@ import LocalGuideHubPage from '@/app/local-guide/page';
 import LocalGuideRegisterPage from '@/app/local-guide/register/page';
 import ApplicationSubmittedPage from '@/app/local-guide/application-submitted/page';
 import PartnerEntryPage from '@/app/partner/page';
+import DemoPage from '@/app/demo/page';
+import SignInPage from '@/app/signin/page';
+import SignUpPage from '@/app/signup/page';
 import { AuthProvider } from '@/hooks/useAuth';
 import { TravelerPrototypeProvider } from '@/components/traveler/TravelerPrototypeContext';
 import { LocalGuidePrototypeProvider } from '@/components/local-guide/LocalGuidePrototypeContext';
@@ -25,8 +28,6 @@ import {
   LegacyDashboardRecovery,
   LegacyGuideDashboardRedirect,
   LegacyMatchRedirect,
-  LegacySigninRecovery,
-  LegacySignupRecovery,
 } from '@/components/routing/LegacyRouteBridge';
 import RouteLoadingState from '@/components/routing/RouteLoadingState';
 
@@ -57,12 +58,13 @@ function Router() {
       <Route path="/local-guide/dashboard" component={LocalGuideDashboardPage} />
       <Route path="/partner" component={PartnerEntryPage} />
       <Route path="/partner/dashboard" component={PartnerDashboardPage} />
+      <Route path="/demo" component={DemoPage} />
       <Route path="/guide-dashboard" component={LegacyGuideDashboardRedirect} />
       <Route path="/match" component={LegacyMatchRedirect} />
       <Route path="/admin" component={AdminPage} />
       <Route path="/admin/dashboard" component={AdminDashboardPage} />
-      <Route path="/signin" component={LegacySigninRecovery} />
-      <Route path="/signup" component={LegacySignupRecovery} />
+      <Route path="/signin" component={SignInPage} />
+      <Route path="/signup" component={SignUpPage} />
         <Route component={NotFound} />
       </Switch>
     </Suspense>

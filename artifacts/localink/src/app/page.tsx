@@ -12,11 +12,12 @@ import SupportChat from '@/components/home/SupportChat';
 import { matchGuides } from '@/components/home/guideMatching';
 import { MOCK_GUIDES } from '@/components/home/mockGuideData';
 import type { RequestGuideDraft } from '@/components/home/requestGuideValidation';
-import { shouldOpenRequestFromSearch } from '@/components/home/requestEntrySignal';
+import { consumePrototypeSignals } from '@/components/home/requestEntrySignal';
 import { useTravelerPrototype } from '@/components/traveler/TravelerPrototypeContext';
 
 export default function Home() {
   const [requestDialogOpen, setRequestDialogOpen] = useState(false);
+  const [confirmation, setConfirmation] = useState('');
   const [, navigate] = useLocation();
   const search = useSearch();
   const {
@@ -26,17 +27,21 @@ export default function Home() {
     submitRequest,
   } = useTravelerPrototype();
   const resultsHeadingRef = useRef<HTMLHeadingElement>(null);
-  const handledLegacyRequestRef = useRef(false);
   const guideResults = useMemo(
     () => requestDraft ? matchGuides(requestDraft, MOCK_GUIDES) : [],
     [requestDraft],
   );
 
   useEffect(() => {
-    if (handledLegacyRequestRef.current || !shouldOpenRequestFromSearch(search)) return;
-    handledLegacyRequestRef.current = true;
-    setRequestDialogOpen(true);
-    navigate('/', { replace: true });
+    const params = new URLSearchParams(search.startsWith('?') ? search.slice(1) : search);
+    const hasOwnedSignal = params.has('openRequest') || params.has('demoAccountCreated');
+    if (!hasOwnedSignal) return;
+    const consumed = consumePrototypeSignals(search, ['openRequest', 'demoAccountCreated']);
+    if (consumed.present.has('openRequest')) setRequestDialogOpen(true);
+    if (consumed.present.has('demoAccountCreated')) {
+      setConfirmation('Demo account created. Tell us about your trip to find a Local Guide.');
+    }
+    navigate(`/${consumed.remainingSearch}`, { replace: true });
   }, [navigate, search]);
 
   useEffect(() => {
@@ -60,6 +65,7 @@ export default function Home() {
   return (
     <div className="home-page flex flex-col min-h-screen">
       <Navbar variant="home" />
+      {confirmation && !requestDialogOpen && <div className="prototype-confirmation" role="status">{confirmation}</div>}
       <main className="flex-1">
         {requestDraft ? (
           <div className="home-results">
@@ -94,6 +100,7 @@ export default function Home() {
       {!requestDialogOpen && <SupportChat />}
       <RequestGuideDialog
         open={requestDialogOpen}
+        notice={confirmation}
         initialDraft={requestDraft}
         onOpenChange={setRequestDialogOpen}
         onSubmit={handleRequestSubmit}

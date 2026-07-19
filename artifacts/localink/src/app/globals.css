@@ -3184,3 +3184,28 @@ a {
     padding: 2.5rem 1rem;
   }
 }
+/* One-time prototype navigation confirmation. */
+.prototype-confirmation {
+  width: min(100% - 32px, 1120px);
+  margin: 14px auto 0;
+  padding: 12px 16px;
+  border: 1px solid #cfe0d4;
+  border-radius: 12px;
+  background: #edf6ef;
+  color: #234f3c;
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.request-dialog-notice {
+  margin-top: 10px;
+  padding: 10px 12px;
+  border: 1px solid #cfe0d4;
+  border-radius: 10px;
+  background: #edf6ef;
+  color: #234f3c;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
