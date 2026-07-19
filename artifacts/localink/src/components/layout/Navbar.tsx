@@ -8,7 +8,7 @@ const navLinks = [
   { name: 'Find a Guide', href: '/guides' },
   { name: 'Experiences', href: '/guides?tab=experiences' },
   { name: 'How It Works', href: '/#how-it-works' },
-  { name: 'Become a Guide', href: '/guide-dashboard' },
+  { name: 'Become a Guide', href: '/local-guide' },
 ];
 
 interface NavbarProps {
@@ -19,7 +19,7 @@ function HomeNavbar() {
   const [pathname] = useLocation();
   const homeLinks = [
     { label: 'For Travelers', href: '/' },
-    { label: 'Local Guide', href: '/guide-dashboard' },
+    { label: 'Local Guide', href: '/local-guide' },
   ];
 
   return (

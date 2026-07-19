@@ -1,0 +1,1258 @@
+.lg-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-bg, #fafafa);
+}
+
+.lg-container {
+  flex: 1;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: calc(var(--header-height, 76px) + 2.5rem) 1.25rem 3rem;
+}
+
+/* ── Hub ── */
+.lg-hub-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.lg-hub-eyebrow {
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent, #2563eb);
+  margin: 0 0 0.5rem;
+}
+
+.lg-hub-header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem;
+  font-family: var(--font-playfair, serif);
+}
+
+.lg-hub-header p {
+  font-size: 1rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+.lg-hub-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.lg-hub-actions .btn {
+  min-width: 200px;
+  text-align: center;
+}
+
+.lg-btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.5rem;
+  border: 1.5px solid var(--color-border, #e5e7eb);
+  border-radius: 999px;
+  background: var(--color-surface, #fff);
+  color: var(--color-text-primary, #111827);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.lg-btn-secondary:hover {
+  border-color: var(--color-accent, #2563eb);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.08);
+}
+
+.lg-benefits {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.lg-benefit-card {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.25rem;
+  text-align: center;
+}
+
+.lg-benefit-card svg {
+  color: var(--color-accent, #2563eb);
+  margin-bottom: 0.5rem;
+}
+
+.lg-benefit-card h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 0.25rem;
+}
+
+.lg-benefit-card p {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+}
+
+.lg-steps {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.75rem;
+  margin-bottom: 2rem;
+}
+
+.lg-steps h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem;
+  text-align: center;
+}
+
+.lg-steps-list {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.lg-step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  flex: 1;
+  min-width: 180px;
+  max-width: 240px;
+}
+
+.lg-step-num {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--color-accent, #2563eb);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.82rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.lg-step-item h3 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0 0 0.15rem;
+}
+
+.lg-step-item p {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+}
+
+/* ── Registration ── */
+.lg-reg-layout {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.lg-reg-progress {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.lg-reg-progress-step {
+  flex: 1;
+  text-align: center;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.5rem 0.25rem;
+  border-bottom: 3px solid var(--color-border, #e5e7eb);
+  color: var(--color-text-secondary, #6b7280);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.lg-reg-progress-step--active {
+  border-color: var(--color-accent, #2563eb);
+  color: var(--color-accent, #2563eb);
+}
+
+.lg-reg-progress-step--done {
+  border-color: var(--color-success, #16a34a);
+  color: var(--color-success, #16a34a);
+}
+
+.lg-reg-form {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.75rem;
+}
+
+.lg-reg-form h2 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 0.25rem;
+}
+
+.lg-reg-form-subtitle {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 1.5rem;
+}
+
+.lg-field {
+  margin-bottom: 1.25rem;
+}
+
+.lg-field label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.lg-field input[type="text"],
+.lg-field input[type="email"],
+.lg-field input[type="tel"],
+.lg-field input[type="number"],
+.lg-field select,
+.lg-field textarea {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  background: var(--color-bg, #fafafa);
+}
+
+.lg-field input:focus,
+.lg-field select:focus,
+.lg-field textarea:focus {
+  outline: none;
+  border-color: var(--color-accent, #2563eb);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.12);
+}
+
+.lg-field textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.lg-field-error {
+  font-size: 0.78rem;
+  color: var(--color-error, #dc2626);
+  margin-top: 0.25rem;
+}
+
+.lg-chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+
+.lg-chip {
+  font-size: 0.8rem;
+  padding: 0.35rem 0.75rem;
+  border: 1.5px solid var(--color-border, #e5e7eb);
+  border-radius: 999px;
+  background: var(--color-surface, #fff);
+  cursor: pointer;
+  transition: border-color 0.12s, background 0.12s;
+  color: var(--color-text-primary, #111827);
+}
+
+.lg-chip:hover {
+  border-color: var(--color-accent, #2563eb);
+}
+
+.lg-chip--selected {
+  background: var(--color-accent, #2563eb);
+  border-color: var(--color-accent, #2563eb);
+  color: #fff;
+}
+
+.lg-image-picker {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+}
+
+.lg-image-option {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  object-fit: cover;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.12s, transform 0.12s;
+}
+
+.lg-image-option:hover {
+  transform: scale(1.05);
+}
+
+.lg-image-option--selected {
+  border-color: var(--color-accent, #2563eb);
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.2);
+}
+
+.lg-reg-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--color-border, #e5e7eb);
+}
+
+/* ── Preview Sidebar ── */
+.lg-reg-preview {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.5rem;
+  position: sticky;
+  top: calc(var(--header-height, 76px) + 1.5rem);
+}
+
+.lg-reg-preview h3 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+  color: var(--color-text-secondary, #6b7280);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.75rem;
+}
+
+.lg-preview-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 0.75rem;
+  display: block;
+  border: 2px solid var(--color-border, #e5e7eb);
+}
+
+.lg-preview-name {
+  text-align: center;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 0.15rem;
+}
+
+.lg-preview-city {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 0.75rem;
+}
+
+.lg-preview-tagline {
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--color-text-secondary, #6b7280);
+  text-align: center;
+  margin: 0 0 1rem;
+}
+
+.lg-preview-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.lg-preview-chip {
+  font-size: 0.7rem;
+  padding: 0.2rem 0.55rem;
+  border-radius: 999px;
+  background: var(--color-bg, #f3f4f6);
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.lg-preview-rate {
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.lg-completeness {
+  margin-top: 0.75rem;
+}
+
+.lg-completeness-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin-bottom: 0.35rem;
+}
+
+.lg-completeness-bar {
+  height: 6px;
+  border-radius: 3px;
+  background: var(--color-border, #e5e7eb);
+  overflow: hidden;
+}
+
+.lg-completeness-fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--color-accent, #2563eb);
+  transition: width 0.3s;
+}
+
+/* ── Availability Schedule ── */
+.lg-schedule-row {
+  display: grid;
+  grid-template-columns: 100px 50px 1fr 1fr;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  font-size: 0.85rem;
+}
+
+.lg-schedule-row:last-child {
+  border-bottom: none;
+}
+
+.lg-schedule-toggle {
+  width: 40px;
+  height: 22px;
+  border-radius: 11px;
+  border: none;
+  cursor: pointer;
+  background: var(--color-border, #d1d5db);
+  position: relative;
+  transition: background 0.15s;
+}
+
+.lg-schedule-toggle::after {
+  content: '';
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.15s;
+}
+
+.lg-schedule-toggle--on {
+  background: var(--color-accent, #2563eb);
+}
+
+.lg-schedule-toggle--on::after {
+  transform: translateX(18px);
+}
+
+.lg-schedule-time {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-family: inherit;
+  background: var(--color-bg, #fafafa);
+}
+
+/* ── Verification Checklist ── */
+.lg-verify-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+}
+
+.lg-verify-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  font-size: 0.88rem;
+}
+
+.lg-verify-item:last-child {
+  border-bottom: none;
+}
+
+.lg-verify-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lg-verify-icon--done {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--color-success, #16a34a);
+}
+
+.lg-verify-icon--pending {
+  background: var(--color-bg, #f3f4f6);
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+/* ── Application Submitted ── */
+.lg-submitted-container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: calc(var(--header-height, 76px) + 3rem) 1.25rem 3rem;
+  text-align: center;
+}
+
+.lg-submitted-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--color-success, #16a34a);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.25rem;
+}
+
+.lg-submitted-container h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.lg-submitted-status {
+  display: inline-block;
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  border: 1.5px solid #d97706;
+  color: #d97706;
+  font-size: 0.78rem;
+  font-weight: 600;
+  margin: 0.75rem 0 1.5rem;
+}
+
+.lg-submitted-note {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 2rem;
+}
+
+.lg-submitted-summary {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.5rem;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.lg-submitted-summary h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.lg-submitted-summary dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.lg-submitted-summary dt {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary, #6b7280);
+  font-weight: 500;
+}
+
+.lg-submitted-summary dd {
+  font-size: 0.88rem;
+  font-weight: 500;
+  margin: 0;
+}
+
+.lg-submitted-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── Dashboard ── */
+.lg-dash-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 2rem;
+  min-height: calc(100vh - var(--header-height, 76px));
+}
+
+.lg-dash-sidebar {
+  padding-top: calc(var(--header-height, 76px) + 1.5rem);
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.lg-dash-sidebar-profile {
+  text-align: center;
+  padding-bottom: 1rem;
+  margin-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.lg-dash-sidebar-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 0.5rem;
+}
+
+.lg-dash-sidebar-name {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin: 0 0 0.1rem;
+}
+
+.lg-dash-sidebar-city {
+  font-size: 0.75rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+}
+
+.lg-dash-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.lg-dash-nav button {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.6rem 0.75rem;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: background 0.12s, color 0.12s;
+}
+
+.lg-dash-nav button:hover {
+  background: var(--color-bg, #f3f4f6);
+}
+
+.lg-dash-nav button[aria-selected="true"] {
+  background: var(--color-accent, #2563eb);
+  color: #fff;
+  font-weight: 600;
+}
+
+.lg-dash-main {
+  padding: calc(var(--header-height, 76px) + 1.5rem) 1.5rem 3rem 0;
+  min-width: 0;
+}
+
+.lg-dash-main h1 {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem;
+}
+
+/* ── Overview Cards ── */
+.lg-overview-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.lg-stat-card {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+}
+
+.lg-stat-card-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 0.25rem;
+}
+
+.lg-stat-card-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.lg-overview-actions {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.lg-action-card {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--color-text-primary, #111827);
+  text-align: left;
+  border: 1px solid var(--color-border, #e5e7eb);
+  transition: border-color 0.12s;
+}
+
+.lg-action-card:hover {
+  border-color: var(--color-accent, #2563eb);
+}
+
+.lg-action-card svg {
+  color: var(--color-accent, #2563eb);
+  flex-shrink: 0;
+}
+
+/* ── Booking Cards ── */
+.lg-booking-filters {
+  display: flex;
+  gap: 0.35rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.lg-booking-filter-btn {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-surface, #fff);
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  color: var(--color-text-secondary, #6b7280);
+  transition: background 0.12s, color 0.12s;
+}
+
+.lg-booking-filter-btn--active {
+  background: var(--color-accent, #2563eb);
+  border-color: var(--color-accent, #2563eb);
+  color: #fff;
+}
+
+.lg-booking-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.lg-booking-card {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.lg-booking-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.lg-booking-card-header h3 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.lg-booking-card-meta {
+  display: flex;
+  gap: 1.5rem;
+  font-size: 0.82rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin-bottom: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.lg-booking-card-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.lg-booking-card-notes {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary, #6b7280);
+  background: var(--color-bg, #f3f4f6);
+  padding: 0.6rem 0.85rem;
+  border-radius: 8px;
+  margin-bottom: 0.75rem;
+}
+
+.lg-booking-card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.lg-booking-payout {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.lg-booking-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lg-btn-accept {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  border: none;
+  background: var(--color-success, #16a34a);
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.lg-btn-decline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border, #e5e7eb);
+  background: var(--color-surface, #fff);
+  color: var(--color-error, #dc2626);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* ── Earnings ── */
+.lg-earnings-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.lg-txn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.lg-txn-table-wrap {
+  overflow-x: auto;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+}
+
+.lg-txn-table th {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary, #6b7280);
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.lg-txn-table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.lg-txn-table tr:last-child td {
+  border-bottom: none;
+}
+
+.lg-payout-note {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary, #6b7280);
+  text-align: center;
+  margin-top: 1.25rem;
+  padding: 0.75rem;
+  background: var(--color-bg, #f3f4f6);
+  border-radius: 10px;
+}
+
+/* ── Messages ── */
+.lg-msg-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.lg-msg-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 0.12s;
+}
+
+.lg-msg-item:hover {
+  border-color: var(--color-accent, #2563eb);
+}
+
+.lg-msg-item--unread {
+  border-left: 3px solid var(--color-accent, #2563eb);
+}
+
+.lg-msg-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.lg-msg-info h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin: 0 0 0.1rem;
+}
+
+.lg-msg-info p {
+  font-size: 0.82rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lg-msg-time {
+  font-size: 0.72rem;
+  color: var(--color-text-tertiary, #9ca3af);
+  white-space: nowrap;
+}
+
+.lg-msg-unread-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent, #2563eb);
+  flex-shrink: 0;
+}
+
+.lg-msg-panel {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.25rem;
+}
+
+.lg-msg-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+}
+
+.lg-msg-panel-messages {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.lg-msg-bubble {
+  margin-bottom: 0.5rem;
+  max-width: 80%;
+}
+
+.lg-msg-bubble--guide {
+  margin-left: auto;
+  text-align: right;
+}
+
+.lg-msg-bubble p {
+  display: inline-block;
+  padding: 0.5rem 0.85rem;
+  border-radius: 14px;
+  font-size: 0.85rem;
+  margin: 0;
+}
+
+.lg-msg-bubble--traveler p {
+  background: var(--color-bg, #f3f4f6);
+}
+
+.lg-msg-bubble--guide p {
+  background: var(--color-accent, #2563eb);
+  color: #fff;
+}
+
+.lg-msg-composer {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.lg-msg-composer input {
+  flex: 1;
+  padding: 0.55rem 0.85rem;
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 22px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  background: var(--color-bg, #f3f4f6);
+}
+
+.lg-msg-composer input:focus {
+  outline: none;
+  border-color: var(--color-accent, #2563eb);
+}
+
+.lg-msg-composer button {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: none;
+  background: var(--color-accent, #2563eb);
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Reviews ── */
+.lg-review-summary {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+}
+
+.lg-review-avg {
+  text-align: center;
+}
+
+.lg-review-avg-num {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.lg-review-avg-label {
+  font-size: 0.78rem;
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.lg-review-card {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.lg-review-card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.lg-review-card-header h3 {
+  font-size: 0.92rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.lg-review-card-header span {
+  font-size: 0.82rem;
+  color: #f59e0b;
+  font-weight: 600;
+}
+
+.lg-review-card p {
+  font-size: 0.88rem;
+  color: var(--color-text-secondary, #6b7280);
+  margin: 0 0 0.35rem;
+}
+
+.lg-review-card footer {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary, #9ca3af);
+}
+
+/* ── Profile Panel ── */
+.lg-profile-section {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.lg-profile-section h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 1rem;
+}
+
+.lg-profile-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--color-border, #e5e7eb);
+  font-size: 0.88rem;
+}
+
+.lg-profile-row:last-child {
+  border-bottom: none;
+}
+
+.lg-profile-row dt {
+  color: var(--color-text-secondary, #6b7280);
+}
+
+.lg-profile-row dd {
+  font-weight: 500;
+  margin: 0;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .lg-reg-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .lg-reg-preview {
+    position: static;
+  }
+
+  .lg-dash-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .lg-dash-sidebar {
+    position: static;
+    height: auto;
+    padding-top: calc(var(--header-height, 76px) + 1rem);
+  }
+
+  .lg-dash-sidebar-profile {
+    display: none;
+  }
+
+  .lg-dash-nav {
+    flex-direction: row;
+    overflow-x: auto;
+    gap: 0.25rem;
+    padding-bottom: 0.5rem;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .lg-dash-nav button {
+    white-space: nowrap;
+    padding: 0.5rem 0.85rem;
+    font-size: 0.8rem;
+  }
+
+  .lg-dash-main {
+    padding: 1rem 0 3rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .lg-container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .lg-hub-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .lg-schedule-row {
+    grid-template-columns: 80px 40px 1fr 1fr;
+    gap: 0.35rem;
+    font-size: 0.8rem;
+  }
+
+  .lg-earnings-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .lg-submitted-summary dl {
+    grid-template-columns: 1fr;
+  }
+
+  .lg-review-summary {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+}

@@ -18,8 +18,13 @@ import SignInPage from '@/app/signin/page';
 import SignUpPage from '@/app/signup/page';
 import NotFound from '@/pages/not-found';
 import ScrollToTop from '@/components/ScrollToTop';
+import LocalGuideHubPage from '@/app/local-guide/page';
+import LocalGuideRegisterPage from '@/app/local-guide/register/page';
+import ApplicationSubmittedPage from '@/app/local-guide/application-submitted/page';
+import LocalGuideDashboardPage from '@/app/local-guide/dashboard/page';
 import { AuthProvider } from '@/hooks/useAuth';
 import { TravelerPrototypeProvider } from '@/components/traveler/TravelerPrototypeContext';
+import { LocalGuidePrototypeProvider } from '@/components/local-guide/LocalGuidePrototypeContext';
 
 function Router() {
   return (
@@ -35,6 +40,10 @@ function Router() {
       <Route path="/bookings/:bookingId/chat" component={BookingChatPage} />
       <Route path="/book/:guideId" component={BookingRequestPage} />
       <Route path="/dashboard" component={DashboardPage} />
+      <Route path="/local-guide" component={LocalGuideHubPage} />
+      <Route path="/local-guide/register" component={LocalGuideRegisterPage} />
+      <Route path="/local-guide/application-submitted" component={ApplicationSubmittedPage} />
+      <Route path="/local-guide/dashboard" component={LocalGuideDashboardPage} />
       <Route path="/guide-dashboard" component={GuideDashboardPage} />
       <Route path="/match" component={MatchPage} />
       <Route path="/admin" component={AdminPage} />
@@ -49,11 +58,12 @@ function App() {
   return (
     <AuthProvider>
       <TravelerPrototypeProvider>
-        <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
-        {/* Reset scroll về đầu trang mỗi khi route thay đổi */}
-        <ScrollToTop />
-        <Router />
-        </WouterRouter>
+        <LocalGuidePrototypeProvider>
+          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}>
+            <ScrollToTop />
+            <Router />
+          </WouterRouter>
+        </LocalGuidePrototypeProvider>
       </TravelerPrototypeProvider>
     </AuthProvider>
   );
