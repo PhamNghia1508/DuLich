@@ -3,20 +3,14 @@ import { Route, Switch, Router as WouterRouter } from 'wouter';
 import HomePage from '@/app/page';
 import GuidesPage from '@/app/guides/page';
 import GuideProfilePage from '@/app/guides/[id]/page';
-import BookingRequestPage from '@/app/book/[guideId]/page';
 import BookingHandoffPage from '@/app/booking-handoff/[guideId]/page';
 import PaymentPage from '@/app/payment/[guideId]/page';
 import BookingSuccessPage from '@/app/booking-success/[guideId]/page';
 import BookingListPage from '@/app/bookings/page';
 import BookingDetailPage from '@/app/bookings/[bookingId]/page';
 import BookingChatPage from '@/app/bookings/[bookingId]/chat/page';
-import DashboardPage from '@/app/dashboard/page';
-import GuideDashboardPage from '@/app/guide-dashboard/page';
-import MatchPage from '@/app/match/page';
 import AdminPage from '@/app/admin/page';
 import AdminDashboardPage from '@/app/admin/dashboard/page';
-import SignInPage from '@/app/signin/page';
-import SignUpPage from '@/app/signup/page';
 import NotFound from '@/pages/not-found';
 import ScrollToTop from '@/components/ScrollToTop';
 import LocalGuideHubPage from '@/app/local-guide/page';
@@ -30,6 +24,14 @@ import { TravelerPrototypeProvider } from '@/components/traveler/TravelerPrototy
 import { LocalGuidePrototypeProvider } from '@/components/local-guide/LocalGuidePrototypeContext';
 import { PartnerPrototypeProvider } from '@/components/partner/PartnerPrototypeContext';
 import { AdminPrototypeProvider } from '@/components/admin/AdminPrototypeContext';
+import {
+  LegacyBookRedirect,
+  LegacyDashboardRecovery,
+  LegacyGuideDashboardRedirect,
+  LegacyMatchRedirect,
+  LegacySigninRecovery,
+  LegacySignupRecovery,
+} from '@/components/routing/LegacyRouteBridge';
 
 function Router() {
   return (
@@ -43,20 +45,20 @@ function Router() {
       <Route path="/bookings" component={BookingListPage} />
       <Route path="/bookings/:bookingId" component={BookingDetailPage} />
       <Route path="/bookings/:bookingId/chat" component={BookingChatPage} />
-      <Route path="/book/:guideId" component={BookingRequestPage} />
-      <Route path="/dashboard" component={DashboardPage} />
+      <Route path="/book/:guideId" component={LegacyBookRedirect} />
+      <Route path="/dashboard" component={LegacyDashboardRecovery} />
       <Route path="/local-guide" component={LocalGuideHubPage} />
       <Route path="/local-guide/register" component={LocalGuideRegisterPage} />
       <Route path="/local-guide/application-submitted" component={ApplicationSubmittedPage} />
       <Route path="/local-guide/dashboard" component={LocalGuideDashboardPage} />
       <Route path="/partner" component={PartnerEntryPage} />
       <Route path="/partner/dashboard" component={PartnerDashboardPage} />
-      <Route path="/guide-dashboard" component={GuideDashboardPage} />
-      <Route path="/match" component={MatchPage} />
+      <Route path="/guide-dashboard" component={LegacyGuideDashboardRedirect} />
+      <Route path="/match" component={LegacyMatchRedirect} />
       <Route path="/admin" component={AdminPage} />
       <Route path="/admin/dashboard" component={AdminDashboardPage} />
-      <Route path="/signin" component={SignInPage} />
-      <Route path="/signup" component={SignUpPage} />
+      <Route path="/signin" component={LegacySigninRecovery} />
+      <Route path="/signup" component={LegacySignupRecovery} />
       <Route component={NotFound} />
     </Switch>
   );
