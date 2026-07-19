@@ -5,12 +5,34 @@ import Navbar from '@/components/layout/Navbar';
 import SupportChat from '@/components/home/SupportChat';
 import { useLocalGuidePrototype } from '@/components/local-guide/LocalGuidePrototypeContext';
 import { calculateGuideProfileCompleteness } from '@/components/local-guide/localGuideRegistrationData';
+import { shouldShowSubmittedApplication } from '@/components/local-guide/localGuidePresentation';
 
 import '../local-guide.css';
 
 export default function ApplicationSubmittedPage() {
   const { submittedApplication } = useLocalGuidePrototype();
   const completeness = submittedApplication ? calculateGuideProfileCompleteness(submittedApplication) : null;
+
+  if (!shouldShowSubmittedApplication(submittedApplication)) {
+    return (
+      <div className="lg-page">
+        <Navbar variant="home" />
+        <main className="lg-submitted-shell">
+          <section className="lg-submitted-card" aria-labelledby="missing-application-title">
+            <div className="lg-submitted-icon"><FileText size={34} /></div>
+            <p className="lg-status-pill">Direct link recovery</p>
+            <h1 id="missing-application-title">No submitted guide application was found.</h1>
+            <p className="lg-lead">Applications live only in local React state for this frontend prototype. Start or review an application from the guide workspace.</p>
+            <div className="lg-submitted-actions">
+              <Link href="/local-guide/register" className="lg-btn-primary">Apply to Become a Guide</Link>
+              <Link href="/local-guide" className="lg-btn-secondary">Return to Local Guide Home</Link>
+            </div>
+          </section>
+        </main>
+        <SupportChat />
+      </div>
+    );
+  }
 
   return (
     <div className="lg-page">

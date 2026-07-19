@@ -4,6 +4,12 @@ import type {
 } from './localGuideDashboardData.ts';
 import type { PrototypeGuideApplication } from './localGuideRegistrationData.ts';
 
+export function shouldShowSubmittedApplication(
+  application: PrototypeGuideApplication | null,
+): application is PrototypeGuideApplication {
+  return application?.status === 'submitted';
+}
+
 export type GuideDashboardTab =
   | 'overview'
   | 'bookings'

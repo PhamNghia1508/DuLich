@@ -42,6 +42,7 @@ import {
   createDashboardMetricCards,
   createRegistrationReviewGroups,
   normalizeGuideTransactionsForCards,
+  shouldShowSubmittedApplication,
 } from './localGuidePresentation.ts';
 
 describe('Registration data defaults', () => {
@@ -181,6 +182,16 @@ describe('Registration steps metadata', () => {
   it('REGISTRATION_STEPS has 4 entries', () => {
     assert.equal(REGISTRATION_STEPS.length, 4);
     assert.equal(REGISTRATION_STEPS[0].label, 'Basic Info');
+  });
+});
+
+describe('Application submitted direct-route recovery', () => {
+  it('only shows submission success when a submitted application exists', () => {
+    assert.equal(shouldShowSubmittedApplication(null), false);
+
+    const submitted = createDefaultRegistrationDraft();
+    submitted.status = 'submitted';
+    assert.equal(shouldShowSubmittedApplication(submitted), true);
   });
 });
 
