@@ -22,6 +22,8 @@ import LocalGuideHubPage from '@/app/local-guide/page';
 import LocalGuideRegisterPage from '@/app/local-guide/register/page';
 import ApplicationSubmittedPage from '@/app/local-guide/application-submitted/page';
 import LocalGuideDashboardPage from '@/app/local-guide/dashboard/page';
+import PartnerEntryPage from '@/app/partner/page';
+import PartnerDashboardPage from '@/app/partner/dashboard/page';
 import { AuthProvider } from '@/hooks/useAuth';
 import { TravelerPrototypeProvider } from '@/components/traveler/TravelerPrototypeContext';
 import { LocalGuidePrototypeProvider } from '@/components/local-guide/LocalGuidePrototypeContext';
@@ -46,6 +48,8 @@ function Router() {
       <Route path="/local-guide/register" component={LocalGuideRegisterPage} />
       <Route path="/local-guide/application-submitted" component={ApplicationSubmittedPage} />
       <Route path="/local-guide/dashboard" component={LocalGuideDashboardPage} />
+      <Route path="/partner" component={PartnerEntryPage} />
+      <Route path="/partner/dashboard" component={PartnerDashboardPage} />
       <Route path="/guide-dashboard" component={GuideDashboardPage} />
       <Route path="/match" component={MatchPage} />
       <Route path="/admin" component={AdminPage} />
