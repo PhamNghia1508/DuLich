@@ -7,9 +7,10 @@ import {
   PARTNER_MONTHLY_REPORTS, calculatePartnerCommission, createPartnerReportSummary,
   filterPartnerBookings, summarizePartnerCommissions, type PartnerBookingStatus,
 } from './partnerPrototypeData';
-import type { PartnerSection } from '@/app/partner/dashboard/page';
 
 const money = (value: number) => new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(value);
+
+export type PartnerSection = 'overview' | 'referral' | 'bookings' | 'commissions' | 'reports' | 'profile';
 
 export default function PartnerDashboardPanels({ activeSection, onSectionChange }: { activeSection: PartnerSection; onSectionChange: (section: PartnerSection) => void }) {
   const context = usePartnerPrototype();

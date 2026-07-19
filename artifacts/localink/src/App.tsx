@@ -14,6 +14,7 @@ import DashboardPage from '@/app/dashboard/page';
 import GuideDashboardPage from '@/app/guide-dashboard/page';
 import MatchPage from '@/app/match/page';
 import AdminPage from '@/app/admin/page';
+import AdminDashboardPage from '@/app/admin/dashboard/page';
 import SignInPage from '@/app/signin/page';
 import SignUpPage from '@/app/signup/page';
 import NotFound from '@/pages/not-found';
@@ -53,6 +54,7 @@ function Router() {
       <Route path="/guide-dashboard" component={GuideDashboardPage} />
       <Route path="/match" component={MatchPage} />
       <Route path="/admin" component={AdminPage} />
+      <Route path="/admin/dashboard" component={AdminDashboardPage} />
       <Route path="/signin" component={SignInPage} />
       <Route path="/signup" component={SignUpPage} />
       <Route component={NotFound} />

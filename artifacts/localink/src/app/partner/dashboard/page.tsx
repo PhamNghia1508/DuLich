@@ -4,11 +4,9 @@ import { BarChart3, BriefcaseBusiness, Building2, CalendarDays, LayoutDashboard,
 import SupportChat from '@/components/home/SupportChat';
 import RoleDashboardShell, { type WorkspaceNavItem } from '@/components/workspace/RoleDashboardShell';
 import { usePartnerPrototype } from '@/components/partner/PartnerPrototypeContext';
-import PartnerDashboardPanels from '@/components/partner/PartnerDashboardPanels';
+import PartnerDashboardPanels, { type PartnerSection } from '@/components/partner/PartnerDashboardPanels';
 
 import '../partner.css';
-
-export type PartnerSection = 'overview' | 'referral' | 'bookings' | 'commissions' | 'reports' | 'profile';
 
 const PARTNER_NAV: readonly WorkspaceNavItem<PartnerSection>[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
